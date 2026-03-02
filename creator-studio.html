@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Studio — VendorVerse</title>
+    <meta name="description" content="VendorVerse Creator Studio — Build, manage, and sell your products.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="creator.css">
+</head>
+
+<body id="creator-studio-page">
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Toggle sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+    </button>
+
+    <div class="creator-layout">
+        <!-- ════════ SIDEBAR ════════ -->
+        <aside class="creator-sidebar">
+            <a href="index.html" class="sidebar-brand">
+                <div class="sidebar-brand-icon">V</div>
+                <div>
+                    <div class="sidebar-brand-text">VendorVerse</div>
+                    <div class="sidebar-brand-sub">Creator Studio</div>
+                </div>
+            </a>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-label">Dashboard</span>
+                <button class="sidebar-link active" data-view="overview">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                    </svg>
+                    Overview
+                </button>
+                <button class="sidebar-link" data-view="add">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
+                    </svg>
+                    Add Product
+                </button>
+                <button class="sidebar-link" data-view="products">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                        <line x1="7" y1="7" x2="7.01" y2="7" />
+                    </svg>
+                    My Products
+                </button>
+
+                <span class="sidebar-section-label">Business</span>
+                <button class="sidebar-link" data-view="orders">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    Orders
+                </button>
+                <button class="sidebar-link" data-view="analytics">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                    Analytics
+                </button>
+                <button class="sidebar-link" data-view="settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                    </svg>
+                    Settings
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="sidebar-back">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12" />
+                        <polyline points="12 19 5 12 12 5" />
+                    </svg>
+                    Back to Store
+                </a>
+            </div>
+        </aside>
+
+        <!-- ════════ MAIN CONTENT ════════ -->
+        <main class="creator-main">
+            <div class="creator-page-header">
+                <h1 class="creator-page-title">Overview</h1>
+                <p class="creator-page-subtitle">Your studio at a glance</p>
+            </div>
+
+            <!-- ═══ VIEW: Overview ═══ -->
+            <div class="creator-view active" id="view-overview">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon purple">📦</div>
+                        <div class="stat-label">Total Products</div>
+                        <div class="stat-value" id="stat-total-products">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">🛒</div>
+                        <div class="stat-label">Total Orders</div>
+                        <div class="stat-value" id="stat-total-orders">0</div>
+                        <span class="stat-badge up">↗ Simulated</span>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon amber">❤️</div>
+                        <div class="stat-label">Wishlist Saves</div>
+                        <div class="stat-value" id="stat-wishlist-saves">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">🌐</div>
+                        <div class="stat-label">Marketplace Status</div>
+                        <div class="stat-value">Live</div>
+                        <span class="stat-badge live">● Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ VIEW: Add Product (3-Step Wizard) ═══ -->
+            <div class="creator-view" id="view-add">
+                <div class="wizard-container">
+                    <!-- Step Indicators -->
+                    <div class="wizard-steps-bar">
+                        <div class="wizard-step-indicator active" id="wizard-ind-1">
+                            <div class="wizard-step-circle">1</div>
+                            <span class="wizard-step-label">Basics</span>
+                        </div>
+                        <div class="wizard-connector" id="wizard-conn-1"></div>
+                        <div class="wizard-step-indicator" id="wizard-ind-2">
+                            <div class="wizard-step-circle">2</div>
+                            <span class="wizard-step-label">Visual</span>
+                        </div>
+                        <div class="wizard-connector" id="wizard-conn-2"></div>
+                        <div class="wizard-step-indicator" id="wizard-ind-3">
+                            <div class="wizard-step-circle">3</div>
+                            <span class="wizard-step-label">Publish</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Basics -->
+                    <div class="wizard-panel active" id="wizard-step-1">
+                        <div class="wizard-field">
+                            <label class="wizard-label" for="w-name">Product Name</label>
+                            <input type="text" class="wizard-input" id="w-name"
+                                placeholder="e.g. Premium Wireless Speaker" autocomplete="off">
+                        </div>
+                        <div class="wizard-field">
+                            <label class="wizard-label" for="w-desc">Short Description</label>
+                            <textarea class="wizard-textarea" id="w-desc" placeholder="Briefly describe your product..."
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Visual & Category -->
+                    <div class="wizard-panel" id="wizard-step-2">
+                        <div class="wizard-field">
+                            <label class="wizard-label">Category</label>
+                            <div class="wizard-category-grid" id="wizard-categories"></div>
+                        </div>
+                        <div class="wizard-field">
+                            <label class="wizard-label" for="w-image">Image URL</label>
+                            <input type="url" class="wizard-input" id="w-image"
+                                placeholder="https://example.com/image.jpg" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Pricing & Preview -->
+                    <div class="wizard-panel" id="wizard-step-3">
+                        <div class="wizard-field">
+                            <label class="wizard-label" for="w-price">Price (₹)</label>
+                            <input type="number" class="wizard-input" id="w-price" placeholder="2999" min="1">
+                        </div>
+                        <div class="wizard-preview">
+                            <img class="wizard-preview-img" id="preview-img"
+                                src="https://via.placeholder.com/400x300?text=Preview" alt="Preview">
+                            <div class="wizard-preview-name" id="preview-name">Product Name</div>
+                            <div class="wizard-preview-price" id="preview-price">₹0</div>
+                        </div>
+                    </div>
+
+                    <!-- Wizard Actions -->
+                    <div class="wizard-actions">
+                        <button class="wizard-btn wizard-btn-secondary" id="wizard-back"
+                            style="display:none">Back</button>
+                        <button class="wizard-btn wizard-btn-primary" id="wizard-next">Next</button>
+                        <button class="wizard-btn wizard-btn-publish" id="wizard-publish" style="display:none">🚀
+                            Publish</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ VIEW: My Products ═══ -->
+            <div class="creator-view" id="view-products">
+                <div class="my-products-grid" id="my-products-grid">
+                    <!-- Injected by creator.js -->
+                </div>
+            </div>
+
+            <!-- ═══ VIEW: Orders ═══ -->
+            <div class="creator-view" id="view-orders">
+                <div class="orders-list" id="orders-list">
+                    <!-- Injected by creator.js -->
+                </div>
+            </div>
+
+            <!-- ═══ VIEW: Analytics ═══ -->
+            <div class="creator-view" id="view-analytics">
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <div class="analytics-card-label">Products Added</div>
+                        <div class="analytics-card-value" id="a-products">0</div>
+                        <div class="progress-track">
+                            <div class="progress-fill purple" id="prog-products"></div>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-card-label">Wishlist Saves</div>
+                        <div class="analytics-card-value" id="a-wishlist">0</div>
+                        <div class="progress-track">
+                            <div class="progress-fill green" id="prog-wishlist"></div>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-card-label">Est. Revenue</div>
+                        <div class="analytics-card-value">₹<span id="a-revenue">0</span></div>
+                        <div class="progress-track">
+                            <div class="progress-fill amber" id="prog-revenue"></div>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-card-label">Engagement Score</div>
+                        <div class="analytics-card-value"><span id="a-engagement">0</span>%</div>
+                        <div class="progress-track">
+                            <div class="progress-fill blue" id="prog-engagement"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ VIEW: Settings ═══ -->
+            <div class="creator-view" id="view-settings">
+                <div class="settings-card">
+                    <div class="settings-row">
+                        <div>
+                            <div class="settings-label">Creator Mode</div>
+                            <div class="settings-sublabel">Enable to sell products on VendorVerse</div>
+                        </div>
+                        <button class="toggle on" id="toggle-creator" type="button"></button>
+                    </div>
+                    <div class="settings-row">
+                        <div>
+                            <div class="settings-label">Store Name</div>
+                            <div class="settings-sublabel">VendorVerse Creator Store</div>
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div>
+                            <div class="settings-label">Theme</div>
+                            <div class="settings-sublabel">Inherited from main site theme</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ═══ EDIT MODAL ═══ -->
+    <div id="edit-modal-overlay">
+        <div class="edit-modal">
+            <h3 class="edit-modal-title">Edit Product</h3>
+            <input type="hidden" id="edit-id">
+            <div class="edit-field">
+                <label class="edit-label" for="edit-name">Name</label>
+                <input type="text" class="edit-input" id="edit-name">
+            </div>
+            <div class="edit-field">
+                <label class="edit-label" for="edit-price">Price (₹)</label>
+                <input type="number" class="edit-input" id="edit-price" min="1">
+            </div>
+            <div class="edit-field">
+                <label class="edit-label" for="edit-image">Image URL</label>
+                <input type="url" class="edit-input" id="edit-image">
+            </div>
+            <div class="edit-actions">
+                <button class="wizard-btn wizard-btn-secondary" id="edit-cancel">Cancel</button>
+                <button class="wizard-btn wizard-btn-primary" id="edit-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="theme.js"></script>
+    <script src="animations.js"></script>
+    <script src="creator.js"></script>
+</body>
+
+</html>

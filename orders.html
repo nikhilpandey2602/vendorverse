@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - VendorVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+    <style>
+        /* Orders Page Styles */
+        .orders-page {
+            min-height: 100vh;
+            background: var(--color-bg);
+            padding-top: 80px;
+        }
+
+        .orders-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-6);
+        }
+
+        @media (max-width: 768px) {
+            .orders-container {
+                padding: var(--space-4);
+            }
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-6);
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            color: var(--color-text-muted);
+            font-size: var(--font-size-sm);
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--color-primary);
+        }
+
+        /* Orders List */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .order-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .order-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: var(--space-5);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid var(--color-border-light);
+            flex-wrap: wrap;
+            gap: var(--space-3);
+        }
+
+        .order-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+
+        .order-number {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .order-date {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-muted);
+        }
+
+        .order-status {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+        }
+
+        .order-status.placed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .order-status.confirmed {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .order-status.shipped {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .order-status.delivered {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .order-status.cancelled {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .order-status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Order Items */
+        .order-items {
+            padding: var(--space-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-3);
+            background: #fafafa;
+            border-radius: var(--radius-lg);
+        }
+
+        .order-item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #eee;
+            flex-shrink: 0;
+        }
+
+        .order-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .order-item-details {
+            flex: 1;
+        }
+
+        .order-item-title {
+            font-size: var(--font-size-base);
+            font-weight: 500;
+            color: var(--color-text-primary);
+            margin-bottom: 4px;
+        }
+
+        .order-item-qty {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-muted);
+        }
+
+        .order-item-price {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        /* Order Footer */
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4) var(--space-5);
+            background: #f9fafb;
+            border-top: 1px solid var(--color-border-light);
+            flex-wrap: wrap;
+            gap: var(--space-3);
+        }
+
+        .order-total-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-muted);
+        }
+
+        .order-total {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        /* Empty State */
+        .empty-orders {
+            text-align: center;
+            padding: var(--space-10);
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+        }
+
+        .empty-orders-icon {
+            font-size: 4rem;
+            margin-bottom: var(--space-4);
+        }
+
+        .empty-orders h2 {
+            font-size: var(--font-size-xl);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .empty-orders p {
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-6);
+        }
+
+        .start-shopping-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-6);
+            background: var(--color-primary);
+            color: white;
+            font-weight: 600;
+            border-radius: var(--radius-lg);
+            transition: all 0.2s;
+        }
+
+        .start-shopping-btn:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: var(--space-10);
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--color-border);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto var(--space-4);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Login Required */
+        .login-required {
+            text-align: center;
+            padding: var(--space-10);
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+        }
+
+        .login-required h2 {
+            margin-bottom: var(--space-2);
+        }
+
+        .login-required p {
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-6);
+        }
+
+        .login-btn {
+            padding: var(--space-3) var(--space-6);
+            background: var(--color-primary);
+            color: white;
+            font-weight: 600;
+            border-radius: var(--radius-lg);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .login-btn:hover {
+            background: var(--color-primary-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" style="position: fixed; top: 0; left: 0; right: 0; z-index: 100;">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">◈</span>
+                <span class="logo-text">VendorVerse</span>
+            </a>
+            <div class="header-actions">
+                <a href="cart.html" class="header-action cart-action" aria-label="Cart">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-badge">0</span>
+                </a>
+                <div class="auth-buttons" id="auth-buttons">
+                    <button class="auth-btn auth-btn-login" onclick="openAuthModal('login')">
+                        <span>Login</span>
+                    </button>
+                </div>
+                <div class="user-menu" id="user-menu" style="display: none;">
+                    <button class="user-menu-trigger" onclick="openDashboard('account')">
+                        <div class="user-avatar-small">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <span class="user-name" id="user-name-display">User</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Orders Page -->
+    <main class="orders-page">
+        <div class="orders-container">
+            <div class="page-header">
+                <h1 class="page-title">My Orders</h1>
+                <a href="index.html" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Continue Shopping
+                </a>
+            </div>
+
+            <div id="orders-content">
+                <!-- Content will be rendered here -->
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p>Loading your orders...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="animations.js"></script>
+    <script src="auth.js"></script>
+    <script src="cart.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:5000';
+        const TOKEN_KEY = 'vendorverse_token';
+
+        // Check login and fetch orders
+        async function loadOrders() {
+            const container = document.getElementById('orders-content');
+            const token = localStorage.getItem(TOKEN_KEY);
+
+            if (!token) {
+                container.innerHTML = `
+                    <div class="login-required">
+                        <div class="empty-orders-icon">🔒</div>
+                        <h2>Login Required</h2>
+                        <p>Please login to view your order history.</p>
+                        <button class="login-btn" onclick="openAuthModal('login')">Login</button>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const response = await fetch(API_BASE + '/api/orders/my', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    if (data.data && data.data.length > 0) {
+                        renderOrders(data.data);
+                    } else {
+                        showEmptyState();
+                    }
+                } else {
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+                showEmptyState();
+            }
+        }
+
+        // Render orders
+        function renderOrders(orders) {
+            const container = document.getElementById('orders-content');
+
+            container.innerHTML = `
+                <div class="orders-list">
+                    ${orders.map(order => renderOrderCard(order)).join('')}
+                </div>
+            `;
+        }
+
+        // Render single order card
+        function renderOrderCard(order) {
+            const date = new Date(order.createdAt).toLocaleDateString('en-IN', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            const statusClass = (order.status || 'pending').toLowerCase();
+            const statusLabel = formatStatus(order.status);
+            const total = order.pricing ? order.pricing.total : 0;
+
+            const items = order.items || [];
+            const itemsHtml = items.map(item => `
+                <div class="order-item">
+                    <div class="order-item-image">
+                        <img src="${item.productSnapshot?.image || 'https://via.placeholder.com/60'}" 
+                             alt="${item.productSnapshot?.title || 'Product'}">
+                    </div>
+                    <div class="order-item-details">
+                        <p class="order-item-title">${item.productSnapshot?.title || 'Product'}</p>
+                        <p class="order-item-qty">Qty: ${item.quantity}</p>
+                    </div>
+                    <p class="order-item-price">₹${(item.price * item.quantity).toLocaleString('en-IN')}</p>
+                </div>
+            `).join('');
+
+            return `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-info">
+                            <p class="order-number">Order #${order.orderNumber || order._id?.slice(-8).toUpperCase()}</p>
+                            <p class="order-date">Placed on ${date}</p>
+                        </div>
+                        <span class="order-status ${statusClass}">${statusLabel}</span>
+                    </div>
+                    <div class="order-items">
+                        ${itemsHtml || '<p>No items</p>'}
+                    </div>
+                    <div class="order-footer">
+                        <span class="order-total-label">Order Total</span>
+                        <span class="order-total">₹${total.toLocaleString('en-IN')}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Format status
+        function formatStatus(status) {
+            const statusMap = {
+                'pending': '⏳ Pending',
+                'confirmed': '✓ Confirmed',
+                'processing': '⚙️ Processing',
+                'shipped': '🚚 Shipped',
+                'delivered': '✅ Delivered',
+                'cancelled': '❌ Cancelled'
+            };
+            return statusMap[status] || status || 'Pending';
+        }
+
+        // Show empty state
+        function showEmptyState() {
+            const container = document.getElementById('orders-content');
+            container.innerHTML = `
+                <div class="empty-orders">
+                    <div class="empty-orders-icon">📦</div>
+                    <h2>No orders yet</h2>
+                    <p>Looks like you haven't placed any orders yet. Start shopping to see your orders here!</p>
+                    <a href="index.html" class="start-shopping-btn">
+                        Start Shopping
+                    </a>
+                </div>
+            `;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            loadOrders();
+            if (typeof updateCartBadge === 'function') {
+                updateCartBadge();
+            }
+            if (typeof checkAuthState === 'function') {
+                checkAuthState();
+            }
+        });
+    </script>
+</body>
+
+</html>

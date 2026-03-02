@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="VendorVerse - India's most trusted multi-vendor e-commerce marketplace. Shop from thousands of local and global sellers.">
+    <title>VendorVerse - Local First, Global Reach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="smart-feed.css">
+    <link rel="stylesheet" href="discovery.css">
+    <link rel="stylesheet" href="creator-profile.css">
+
+</head>
+
+<body>
+    <!-- Skip Navigation -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Dynamic Logo -->
+            <a href="index.html" class="logo">
+                <div id="dynamic-logo" style="display: flex; align-items: center;">
+                    <!-- Logo will be injected by theme.js -->
+                </div>
+            </a>
+
+            <!-- Desktop Search -->
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <select class="category-select" aria-label="Category">
+                        <option value="all">All</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="home">Home</option>
+                    </select>
+                    <input type="search" class="search-input" placeholder="Search products..." aria-label="Search">
+                    <button class="search-btn search-open-btn" aria-label="Search">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="header-actions">
+                <!-- Theme Switcher -->
+                <div class="theme-switcher-container">
+                    <select id="theme-switcher" class="theme-select" aria-label="Select theme">
+                        <option value="light">☀️ Light</option>
+                        <option value="dark">🌙 Dark</option>
+                        <option value="blue">💎 Blue</option>
+                    </select>
+                </div>
+
+                <a href="#" class="header-action wishlist-action" id="wishlist-nav-btn" aria-label="Wishlist">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                        </path>
+                    </svg>
+                    <span class="wishlist-badge" id="wishlist-badge">0</span>
+                    <span class="action-label">Wishlist</span>
+                </a>
+                <a href="cart.html" class="header-action cart-action" aria-label="Cart">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-badge">0</span>
+                    <span class="action-label">Cart</span>
+                </a>
+
+                <!-- Creator Links -->
+                <a href="creator-studio.html" class="header-action" id="creator-studio-link" aria-label="Creator Studio"
+                    style="display:none">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                    <span class="action-label">Studio</span>
+                </a>
+                <a href="vendor-dashboard.html" class="header-action" id="vendor-dashboard-link"
+                    aria-label="Vendor Dashboard">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                    </svg>
+                    <span class="action-label">Dashboard</span>
+                </a>
+                <a href="#" class="header-action" id="become-creator-btn" aria-label="Become a Creator">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
+                    </svg>
+                    <span class="action-label">Create</span>
+                </a>
+
+                <!-- Auth Section - Shows Login/Register when logged out -->
+                <div class="auth-section" id="auth-section">
+                    <!-- Logged Out State -->
+                    <div class="auth-buttons" id="auth-buttons">
+                        <button class="auth-btn auth-btn-login" id="login-btn" onclick="openAuthModal('login')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span>Login</span>
+                        </button>
+                        <button class="auth-btn auth-btn-register" onclick="openAuthModal('register')">
+                            Register
+                        </button>
+                    </div>
+
+                    <!-- Logged In State (Hidden by default) -->
+                    <div class="user-menu" id="user-menu" style="display: none;">
+                        <button class="user-menu-trigger" id="user-menu-trigger">
+                            <div class="user-avatar-small">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="user-info-header">
+                                <span class="user-greeting">Hello,</span>
+                                <span class="user-name" id="user-name-display">User</span>
+                            </div>
+                            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </button>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <button class="dropdown-item" onclick="openDashboard('account')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                My Account
+                            </button>
+                            <a href="orders.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                </svg>
+                                My Orders
+                            </a>
+                            <a href="/wishlist" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                    </path>
+                                </svg>
+                                Wishlist
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item logout-btn" onclick="handleLogout()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                </svg>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Navigation -->
+        <nav class="category-nav" aria-label="Product categories">
+            <div class="category-nav-container">
+                <a href="/electronics" class="category-link">
+                    <span class="category-icon">📱</span>
+                    Electronics
+                </a>
+                <a href="/fashion" class="category-link">
+                    <span class="category-icon">👗</span>
+                    Fashion
+                </a>
+                <a href="/home" class="category-link">
+                    <span class="category-icon">🏠</span>
+                    Home & Living
+                </a>
+                <a href="/beauty" class="category-link">
+                    <span class="category-icon">💄</span>
+                    Beauty
+                </a>
+                <a href="/grocery" class="category-link">
+                    <span class="category-icon">🛒</span>
+                    Grocery
+                </a>
+                <a href="/sports" class="category-link">
+                    <span class="category-icon">⚽</span>
+                    Sports
+                </a>
+                <a href="/books" class="category-link">
+                    <span class="category-icon">📚</span>
+                    Books
+                </a>
+                <a href="/deals" class="category-link deals-link">
+                    <span class="category-icon">🔥</span>
+                    Today's Deals
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Search (visible on mobile) -->
+    <div class="mobile-search">
+        <div class="mobile-search-wrapper">
+            <input type="search" class="mobile-search-input" placeholder="Search VendorVerse...">
+            <button class="mobile-voice-btn" aria-label="Voice search">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Hero Carousel -->
+        <section class="hero-carousel" aria-label="Featured promotions">
+            <div class="carousel-container">
+                <div class="carousel-track" id="carousel-track">
+                    <div class="carousel-slide active">
+                        <div class="slide-content">
+                            <div class="slide-text">
+                                <span class="slide-tag">New Arrivals</span>
+                                <h2 class="slide-title">Winter Collection 2024</h2>
+                                <p class="slide-desc">Up to 50% off on premium winter wear</p>
+                                <a href="/winter-sale" class="slide-cta">Shop Now</a>
+                            </div>
+                            <div class="slide-image">
+                                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=400&fit=crop"
+                                    alt="Winter fashion collection">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="slide-content slide-content-alt">
+                            <div class="slide-text">
+                                <span class="slide-tag">Weekend Special</span>
+                                <h2 class="slide-title">Electronics Fest</h2>
+                                <p class="slide-desc">Latest gadgets at unbeatable prices</p>
+                                <a href="/electronics-fest" class="slide-cta">Explore Deals</a>
+                            </div>
+                            <div class="slide-image">
+                                <img src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=600&h=400&fit=crop"
+                                    alt="Electronics gadgets">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="slide-content slide-content-green">
+                            <div class="slide-text">
+                                <span class="slide-tag">Local Finds</span>
+                                <h2 class="slide-title">Handcrafted Treasures</h2>
+                                <p class="slide-desc">Support local artisans across India</p>
+                                <a href="/local-finds" class="slide-cta">Discover Now</a>
+                            </div>
+                            <div class="slide-image">
+                                <img src="https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?w=600&h=400&fit=crop"
+                                    alt="Handcrafted items">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Previous slide">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                </button>
+                <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Next slide">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+                <div class="carousel-dots" id="carousel-dots">
+                    <button class="dot active" data-index="0" aria-label="Go to slide 1"></button>
+                    <button class="dot" data-index="1" aria-label="Go to slide 2"></button>
+                    <button class="dot" data-index="2" aria-label="Go to slide 3"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ✦ Discover Section — Category Chips + Dynamic Product Grid -->
+        <section class="discover-section">
+            <div class="container">
+                <div class="discover-header">
+                    <span class="discover-title">✦ Discover Products</span>
+                </div>
+                <div class="category-chips-wrap" id="category-chips">
+                    <!-- Injected by discovery.js -->
+                </div>
+            </div>
+        </section>
+
+        <section class="discover-products-section">
+            <div class="container">
+                <div id="discover-grid">
+                    <!-- Injected by discovery.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Categories -->
+        <section class="quick-categories">
+            <div class="container">
+                <div class="quick-category-grid">
+                    <a href="/mobiles" class="quick-category-item">
+                        <div class="quick-category-icon">📱</div>
+                        <span>Mobiles</span>
+                    </a>
+                    <a href="/fashion" class="quick-category-item">
+                        <div class="quick-category-icon">👗</div>
+                        <span>Fashion</span>
+                    </a>
+                    <a href="/home" class="quick-category-item">
+                        <div class="quick-category-icon">🏠</div>
+                        <span>Home</span>
+                    </a>
+                    <a href="/beauty" class="quick-category-item">
+                        <div class="quick-category-icon">💄</div>
+                        <span>Beauty</span>
+                    </a>
+                    <a href="/gaming" class="quick-category-item">
+                        <div class="quick-category-icon">🎮</div>
+                        <span>Gaming</span>
+                    </a>
+                    <a href="/books" class="quick-category-item">
+                        <div class="quick-category-icon">📚</div>
+                        <span>Books</span>
+                    </a>
+                    <a href="/grocery" class="quick-category-item">
+                        <div class="quick-category-icon">🛒</div>
+                        <span>Grocery</span>
+                    </a>
+                    <a href="/deals" class="quick-category-item highlight">
+                        <div class="quick-category-icon">⚡</div>
+                        <span>Deals</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Smart Feed Section (Replaces Static Carousels) -->
+        <section class="smart-feed-section">
+            <div class="container">
+                <div class="smart-feed-header">
+                    <h2 class="smart-feed-title">Recommended For You</h2>
+                    <p class="smart-feed-subtitle">Curated picks based on your style and interests</p>
+                </div>
+                <div id="smart-feed-grid">
+                    <!-- Cards injected by smart-feed.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Seller Categories (Kept intentionally) -->
+        <section class="best-seller-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-icon">🏆</span>
+                        Best Seller Categories
+                    </h2>
+                </div>
+                <div class="category-banner-grid">
+                    <a href="/electronics" class="category-banner electronics">
+                        <div class="banner-content">
+                            <h3>Electronics</h3>
+                            <p>Gadgets & Accessories</p>
+                            <span class="banner-cta">Shop Now →</span>
+                        </div>
+                        <div class="banner-image">
+                            <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=300&fit=crop"
+                                alt="Electronics">
+                        </div>
+                    </a>
+                    <a href="/fashion" class="category-banner fashion">
+                        <div class="banner-content">
+                            <h3>Fashion</h3>
+                            <p>Trending Styles</p>
+                            <span class="banner-cta">Shop Now →</span>
+                        </div>
+                        <div class="banner-image">
+                            <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&h=300&fit=crop"
+                                alt="Fashion">
+                        </div>
+                    </a>
+                    <a href="/home" class="category-banner home-living">
+                        <div class="banner-content">
+                            <h3>Home & Living</h3>
+                            <p>Comfort & Style</p>
+                            <span class="banner-cta">Shop Now →</span>
+                        </div>
+                        <div class="banner-image">
+                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop"
+                                alt="Home Living">
+                        </div>
+                    </a>
+                    <a href="/beauty" class="category-banner beauty">
+                        <div class="banner-content">
+                            <h3>Beauty</h3>
+                            <p>Skincare & Makeup</p>
+                            <span class="banner-cta">Shop Now →</span>
+                        </div>
+                        <div class="banner-image">
+                            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=300&fit=crop"
+                                alt="Beauty">
+                        </div>
+                    </a>
+                    <a href="/grocery" class="category-banner grocery">
+                        <div class="banner-content">
+                            <h3>Grocery</h3>
+                            <p>Fresh & Essentials</p>
+                            <span class="banner-cta">Shop Now →</span>
+                        </div>
+                        <div class="banner-image">
+                            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&h=300&fit=crop"
+                                alt="Grocery">
+                        </div>
+                    </a>
+                    <a href="/sports" class="category-banner sports">
+                        <div class="banner-content">
+                            <h3>Sports</h3>
+                            <p>Gear & Equipment</p>
+                            <span class="banner-cta">Shop Now →</span>
+                        </div>
+                        <div class="banner-image">
+                            <img src="https://images.unsplash.com/photo-1461896836934- voices?w=400&h=300&fit=crop"
+                                alt="Sports">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- VendorVerse Plus Banner -->
+        <section class="promo-banner">
+            <div class="container">
+                <div class="promo-content">
+                    <div class="promo-text">
+                        <span class="promo-tag">✨ VendorVerse Plus</span>
+                        <h2 class="promo-title">Unlimited Free Delivery & Exclusive Deals</h2>
+                        <p class="promo-desc">Join VendorVerse Plus at just ₹499/year and enjoy premium benefits</p>
+                        <div class="promo-features">
+                            <span>🚀 Free Delivery</span>
+                            <span>⚡ Early Access</span>
+                            <span>💎 Exclusive Deals</span>
+                        </div>
+                        <a href="/plus" class="promo-cta">Join Now - ₹499/year</a>
+                    </div>
+                    <div class="promo-graphic">
+                        <div class="promo-badge">PLUS</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Local Finds Section -->
+        <section class="product-section local-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-icon">🎨</span>
+                        Local Finds - Handcrafted Treasures
+                    </h2>
+                    <span class="section-subtitle">Support Indian artisans</span>
+                    <a href="/local-finds" class="view-all">View All →</a>
+                </div>
+                <div class="product-carousel">
+                    <button class="scroll-btn scroll-left" aria-label="Scroll left">‹</button>
+                    <div class="product-grid">
+                        <article class="product-card">
+                            <div class="product-image-container">
+                                <img src="https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?w=300&h=300&fit=crop"
+                                    alt="Handcrafted Pottery" class="product-image" loading="lazy">
+                                <span class="product-badge local">Local Artisan</span>
+                                <button class="wishlist-btn" aria-label="Add to wishlist">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-brand">Rajasthan Crafts</span>
+                                <h3 class="product-title">Hand-painted Clay Pottery Set</h3>
+                                <div class="product-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-count">(234)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">₹1,299</span>
+                                </div>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </article>
+
+                        <article class="product-card">
+                            <div class="product-image-container">
+                                <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=300&h=300&fit=crop"
+                                    alt="Handwoven Textile" class="product-image" loading="lazy">
+                                <span class="product-badge local">Local Artisan</span>
+                                <button class="wishlist-btn" aria-label="Add to wishlist">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-brand">Kerala Weavers</span>
+                                <h3 class="product-title">Handwoven Cotton Saree</h3>
+                                <div class="product-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-count">(567)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">₹2,499</span>
+                                </div>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </article>
+
+                        <article class="product-card">
+                            <div class="product-image-container">
+                                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=300&h=300&fit=crop"
+                                    alt="Brass Lamp" class="product-image" loading="lazy">
+                                <span class="product-badge local">Local Artisan</span>
+                                <button class="wishlist-btn" aria-label="Add to wishlist">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-brand">Moradabad Metalworks</span>
+                                <h3 class="product-title">Traditional Brass Lamp</h3>
+                                <div class="product-rating">
+                                    <span class="stars">★★★★☆</span>
+                                    <span class="rating-count">(189)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">₹899</span>
+                                </div>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </article>
+
+                        <article class="product-card">
+                            <div class="product-image-container">
+                                <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=300&h=300&fit=crop"
+                                    alt="Handmade Jewelry" class="product-image" loading="lazy">
+                                <span class="product-badge local">Local Artisan</span>
+                                <button class="wishlist-btn" aria-label="Add to wishlist">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="product-info">
+                                <span class="product-brand">Jaipur Gems</span>
+                                <h3 class="product-title">Kundan Jewelry Set</h3>
+                                <div class="product-rating">
+                                    <span class="stars">★★★★★</span>
+                                    <span class="rating-count">(423)</span>
+                                </div>
+                                <div class="product-price">
+                                    <span class="current-price">₹3,999</span>
+                                </div>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </article>
+                    </div>
+                    <button class="scroll-btn scroll-right" aria-label="Scroll right">›</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>About VendorVerse</h4>
+                    <ul>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/careers">Careers</a></li>
+                        <li><a href="/press">Press</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/seller">Sell on VendorVerse</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Help & Support</h4>
+                    <ul>
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/track-order">Track Order</a></li>
+                        <li><a href="/returns">Returns</a></li>
+                        <li><a href="/seller-support">Seller Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="/return-policy">Return Policy</a></li>
+                        <li><a href="/terms">Terms of Use</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/shipping">Shipping Info</a></li>
+                        <li><a href="/security">Security</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook" class="social-link">📘</a>
+                        <a href="#" aria-label="Instagram" class="social-link">📷</a>
+                        <a href="#" aria-label="Twitter" class="social-link">🐦</a>
+                        <a href="#" aria-label="YouTube" class="social-link">📺</a>
+                    </div>
+                    <div class="app-download">
+                        <h5>Download Our App</h5>
+                        <div class="app-buttons">
+                            <a href="#" class="app-btn">
+                                <span>App Store</span>
+                            </a>
+                            <a href="#" class="app-btn">
+                                <span>Google Play</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="payment-methods">
+                    <span>We Accept:</span>
+                    <div class="payment-icons">
+                        <span class="payment-icon">💳 Visa</span>
+                        <span class="payment-icon">💳 Mastercard</span>
+                        <span class="payment-icon">📱 UPI</span>
+                        <span class="payment-icon">💵 COD</span>
+                    </div>
+                </div>
+                <p class="copyright">© 2024 VendorVerse. All Rights Reserved. | Made with ❤️ in India</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+        <div class="mobile-nav-content">
+            <div class="mobile-nav-header">
+                <span class="logo-text">VendorVerse</span>
+                <button class="mobile-nav-close" id="mobile-nav-close" aria-label="Close menu">✕</button>
+            </div>
+            <div class="mobile-nav-user" id="mobile-nav-user">
+                <div class="user-avatar">👤</div>
+                <div class="user-info">
+                    <span id="mobile-greeting">Hello, Guest</span>
+                    <a href="javascript:void(0)" onclick="openAuthModal('login'); closeMobileNav();"
+                        id="mobile-auth-link">Login / Register</a>
+                </div>
+            </div>
+            <ul class="mobile-nav-links">
+                <li><a href="/">🏠 Home</a></li>
+                <li><a href="/categories">📦 All Categories</a></li>
+                <li><a href="/deals">🔥 Today's Deals</a></li>
+                <li><a href="/orders">📋 My Orders</a></li>
+                <li><a href="/wishlist">❤️ Wishlist</a></li>
+                <li><a href="/plus">✨ VendorVerse Plus</a></li>
+                <li><a href="/help">❓ Help Center</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal-overlay" id="auth-modal-overlay">
+        <div class="auth-modal" id="auth-modal" role="dialog" aria-labelledby="auth-modal-title">
+            <!-- Close Button -->
+            <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="Close modal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="auth-modal-header">
+                <div class="auth-logo">
+                    <span class="logo-icon">◈</span>
+                    <span>VendorVerse</span>
+                </div>
+                <h2 id="auth-modal-title" class="auth-modal-title">Welcome Back!</h2>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="login-tab" onclick="switchAuthTab('login')">
+                    Login
+                </button>
+                <button class="auth-tab" id="register-tab" onclick="switchAuthTab('register')">
+                    Register
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <form class="auth-form" id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <div class="input-wrapper">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <div class="input-wrapper">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <input type="password" id="login-password" name="password" placeholder="Enter your password"
+                            required>
+                        <button type="button" class="toggle-password"
+                            onclick="togglePasswordVisibility('login-password')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" name="remember">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="/forgot-password" class="forgot-link">Forgot Password?</a>
+                </div>
+                <div class="form-message" id="login-message"></div>
+                <button type="submit" class="auth-submit-btn" id="login-submit-btn">
+                    <span>Login</span>
+                    <div class="btn-loader" style="display: none;"></div>
+                </button>
+            </form>
+
+            <!-- Register Form (Hidden by default) -->
+            <form class="auth-form" id="register-form" style="display: none;" onsubmit="handleRegister(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="register-firstname">First Name</label>
+                        <div class="input-wrapper">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input type="text" id="register-firstname" name="firstName" placeholder="First name"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-lastname">Last Name</label>
+                        <div class="input-wrapper">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input type="text" id="register-lastname" name="lastName" placeholder="Last name" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email Address</label>
+                    <div class="input-wrapper">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <input type="email" id="register-email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <div class="input-wrapper">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <input type="password" id="register-password" name="password"
+                            placeholder="Create a password (min 6 chars)" minlength="6" required>
+                        <button type="button" class="toggle-password"
+                            onclick="togglePasswordVisibility('register-password')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <label class="checkbox-wrapper terms-checkbox">
+                    <input type="checkbox" name="terms" required>
+                    <span class="checkmark"></span>
+                    I agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>
+                </label>
+                <div class="form-message" id="register-message"></div>
+                <button type="submit" class="auth-submit-btn" id="register-submit-btn">
+                    <span>Create Account</span>
+                    <div class="btn-loader" style="display: none;"></div>
+                </button>
+            </form>
+
+            <!-- Social Login -->
+            <div class="auth-divider">
+                <span>or continue with</span>
+            </div>
+            <div class="social-login">
+                <button class="social-btn google-btn" type="button">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path fill="#EA4335"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    Google
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div class="dashboard-modal-overlay" id="dashboard-modal-overlay">
+        <div class="dashboard-modal" id="dashboard-modal">
+            <!-- Close Button -->
+            <button class="dashboard-close" onclick="closeDashboard()" aria-label="Close dashboard">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div class="dashboard-user-avatar">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <div class="dashboard-user-info">
+                    <h2 id="dashboard-user-name">User Name</h2>
+                    <p id="dashboard-user-email">user@email.com</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Tabs -->
+            <div class="dashboard-tabs">
+                <button class="dashboard-tab active" id="tab-account" onclick="switchDashboardTab('account')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Account
+                </button>
+                <button class="dashboard-tab" id="tab-orders" onclick="switchDashboardTab('orders')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Orders
+                </button>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Account Tab Content -->
+                <div class="dashboard-section" id="section-account">
+                    <h3>Account Details</h3>
+                    <div class="account-info-grid">
+                        <div class="account-info-item">
+                            <label>First Name</label>
+                            <p id="account-firstname">-</p>
+                        </div>
+                        <div class="account-info-item">
+                            <label>Last Name</label>
+                            <p id="account-lastname">-</p>
+                        </div>
+                        <div class="account-info-item full-width">
+                            <label>Email Address</label>
+                            <p id="account-email">-</p>
+                        </div>
+                        <div class="account-info-item full-width">
+                            <label>Account Type</label>
+                            <p id="account-role">User</p>
+                        </div>
+                    </div>
+                    <button class="dashboard-logout-btn" onclick="handleLogout(); closeDashboard();">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Logout
+                    </button>
+                </div>
+
+                <!-- Orders Tab Content -->
+                <div class="dashboard-section" id="section-orders" style="display: none;">
+                    <h3>My Orders</h3>
+
+                    <!-- Loading Spinner -->
+                    <div class="orders-loading" id="orders-loading">
+                        <div class="spinner"></div>
+                        <p>Loading your orders...</p>
+                    </div>
+
+                    <!-- Orders List -->
+                    <div class="orders-list" id="orders-list" style="display: none;"></div>
+
+                    <!-- No Orders Message -->
+                    <div class="no-orders" id="no-orders" style="display: none;">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <h4>No orders yet</h4>
+                        <p>When you place orders, they will appear here.</p>
+                        <a href="/" class="shop-now-btn" onclick="closeDashboard()">Start Shopping</a>
+                    </div>
+
+                    <!-- Orders Error -->
+                    <div class="orders-error" id="orders-error" style="display: none;">
+                        <p>Unable to load orders. Please try again.</p>
+                        <button onclick="fetchOrders()">Retry</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal-overlay" id="checkout-modal-overlay">
+        <div class="checkout-modal" id="checkout-modal">
+            <!-- Close Button -->
+            <button class="checkout-close" onclick="closeCheckout()" aria-label="Close checkout">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Checkout Header -->
+            <div class="checkout-header">
+                <h2>Checkout</h2>
+                <p>Review your order and complete purchase</p>
+            </div>
+
+            <!-- Checkout Content -->
+            <div class="checkout-content">
+                <!-- Cart Summary -->
+                <div class="checkout-section">
+                    <h3>🛒 Order Summary</h3>
+                    <div class="checkout-items" id="checkout-items">
+                        <!-- Items will be rendered here by JS -->
+                    </div>
+                    <div class="checkout-totals">
+                        <div class="total-row">
+                            <span>Subtotal</span>
+                            <span id="checkout-subtotal">₹0</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Shipping</span>
+                            <span id="checkout-shipping">₹0</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Tax (18% GST)</span>
+                            <span id="checkout-tax">₹0</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <span>Total</span>
+                            <span id="checkout-total">₹0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="checkout-section">
+                    <h3>📍 Shipping Address</h3>
+                    <form id="shipping-form" class="shipping-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ship-fullname">Full Name *</label>
+                                <input type="text" id="ship-fullname" name="fullName" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-phone">Phone Number *</label>
+                                <input type="tel" id="ship-phone" name="phone" placeholder="9876543210" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ship-address1">Address Line 1 *</label>
+                            <input type="text" id="ship-address1" name="addressLine1"
+                                placeholder="House/Flat No, Building Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ship-address2">Address Line 2</label>
+                            <input type="text" id="ship-address2" name="addressLine2" placeholder="Street, Landmark">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ship-city">City *</label>
+                                <input type="text" id="ship-city" name="city" placeholder="Mumbai" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-state">State *</label>
+                                <input type="text" id="ship-state" name="state" placeholder="Maharashtra" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ship-pincode">Pincode *</label>
+                                <input type="text" id="ship-pincode" name="pincode" placeholder="400001" required
+                                    pattern="[0-9]{6}">
+                            </div>
+                            <div class="form-group">
+                                <label for="ship-country">Country</label>
+                                <input type="text" id="ship-country" name="country" value="India" readonly>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="checkout-section">
+                    <h3>💳 Payment Method</h3>
+                    <div class="payment-options">
+                        <label class="payment-option selected">
+                            <input type="radio" name="paymentMethod" value="cod" checked>
+                            <div class="payment-option-content">
+                                <span class="payment-icon">💵</span>
+                                <span class="payment-label">Cash on Delivery</span>
+                            </div>
+                        </label>
+                        <label class="payment-option disabled">
+                            <input type="radio" name="paymentMethod" value="card" disabled>
+                            <div class="payment-option-content">
+                                <span class="payment-icon">💳</span>
+                                <span class="payment-label">Credit/Debit Card (Coming Soon)</span>
+                            </div>
+                        </label>
+                        <label class="payment-option disabled">
+                            <input type="radio" name="paymentMethod" value="upi" disabled>
+                            <div class="payment-option-content">
+                                <span class="payment-icon">📱</span>
+                                <span class="payment-label">UPI (Coming Soon)</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Error/Success Message -->
+                <div class="checkout-message" id="checkout-message"></div>
+
+                <!-- Place Order Button -->
+                <button type="button" class="place-order-btn" id="place-order-btn" onclick="placeOrder()">
+                    <span>Place Order</span>
+                    <div class="btn-loader" style="display: none;"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Styles -->
+    <link rel="stylesheet" href="auth.css">
+
+    <!-- Scripts -->
+    <script src="theme.js"></script>
+    <script src="animations.js"></script>
+    <script src="script.js"></script>
+    <script src="auth.js"></script>
+    <script src="animations.js"></script>
+    <script src="script.js"></script>
+    <script src="discovery.js"></script>
+    <script src="creator.js"></script>
+    <script src="creator-profile.js"></script>
+    <script src="smart-feed.js"></script>
+
+    <!-- ══════════════════════════════════════════
+         LIVE SEARCH OVERLAY
+    ══════════════════════════════════════════ -->
+    <div id="search-overlay" role="dialog" aria-modal="true" aria-label="Search products">
+        <div class="search-overlay-inner">
+            <div class="search-overlay-field">
+                <input type="search" id="search-overlay-input" class="search-overlay-input"
+                    placeholder="Search products, brands, categories…" autocomplete="off" spellcheck="false">
+                <button id="search-overlay-close" class="search-overlay-close" aria-label="Close search">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <p class="search-results-label" id="search-results-label">All Products</p>
+            <div class="search-results-grid" id="search-results"></div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         FILTER FLOATING PANEL
+    ══════════════════════════════════════════ -->
+    <div id="filter-panel-overlay"></div>
+
+    <aside id="filter-panel" role="dialog" aria-label="Filter products">
+        <div class="filter-panel-header">
+            <span class="filter-panel-title">Filter</span>
+            <button id="filter-panel-close" class="filter-panel-close" aria-label="Close filters">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Price Range -->
+        <div class="filter-group">
+            <p class="filter-group-label">Price Range</p>
+            <p class="price-display" id="price-display">Up to ₹20,000</p>
+            <input type="range" id="filter-price" class="range-slider" min="500" max="20000" step="100" value="20000">
+        </div>
+
+        <!-- Rating -->
+        <div class="filter-group">
+            <p class="filter-group-label">Minimum Rating</p>
+            <div class="rating-filter-stars">
+                <button class="rating-filter-btn" data-rating="1" type="button">★ 1+</button>
+                <button class="rating-filter-btn" data-rating="2" type="button">★ 2+</button>
+                <button class="rating-filter-btn" data-rating="3" type="button">★ 3+</button>
+                <button class="rating-filter-btn" data-rating="4" type="button">★ 4+</button>
+                <button class="rating-filter-btn" data-rating="4.5" type="button">★ 4.5+</button>
+            </div>
+        </div>
+
+        <div class="filter-actions">
+            <button id="filter-apply" class="filter-apply-btn">Apply Filters</button>
+            <button id="filter-reset" class="filter-reset-btn">Reset</button>
+        </div>
+    </aside>
+
+    <!-- Filter FAB -->
+    <button id="filter-fab" class="filter-fab" type="button" aria-label="Open filters">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="8" y1="12" x2="16" y2="12" />
+            <line x1="11" y1="18" x2="13" y2="18" />
+        </svg>
+        Filter
+    </button>
+
+    <!-- ══════════════════════════════════════════
+         QUICK VIEW MODAL
+    ══════════════════════════════════════════ -->
+    <div id="quickview-modal" role="dialog" aria-modal="true" aria-label="Product quick view">
+        <div class="modal-backdrop"></div>
+        <div class="quickview-card">
+            <!-- Image Side -->
+            <div class="quickview-image-side">
+                <img id="qv-image" src="" alt="" loading="lazy">
+                <span id="qv-badge" class="quickview-badge-pill"></span>
+            </div>
+            <!-- Info Side -->
+            <div class="quickview-info-side">
+                <span class="qv-brand" id="qv-brand"></span>
+                <h2 class="qv-title" id="qv-title"></h2>
+                <div class="qv-rating">
+                    <span class="qv-stars" id="qv-stars"></span>
+                    <span class="qv-rating-count" id="qv-count"></span>
+                </div>
+                <div class="qv-price-row">
+                    <span class="qv-price" id="qv-price"></span>
+                    <span class="qv-original" id="qv-orig"></span>
+                    <span class="qv-discount-badge" id="qv-disc"></span>
+                </div>
+                <span class="qv-category-tag" id="qv-cat"></span>
+                <p class="qv-description" id="qv-desc"></p>
+                <div class="qv-actions">
+                    <button id="qv-add-cart" class="qv-add-cart ripple-container">
+                        Add to Cart
+                    </button>
+                    <button id="qv-wishlist-btn" class="qv-wishlist-btn" aria-label="Add to wishlist">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <button class="quickview-close-btn" id="quickview-close" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <script src="smart-feed.js"></script>
+</body>
+
+</html>
