@@ -6,9 +6,8 @@
  * Do NOT open via file:// protocol
  */
 
-// ==============================================
-// API Configuration
-// ==============================================
+// 
+// 
 
 // Backend API base URL - Change if your backend runs on a different port
 const API_BASE = "http://localhost:5000";
@@ -18,9 +17,9 @@ const TOKEN_KEY = 'vendorverse_token';
 const USER_KEY = 'vendorverse_user';
 
 
-// ==============================================
+// 
 // Initialize on Page Load
-// ==============================================
+// 
 
 document.addEventListener('DOMContentLoaded', function () {
     // Check if user is already logged in
@@ -48,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// ==============================================
+// 
 // Auth State Management
-// ==============================================
+// 
 
 /**
  * Check if user is logged in and update UI
@@ -136,10 +135,9 @@ function clearAuthData() {
 }
 
 
-// ==============================================
+// 
 // Modal Functions
-// ==============================================
-
+//
 /**
  * Open auth modal
  */
@@ -221,9 +219,9 @@ function clearFormMessages() {
 }
 
 
-// ==============================================
+//
 // Login Handler
-// ==============================================
+//
 
 /**
  * Handle login form submission
@@ -292,9 +290,9 @@ async function handleLogin(event) {
 }
 
 
-// ==============================================
+// 
 // Register Handler
-// ==============================================
+// 
 
 /**
  * Handle register form submission
@@ -375,9 +373,9 @@ async function handleRegister(event) {
 }
 
 
-// ==============================================
+// 
 // Logout Handler
-// ==============================================
+// 
 
 /**
  * Handle logout
@@ -398,9 +396,9 @@ function handleLogout() {
 }
 
 
-// ==============================================
+// 
 // UI Helper Functions
-// ==============================================
+// 
 
 /**
  * Show message in form
@@ -516,9 +514,9 @@ function showToastNotification(message) {
 }
 
 
-// ==============================================
+// 
 // Dashboard Functions
-// ==============================================
+// 
 
 /**
  * Open dashboard modal
@@ -751,9 +749,9 @@ function formatStatus(status) {
 }
 
 
-// ==============================================
+// 
 // Expose Functions Globally (for onclick handlers)
-// ==============================================
+// 
 
 window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VendorVerse AI Panel — Platform insights, trending drops, and top creators.">
+    <title>AI Dashboard — VendorVerse</title>
+    <!-- Theme Initialization to prevent flash of wrong theme -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('vendorverse_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+            document.documentElement.classList.add('theme-' + savedTheme);
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ai-panel.css">
+    <link rel="stylesheet" href="ai-copilot.css">
+</head>
+
+<body id="ai-panel-page">
+    <div class="aip-container">
+        <!-- Back Link -->
+        <a href="index.html" class="aip-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back to Store
+        </a>
+
+        <!-- Header -->
+        <div class="aip-header">
+            <div class="aip-header-icon">🤖</div>
+            <div>
+                <h1 class="aip-title">AI Dashboard</h1>
+                <p class="aip-subtitle">Platform insights powered by VendorVerse AI</p>
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="aip-stats" id="aip-stats"></div>
+
+        <!-- Sections Grid -->
+        <div class="aip-grid">
+            <section class="aip-section" id="aip-trending-drops">
+                <h2 class="aip-section-title">🔥 Trending Drops</h2>
+                <div class="aip-section-body" id="aip-drops-list"></div>
+            </section>
+            <section class="aip-section" id="aip-top-creators">
+                <h2 class="aip-section-title">🌟 Top Creators</h2>
+                <div class="aip-section-body" id="aip-creators-list"></div>
+            </section>
+            <section class="aip-section aip-full-width" id="aip-categories">
+                <h2 class="aip-section-title">📊 Category Distribution</h2>
+                <div class="aip-section-body" id="aip-categories-list"></div>
+            </section>
+            <section class="aip-section aip-full-width" id="aip-insights">
+                <h2 class="aip-section-title">💡 Platform Insights</h2>
+                <div class="aip-section-body" id="aip-insights-list"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="theme.js"></script>
+    <script src="script.js"></script>
+    <script src="discovery.js"></script>
+    <script src="creator-drops.js"></script>
+    <script src="creator-match.js"></script>
+    <script src="drop-room.js"></script>
+    <script src="ai-copilot.js"></script>
+    <script src="ai-panel.js"></script>
+</body>
+
+</html>

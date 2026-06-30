@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Dashboard — VendorVerse</title>
+    <!-- Theme Initialization to prevent flash of wrong theme -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('vendorverse_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+            document.documentElement.classList.add('theme-' + savedTheme);
+        })();
+    </script>
     <meta name="description" content="Manage your VendorVerse store — products, orders, analytics and more.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,402 +20,265 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="vendor-dashboard.css">
 </head>
+<body>
 
-<body id="vd-dashboard-page">
+<div class="vd">
+    <!-- ════ SIDEBAR ════ -->
+    <aside class="vd-sidebar">
+        <div class="vd-sb-top">
+            <a href="index.html" class="vd-sb-brand">
+                <span class="vd-sb-diamond">◆</span>
+                <span class="vd-sb-name">VendorVerse</span>
+            </a>
+            <div class="vd-sb-status"><span class="vd-sb-dot"></span>Store Active</div>
+        </div>
 
-    <!-- Mobile sidebar toggle -->
-    <button class="vd-mobile-toggle" id="vd-mobile-toggle" aria-label="Toggle sidebar">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
-    </button>
+        <nav class="vd-sb-nav">
+            <a href="#" class="vd-sb-link active" data-view="dashboard">📊 Dashboard</a>
+            <a href="#" class="vd-sb-link" data-view="products">📦 Products</a>
+            <a href="#" class="vd-sb-link" data-view="orders">🛒 Orders</a>
+            <a href="#" class="vd-sb-link" data-view="analytics">📈 Analytics</a>
+            <a href="#" class="vd-sb-link" data-view="copilot">🤖 AI Copilot</a>
+            <a href="#" class="vd-sb-link" data-view="customers">👥 Customers</a>
+            <a href="#" class="vd-sb-link" data-view="settings">⚙️ Settings</a>
+        </nav>
 
-    <div class="vd-layout">
-        <!-- ════ SIDEBAR ════ -->
-        <aside class="vd-sidebar">
-            <div class="vd-sidebar-head">
-                <a href="index.html" class="vd-sidebar-brand">
-                    <div class="vd-brand-logo">V</div>
-                    <div class="vd-brand-info">
-                        <div class="vd-brand-name">VendorVerse</div>
-                        <div class="vd-brand-sub">Vendor Dashboard</div>
-                    </div>
-                </a>
+        <div class="vd-sb-user">
+            <div class="vd-sb-avatar">NP</div>
+            <div class="vd-sb-userinfo">
+                <span class="vd-sb-username">Nikhil Pandey</span>
+                <span class="vd-sb-pro">Pro</span>
             </div>
+        </div>
+    </aside>
 
-            <!-- Mode Switch -->
-            <div class="vd-mode-switch">
-                <button class="vd-mode-btn" data-mode="store" type="button">🏪 Store</button>
-                <button class="vd-mode-btn active" data-mode="creator" type="button">🎨 Creator</button>
+    <!-- ════ MAIN ════ -->
+    <div class="vd-main">
+        <!-- ── TOP BAR ── -->
+        <header class="vd-topbar">
+            <h1 class="vd-topbar-title">Dashboard</h1>
+            <div class="vd-topbar-right">
+                <div class="vd-search">
+                    <span class="vd-search-icon">🔍</span>
+                    <input type="text" placeholder="Search..." class="vd-search-input">
+                </div>
+                <button class="vd-bell">
+                    🔔
+                    <span class="vd-bell-badge"></span>
+                </button>
+                <span class="vd-date" id="vd-date"></span>
             </div>
+        </header>
 
-            <nav class="vd-nav">
-                <span class="vd-nav-label">Main</span>
-                <button class="vd-nav-item active" data-view="overview">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7" rx="1" />
-                        <rect x="14" y="3" width="7" height="7" rx="1" />
-                        <rect x="3" y="14" width="7" height="7" rx="1" />
-                        <rect x="14" y="14" width="7" height="7" rx="1" />
-                    </svg>
-                    Dashboard
-                </button>
-                <button class="vd-nav-item" data-view="products">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                        <line x1="7" y1="7" x2="7.01" y2="7" />
-                    </svg>
-                    My Products
-                    <span class="vd-nav-badge" id="vd-nav-prod-count">0</span>
-                </button>
-                <button class="vd-nav-item" data-view="orders">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                        <line x1="3" y1="6" x2="21" y2="6" />
-                        <path d="M16 10a4 4 0 0 1-8 0" />
-                    </svg>
-                    Orders
-                </button>
+        <!-- ── SCROLLABLE CONTENT ── -->
+        <div class="vd-body">
 
-                <span class="vd-nav-label">Insights</span>
-                <button class="vd-nav-item" data-view="analytics">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="20" x2="18" y2="10" />
-                        <line x1="12" y1="20" x2="12" y2="4" />
-                        <line x1="6" y1="20" x2="6" y2="14" />
-                    </svg>
-                    Analytics
-                </button>
-                <button class="vd-nav-item" data-view="earnings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10" />
-                        <line x1="12" y1="8" x2="12" y2="12" />
-                        <line x1="12" y1="16" x2="12.01" y2="16" />
-                    </svg>
-                    Earnings
-                </button>
-
-                <span class="vd-nav-label">Account</span>
-                <button class="vd-nav-item" data-view="profile">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                        <circle cx="12" cy="7" r="4" />
-                    </svg>
-                    Store Profile
-                </button>
-                <button class="vd-nav-item" data-view="settings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3" />
-                        <path
-                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                    </svg>
-                    Settings
-                </button>
-            </nav>
-
-            <div class="vd-sidebar-footer">
-                <a href="index.html" class="vd-back-link">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="19" y1="12" x2="5" y2="12" />
-                        <polyline points="12 19 5 12 12 5" />
-                    </svg>
-                    Back to Store
-                </a>
-            </div>
-        </aside>
-
-        <!-- ════ MAIN ════ -->
-        <main class="vd-main">
-            <div class="vd-page-head">
-                <div>
-                    <h1 class="vd-page-title" id="vd-title">Dashboard</h1>
-                    <p class="vd-page-sub" id="vd-sub">Overview of your store</p>
+            <!-- METRIC CARDS -->
+            <div class="vd-metrics">
+                <div class="vd-metric" id="mc-revenue">
+                    <div class="vd-metric-icon violet">💰</div>
+                    <div class="vd-metric-label">Total Revenue</div>
+                    <div class="vd-metric-val">₹2,45,890</div>
+                    <div class="vd-metric-change up">↑ 18.4%</div>
+                </div>
+                <div class="vd-metric" id="mc-orders">
+                    <div class="vd-metric-icon blue">📦</div>
+                    <div class="vd-metric-label">Total Orders</div>
+                    <div class="vd-metric-val">1,284</div>
+                    <div class="vd-metric-change up">↑ 12.1%</div>
+                </div>
+                <div class="vd-metric" id="mc-products">
+                    <div class="vd-metric-icon amber">🏷️</div>
+                    <div class="vd-metric-label">Active Products</div>
+                    <div class="vd-metric-val">94</div>
+                    <div class="vd-metric-change up">↑ 5.3%</div>
+                </div>
+                <div class="vd-metric" id="mc-visitors">
+                    <div class="vd-metric-icon teal">👁️</div>
+                    <div class="vd-metric-label">Store Visitors</div>
+                    <div class="vd-metric-val">28,492</div>
+                    <div class="vd-metric-change up">↑ 22.7%</div>
                 </div>
             </div>
 
-            <!-- ═══ VIEW: Overview ═══ -->
-            <div class="vd-view active" id="view-overview">
-                <!-- Main Stats -->
-                <div class="vd-stats">
-                    <div class="vd-stat-card purple">
-                        <div class="vd-stat-icon purple">💰</div>
-                        <div class="vd-stat-label">Total Sales</div>
-                        <div class="vd-stat-value">₹<span id="vd-total-sales">0</span></div>
-                        <span class="vd-stat-trend up">↗ +14%</span>
-                    </div>
-                    <div class="vd-stat-card green">
-                        <div class="vd-stat-icon green">📦</div>
-                        <div class="vd-stat-label">Orders Today</div>
-                        <div class="vd-stat-value" id="vd-orders-today">0</div>
-                        <span class="vd-stat-trend up">↗ +8%</span>
-                    </div>
-                    <div class="vd-stat-card blue">
-                        <div class="vd-stat-icon blue">🏷️</div>
-                        <div class="vd-stat-label">Products</div>
-                        <div class="vd-stat-value" id="vd-total-products">0</div>
-                    </div>
-                </div>
-
-                <!-- Creator mode extras -->
-                <div class="vd-stats vd-creator-extra" id="vd-creator-extra">
-                    <div class="vd-stat-card rose">
-                        <div class="vd-stat-icon rose">👥</div>
-                        <div class="vd-stat-label">Followers</div>
-                        <div class="vd-stat-value" id="vd-followers">0</div>
-                    </div>
-                    <div class="vd-stat-card teal">
-                        <div class="vd-stat-icon teal">🔥</div>
-                        <div class="vd-stat-label">Engagement</div>
-                        <div class="vd-stat-value"><span id="vd-engagement">0</span>%</div>
-                    </div>
-                </div>
-
-                <!-- Store mode extras -->
-                <div class="vd-stats vd-store-extra" id="vd-store-extra" style="display:none">
-                    <div class="vd-stat-card amber">
-                        <div class="vd-stat-icon amber">⚠️</div>
-                        <div class="vd-stat-label">Inventory Alerts</div>
-                        <div class="vd-stat-value" id="vd-inventory-alerts">0</div>
-                    </div>
-                    <div class="vd-stat-card teal">
-                        <div class="vd-stat-icon teal">📊</div>
-                        <div class="vd-stat-label">Stock Health</div>
-                        <div class="vd-stat-value"><span id="vd-stock-health">0</span>%</div>
-                    </div>
-                </div>
-
-                <!-- Revenue Chart -->
-                <div class="vd-chart-card">
-                    <div class="vd-chart-header">
-                        <span class="vd-chart-title">Revenue</span>
-                        <div class="vd-chart-period">
-                            <button class="vd-period-btn active" data-days="7" type="button">7d</button>
-                            <button class="vd-period-btn" data-days="30" type="button">30d</button>
-                        </div>
-                    </div>
-                    <div class="vd-chart-bars" id="vd-chart-bars"></div>
-                </div>
-
-                <!-- Panels Row -->
-                <div class="vd-panels-row">
+            <!-- TWO COLUMN GRID -->
+            <div class="vd-grid">
+                <!-- LEFT 65% -->
+                <div class="vd-grid-left">
+                    <!-- Revenue Chart -->
                     <div class="vd-panel">
                         <div class="vd-panel-head">
-                            <span class="vd-panel-title">Top Products</span>
+                            <div>
+                                <h2 class="vd-panel-title">Revenue Overview</h2>
+                                <span class="vd-panel-sub">Last 30 days</span>
+                            </div>
+                            <div class="vd-tabs">
+                                <button class="vd-tab" data-range="7">7D</button>
+                                <button class="vd-tab active" data-range="30">30D</button>
+                                <button class="vd-tab" data-range="90">90D</button>
+                            </div>
                         </div>
-                        <div id="vd-top-products"></div>
+                        <canvas id="vd-chart" width="800" height="280"></canvas>
                     </div>
+
+                    <!-- Recent Orders Table -->
                     <div class="vd-panel">
                         <div class="vd-panel-head">
-                            <span class="vd-panel-title">Recent Orders</span>
+                            <h2 class="vd-panel-title">Recent Orders</h2>
+                            <a href="#" class="vd-viewall">View All</a>
                         </div>
-                        <div id="vd-recent-orders"></div>
+                        <div class="vd-table-wrap">
+                            <table class="vd-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Product</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="vd-t-id">#VV-8294</td>
+                                        <td>Priya Sharma</td>
+                                        <td>Smart Watch Pro</td>
+                                        <td>₹4,999</td>
+                                        <td><span class="vd-badge green">Delivered</span></td>
+                                        <td class="vd-t-date">Apr 10</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="vd-t-id">#VV-8293</td>
+                                        <td>Arjun Mehta</td>
+                                        <td>Wireless Earbuds</td>
+                                        <td>₹3,299</td>
+                                        <td><span class="vd-badge blue">Shipped</span></td>
+                                        <td class="vd-t-date">Apr 10</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="vd-t-id">#VV-8291</td>
+                                        <td>Sneha Patel</td>
+                                        <td>Artisan Silk Scarf</td>
+                                        <td>₹1,899</td>
+                                        <td><span class="vd-badge amber">Processing</span></td>
+                                        <td class="vd-t-date">Apr 9</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="vd-t-id">#VV-8289</td>
+                                        <td>Rohit Kumar</td>
+                                        <td>Leather Wallet</td>
+                                        <td>₹2,499</td>
+                                        <td><span class="vd-badge green">Delivered</span></td>
+                                        <td class="vd-t-date">Apr 9</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="vd-t-id">#VV-8287</td>
+                                        <td>Ananya Reddy</td>
+                                        <td>Ceramic Vase Set</td>
+                                        <td>₹3,750</td>
+                                        <td><span class="vd-badge red">Cancelled</span></td>
+                                        <td class="vd-t-date">Apr 8</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="vd-t-id">#VV-8285</td>
+                                        <td>Vikram Singh</td>
+                                        <td>Bluetooth Speaker</td>
+                                        <td>₹5,499</td>
+                                        <td><span class="vd-badge green">Delivered</span></td>
+                                        <td class="vd-t-date">Apr 7</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- ═══ VIEW: Products ═══ -->
-            <div class="vd-view" id="view-products">
-                <div class="vd-products-toolbar">
-                    <span class="vd-product-count" id="vd-product-count">0 products</span>
-                    <button class="vd-add-product-btn" id="vd-add-product-btn">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5">
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                        Add Product
-                    </button>
-                </div>
-                <div class="vd-products-grid" id="vd-products-grid"></div>
-            </div>
-
-            <!-- ═══ VIEW: Orders ═══ -->
-            <div class="vd-view" id="view-orders">
-                <div class="vd-panel" style="padding:0; overflow:auto">
-                    <table class="vd-orders-table">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Buyer</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Payment</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="vd-orders-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- ═══ VIEW: Analytics ═══ -->
-            <div class="vd-view" id="view-analytics">
-                <div class="vd-chart-card">
-                    <div class="vd-chart-header">
-                        <span class="vd-chart-title">Revenue Trend</span>
-                        <div class="vd-chart-period">
-                            <button class="vd-period-btn active" data-days="7" type="button">7d</button>
-                            <button class="vd-period-btn" data-days="30" type="button">30d</button>
+                <!-- RIGHT 35% -->
+                <div class="vd-grid-right">
+                    <!-- Top Products -->
+                    <div class="vd-panel">
+                        <div class="vd-panel-head">
+                            <h2 class="vd-panel-title">Top Products</h2>
+                            <a href="#" class="vd-viewall">See All</a>
                         </div>
-                    </div>
-                    <div class="vd-chart-bars" id="vd-chart-bars"></div>
-                </div>
-                <div class="vd-analytics-grid">
-                    <div class="vd-analytics-card">
-                        <div class="vd-analytics-label">Products Listed</div>
-                        <div class="vd-analytics-value" id="vd-a-products">0</div>
-                        <div class="vd-progress">
-                            <div class="vd-progress-bar purple" id="vd-prog-products"></div>
-                        </div>
-                    </div>
-                    <div class="vd-analytics-card">
-                        <div class="vd-analytics-label">Wishlist Saves</div>
-                        <div class="vd-analytics-value" id="vd-a-wishlist">0</div>
-                        <div class="vd-progress">
-                            <div class="vd-progress-bar green" id="vd-prog-wishlist"></div>
-                        </div>
-                    </div>
-                    <div class="vd-analytics-card">
-                        <div class="vd-analytics-label">Est. Revenue</div>
-                        <div class="vd-analytics-value">₹<span id="vd-a-revenue">0</span></div>
-                        <div class="vd-progress">
-                            <div class="vd-progress-bar amber" id="vd-prog-revenue"></div>
-                        </div>
-                    </div>
-                    <div class="vd-analytics-card">
-                        <div class="vd-analytics-label">Engagement</div>
-                        <div class="vd-analytics-value"><span id="vd-a-engage">0</span>%</div>
-                        <div class="vd-progress">
-                            <div class="vd-progress-bar blue" id="vd-prog-engage"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ═══ VIEW: Earnings ═══ -->
-            <div class="vd-view" id="view-earnings">
-                <div class="vd-earnings-grid">
-                    <div class="vd-earnings-card">
-                        <div class="vd-earnings-label">Total Earnings</div>
-                        <div class="vd-earnings-value">₹<span id="vd-earn-total">0</span></div>
-                    </div>
-                    <div class="vd-earnings-card">
-                        <div class="vd-earnings-label">Platform Comission (12%)</div>
-                        <div class="vd-earnings-value" style="color:#ef4444">₹<span id="vd-earn-commission">0</span>
-                        </div>
-                    </div>
-                    <div class="vd-earnings-card">
-                        <div class="vd-earnings-label">Pending Payout</div>
-                        <div class="vd-earnings-value" style="color:#f59e0b">₹<span id="vd-earn-pending">0</span></div>
-                    </div>
-                    <div class="vd-earnings-card">
-                        <div class="vd-earnings-label">Withdrawable</div>
-                        <div class="vd-earnings-value green">₹<span id="vd-earn-withdraw">0</span></div>
-                    </div>
-                </div>
-                <div style="text-align:center">
-                    <button class="vd-payout-btn" id="vd-payout-btn">💸 Request Payout</button>
-                </div>
-            </div>
-
-            <!-- ═══ VIEW: Profile ═══ -->
-            <div class="vd-view" id="view-profile">
-                <div class="vd-profile-card">
-                    <div class="vd-profile-banner"></div>
-                    <div class="vd-profile-body">
-                        <img class="vd-profile-avatar"
-                            src="https://api.dicebear.com/7.x/initials/svg?seed=VV&backgroundColor=6366f1&textColor=ffffff"
-                            alt="Vendor">
-                        <h2 class="vd-profile-name">My VendorVerse Store</h2>
-                        <p class="vd-profile-bio">A curated creator marketplace where innovation meets design. Explore
-                            premium products crafted with care.</p>
-                        <div class="vd-profile-stats">
-                            <div class="vd-profile-stat-item">
-                                <div class="vd-profile-stat-num" id="vd-profile-products">0</div>
-                                <div class="vd-profile-stat-label">Products</div>
+                        <div class="vd-top-products">
+                            <div class="vd-tp">
+                                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&h=80&fit=crop" alt="" class="vd-tp-img">
+                                <div class="vd-tp-info">
+                                    <span class="vd-tp-name">Smart Watch Pro</span>
+                                    <span class="vd-tp-sales">342 sold</span>
+                                </div>
+                                <span class="vd-tp-rev">₹17.1L</span>
                             </div>
-                            <div class="vd-profile-stat-item">
-                                <div class="vd-profile-stat-num" id="vd-profile-followers">0</div>
-                                <div class="vd-profile-stat-label">Followers</div>
+                            <div class="vd-tp">
+                                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&h=80&fit=crop" alt="" class="vd-tp-img">
+                                <div class="vd-tp-info">
+                                    <span class="vd-tp-name">Wireless Earbuds</span>
+                                    <span class="vd-tp-sales">289 sold</span>
+                                </div>
+                                <span class="vd-tp-rev">₹9.5L</span>
                             </div>
-                            <div class="vd-profile-stat-item">
-                                <div class="vd-profile-stat-num">★ 4.8</div>
-                                <div class="vd-profile-stat-label">Rating</div>
+                            <div class="vd-tp">
+                                <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&h=80&fit=crop" alt="" class="vd-tp-img">
+                                <div class="vd-tp-info">
+                                    <span class="vd-tp-name">Artisan Silk Scarf</span>
+                                    <span class="vd-tp-sales">198 sold</span>
+                                </div>
+                                <span class="vd-tp-rev">₹3.8L</span>
+                            </div>
+                            <div class="vd-tp">
+                                <img src="https://images.unsplash.com/photo-1491637417460-6a94da76af72?w=80&h=80&fit=crop" alt="" class="vd-tp-img">
+                                <div class="vd-tp-info">
+                                    <span class="vd-tp-name">Leather Wallet</span>
+                                    <span class="vd-tp-sales">156 sold</span>
+                                </div>
+                                <span class="vd-tp-rev">₹3.9L</span>
                             </div>
                         </div>
-                        <a href="creator.html?id=creator_artisan" class="vd-profile-link">
-                            View Public Store →
-                        </a>
+                    </div>
+
+                    <!-- AI Insights -->
+                    <div class="vd-panel vd-ai-panel">
+                        <div class="vd-panel-head">
+                            <h2 class="vd-panel-title">🤖 AI Insights</h2>
+                        </div>
+                        <div class="vd-ai-items">
+                            <div class="vd-ai-item">
+                                <span class="vd-ai-dot violet"></span>
+                                <span>Your <strong>Smart Watch</strong> has 3x higher CTR than category average. Consider increasing ad spend.</span>
+                            </div>
+                            <div class="vd-ai-item">
+                                <span class="vd-ai-dot teal"></span>
+                                <span><strong>Artisan Silk Scarf</strong> stock running low — only 12 units left. Restock recommended.</span>
+                            </div>
+                            <div class="vd-ai-item">
+                                <span class="vd-ai-dot amber"></span>
+                                <span>Peak traffic hours: <strong>7–9 PM IST</strong>. Schedule drops during this window for max reach.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Store Activity -->
+                    <div class="vd-panel">
+                        <div class="vd-panel-head">
+                            <h2 class="vd-panel-title">Activity</h2>
+                        </div>
+                        <div class="vd-activity">
+                            <div class="vd-act"><span class="vd-act-time">2m ago</span><span>New order <strong>#VV-8294</strong> received</span></div>
+                            <div class="vd-act"><span class="vd-act-time">18m ago</span><span>Product <strong>Ceramic Vase</strong> viewed 48 times</span></div>
+                            <div class="vd-act"><span class="vd-act-time">1h ago</span><span>Customer left a <strong>5-star review</strong></span></div>
+                            <div class="vd-act"><span class="vd-act-time">3h ago</span><span>Payout of <strong>₹24,500</strong> processed</span></div>
+                            <div class="vd-act"><span class="vd-act-time">5h ago</span><span>New follower: <strong>@artlover92</strong></span></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- ═══ VIEW: Settings ═══ -->
-            <div class="vd-view" id="view-settings">
-                <div class="vd-settings-card">
-                    <div class="vd-settings-row">
-                        <div>
-                            <div class="vd-settings-label">Email Notifications</div>
-                            <div class="vd-settings-sub">Receive order and payout alerts</div>
-                        </div>
-                        <button class="vd-toggle on" type="button"></button>
-                    </div>
-                    <div class="vd-settings-row">
-                        <div>
-                            <div class="vd-settings-label">Dark Mode</div>
-                            <div class="vd-settings-sub">Match site theme setting</div>
-                        </div>
-                        <button class="vd-toggle" type="button"></button>
-                    </div>
-                    <div class="vd-settings-row">
-                        <div>
-                            <div class="vd-settings-label">Public Storefront</div>
-                            <div class="vd-settings-sub">Allow customers to visit your store page</div>
-                        </div>
-                        <button class="vd-toggle on" type="button"></button>
-                    </div>
-                    <div class="vd-settings-row">
-                        <div>
-                            <div class="vd-settings-label">Analytics Tracking</div>
-                            <div class="vd-settings-sub">Track views, clicks and engagement</div>
-                        </div>
-                        <button class="vd-toggle on" type="button"></button>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- ═══ EDIT MODAL ═══ -->
-    <div id="vd-edit-overlay">
-        <div class="vd-edit-modal">
-            <h3 class="vd-edit-title">Edit Product</h3>
-            <input type="hidden" id="vd-edit-id">
-            <div class="vd-edit-field">
-                <label class="vd-edit-label" for="vd-edit-name">Name</label>
-                <input type="text" class="vd-edit-input" id="vd-edit-name">
-            </div>
-            <div class="vd-edit-field">
-                <label class="vd-edit-label" for="vd-edit-price">Price (₹)</label>
-                <input type="number" class="vd-edit-input" id="vd-edit-price" min="1">
-            </div>
-            <div class="vd-edit-field">
-                <label class="vd-edit-label" for="vd-edit-image">Image URL</label>
-                <input type="url" class="vd-edit-input" id="vd-edit-image">
-            </div>
-            <div class="vd-edit-actions">
-                <button class="vd-btn-secondary" id="vd-edit-cancel">Cancel</button>
-                <button class="vd-btn-primary" id="vd-edit-save">Save</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Scripts -->
-    <script src="theme.js"></script>
-    <script src="animations.js"></script>
+<script src="theme.js"></script>
     <script src="vendor-dashboard.js"></script>
 </body>
-
 </html>

@@ -51,24 +51,25 @@ const LOGOS = {
  * Initialize theme system
  */
 function initThemeSystem() {
-    // Get saved theme or default to light
-    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || THEMES.LIGHT;
+    // Get saved theme or default to dark
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || THEMES.DARK;
     applyTheme(savedTheme, false);
 
     // Setup theme switcher if it exists
     setupThemeSwitcher();
 
-    console.log('%c🎨 Theme System Loaded', 'color: #6366f1; font-weight: bold;');
+    console.log('%c🎨 Theme System Loaded', 'color: var(--accent-color); font-weight: bold;');
 }
 
 /**
- * Apply theme to body and update logo
+ * Apply theme to body and html, and update logo
  */
 function applyTheme(theme, animate = true) {
     if (!Object.values(THEMES).includes(theme)) {
-        theme = THEMES.LIGHT;
+        theme = THEMES.DARK;
     }
 
+    const html = document.documentElement;
     const body = document.body;
     const logoContainer = document.getElementById('dynamic-logo');
 
@@ -81,9 +82,18 @@ function applyTheme(theme, animate = true) {
         }
     }
 
-    // Apply theme
-    setTimeout(() => {
+    // Apply theme helper function
+    const applyThemeData = () => {
+        // Apply data-theme attribute to both html and body
+        html.setAttribute('data-theme', theme);
         body.setAttribute('data-theme', theme);
+
+        // Apply class theme-dark, theme-light, theme-blue to both html and body
+        html.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+        html.classList.add('theme-' + theme);
+
+        body.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+        body.classList.add('theme-' + theme);
 
         // Update logo
         if (logoContainer) {
@@ -108,7 +118,13 @@ function applyTheme(theme, animate = true) {
                 if (logoContainer) logoContainer.style.transition = '';
             }, 300);
         }
-    }, animate ? 100 : 0);
+    };
+
+    if (animate) {
+        setTimeout(applyThemeData, 100);
+    } else {
+        applyThemeData();
+    }
 }
 
 /**

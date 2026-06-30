@@ -5,12 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creator Studio — VendorVerse</title>
+    <!-- Theme Initialization to prevent flash of wrong theme -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('vendorverse_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+            document.documentElement.classList.add('theme-' + savedTheme);
+        })();
+    </script>
     <meta name="description" content="VendorVerse Creator Studio — Build, manage, and sell your products.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="creator.css">
+    <link rel="stylesheet" href="ai-copilot.css">
 </head>
 
 <body id="creator-studio-page">
@@ -69,6 +79,12 @@
                         <path d="M16 10a4 4 0 0 1-8 0" />
                     </svg>
                     Orders
+                </button>
+                <button class="sidebar-link" data-view="drops">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L7 9a5 5 0 1 0 10 0L12 2z" />
+                    </svg>
+                    Drops
                 </button>
                 <button class="sidebar-link" data-view="analytics">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -221,6 +237,49 @@
                 </div>
             </div>
 
+            <!-- ═══ VIEW: Drops ═══ -->
+            <div class="creator-view" id="view-drops">
+                <div class="drops-stats">
+                    <div class="drops-stat-card">
+                        <div class="drops-stat-label">Active Drops</div>
+                        <div class="drops-stat-value" id="drops-stat-active">0</div>
+                    </div>
+                    <div class="drops-stat-card">
+                        <div class="drops-stat-label">Drop Sales</div>
+                        <div class="drops-stat-value" id="drops-stat-sales">₹0</div>
+                    </div>
+                    <div class="drops-stat-card">
+                        <div class="drops-stat-label">Commission Earned</div>
+                        <div class="drops-stat-value" id="drops-stat-commission">₹0</div>
+                    </div>
+                </div>
+                <div class="drops-layout">
+                    <section class="drops-panel">
+                        <div class="drops-panel-header">
+                            <div>
+                                <h2 class="drops-panel-title">Collaboration Invites</h2>
+                                <p class="drops-panel-sub">Accept invites from vendors and turn them into Product Drops.
+                                </p>
+                            </div>
+                        </div>
+                        <div id="drops-invites-list" class="drops-list">
+                            <!-- Injected by creator.js -->
+                        </div>
+                    </section>
+                    <section class="drops-panel">
+                        <div class="drops-panel-header">
+                            <div>
+                                <h2 class="drops-panel-title">Active Drops</h2>
+                                <p class="drops-panel-sub">Live drops your followers can see in the Smart Feed.</p>
+                            </div>
+                        </div>
+                        <div id="drops-active-list" class="drops-list">
+                            <!-- Injected by creator.js -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+
             <!-- ═══ VIEW: Analytics ═══ -->
             <div class="creator-view" id="view-analytics">
                 <div class="analytics-grid">
@@ -309,7 +368,11 @@
     <!-- Scripts -->
     <script src="theme.js"></script>
     <script src="animations.js"></script>
+    <script src="creator-drops.js"></script>
+    <script src="creator-match.js"></script>
+    <script src="drop-room.js"></script>
     <script src="creator.js"></script>
+    <script src="ai-copilot.js"></script>
 </body>
 
 </html>

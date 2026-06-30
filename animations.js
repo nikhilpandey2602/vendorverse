@@ -3,7 +3,7 @@
  * Premium micro-interactions and visual feedback
  */
 
-// ===== PAGE LOAD ANIMATION =====
+// PAGE LOAD ANIMATION
 document.addEventListener('DOMContentLoaded', () => {
     document.body.style.animation = 'fadeIn 300ms ease';
 
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ===== TOAST NOTIFICATION SYSTEM =====
+//  TOAST NOTIFICATION SYSTEM 
 window.showToast = function (message, type = 'info') {
     // Remove existing toast
     const existing = document.querySelector('.premium-toast');
@@ -99,7 +99,7 @@ window.showToast = function (message, type = 'info') {
     }, 3000);
 };
 
-// ===== BUTTON PRESS ANIMATION =====
+// BUTTON PRESS ANIMATION 
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('button, .btn, .auth-btn, .add-to-cart-btn');
     if (btn && !btn.disabled) {
@@ -110,7 +110,7 @@ document.addEventListener('click', (e) => {
     }
 }, true);
 
-// ===== CART ITEM SLIDE-IN ANIMATION =====
+// CART ITEM SLIDE-IN ANIMATION 
 window.animateCartItems = function () {
     const items = document.querySelectorAll('.cart-item');
     items.forEach((item, index) => {
@@ -122,7 +122,7 @@ window.animateCartItems = function () {
     });
 };
 
-// ===== ADD LOADING STATE TO BUTTONS =====
+//  ADD LOADING STATE TO BUTTONS
 window.setButtonLoading = function (button, loading) {
     if (loading) {
         button.dataset.originalText = button.innerHTML;
@@ -154,7 +154,7 @@ if (!document.getElementById('spinner-styles')) {
     document.head.appendChild(style);
 }
 
-// ===== SKELETON LOADING =====
+// SKELETON LOADING 
 window.createSkeleton = function (container, count = 4) {
     const skeletonHTML = Array(count).fill(0).map(() => `
         <div class="skeleton-card" style="
@@ -189,7 +189,7 @@ window.removeSkeleton = function (container) {
     }
 };
 
-// ===== SMOOTH SCROLL =====
+// SMOOTH SCROLL 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');

@@ -1,0 +1,618 @@
+/* ============================================
+   VendorVerse — Drop Room
+   ============================================ */
+
+/* ── Page ── */
+.dr-page {
+    min-height: 100vh;
+    background: var(--color-bg, #0f172a);
+    font-family: 'Inter', sans-serif;
+}
+
+.dr-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 24px 60px;
+}
+
+/* ── Back Link ── */
+.dr-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-secondary, #94a3b8);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: color 200ms;
+}
+
+.dr-back:hover {
+    color: #fff;
+}
+
+/* ── Room Layout ── */
+.dr-room {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 20px;
+    min-height: 600px;
+}
+
+/* ── Left: Stage ── */
+.dr-stage {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e293b 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.dr-stage-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dr-stage-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dr-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #fff;
+}
+
+.dr-live-badge.waiting {
+    background: linear-gradient(135deg, #f59e0b, #f97316);
+}
+
+.dr-live-badge.live {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    animation: drPulse 2s ease-in-out infinite;
+}
+
+.dr-live-badge.ended {
+    background: #475569;
+}
+
+.dr-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    animation: drDotPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes drPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+    }
+}
+
+@keyframes drDotPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.dr-viewer-count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.dr-viewer-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+}
+
+/* ── Stage Body ── */
+.dr-stage-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.dr-creator-spotlight {
+    margin-bottom: 28px;
+}
+
+.dr-creator-avatar-lg {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(99, 102, 241, 0.5);
+    object-fit: cover;
+    margin-bottom: 12px;
+}
+
+.dr-creator-name-lg {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.dr-creator-niche-lg {
+    color: #818cf8;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ── Product Display ── */
+.dr-product-showcase {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 20px 28px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    max-width: 520px;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.dr-product-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 14px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.dr-product-details {
+    text-align: left;
+    flex: 1;
+}
+
+.dr-product-name {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.dr-product-desc {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.dr-product-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.dr-product-price {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+.dr-product-orig {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.8rem;
+    text-decoration: line-through;
+}
+
+.dr-product-discount {
+    color: #10b981;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: rgba(16, 185, 129, 0.15);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+/* ── Countdown ── */
+.dr-countdown-section {
+    margin-bottom: 28px;
+}
+
+.dr-countdown-label {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+}
+
+.dr-countdown-grid {
+    display: flex;
+    gap: 10px;
+}
+
+.dr-cd-block {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    min-width: 60px;
+    text-align: center;
+}
+
+.dr-cd-num {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.dr-cd-lbl {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.55rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+}
+
+/* ── Buy Button ── */
+.dr-buy-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+
+.dr-buy-btn.locked {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.dr-buy-btn.unlocked {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    animation: drBuyAppear 600ms ease both;
+}
+
+.dr-buy-btn.unlocked:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(16, 185, 129, 0.45);
+}
+
+.dr-buy-btn.ended {
+    background: #475569;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+}
+
+@keyframes drBuyAppear {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ── Stock Bar ── */
+.dr-stock-bar-wrap {
+    max-width: 320px;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.dr-stock-label {
+    display: flex;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.dr-stock-track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.dr-stock-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ef4444, #f59e0b);
+    border-radius: 3px;
+    transition: width 600ms ease;
+}
+
+/* ── Right: Chat ── */
+.dr-chat {
+    background: var(--color-surface, #1e293b);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.dr-chat-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dr-chat-title {
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.dr-chat-count {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ── Chat Messages ── */
+.dr-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 440px;
+    min-height: 300px;
+}
+
+.dr-chat-msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: drMsgIn 300ms ease both;
+}
+
+@keyframes drMsgIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dr-chat-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.dr-chat-bubble {
+    flex: 1;
+}
+
+.dr-chat-name {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #818cf8;
+    margin-bottom: 2px;
+}
+
+.dr-chat-text {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.45;
+}
+
+.dr-chat-time {
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.25);
+    margin-top: 2px;
+}
+
+.dr-chat-system {
+    text-align: center;
+    padding: 6px;
+}
+
+.dr-chat-system-text {
+    font-size: 0.7rem;
+    color: #818cf8;
+    font-weight: 600;
+    background: rgba(129, 140, 248, 0.1);
+    padding: 4px 12px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+/* ── Chat Input ── */
+.dr-chat-input-wrap {
+    padding: 12px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    gap: 8px;
+}
+
+.dr-chat-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 0.8rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 200ms;
+}
+
+.dr-chat-input:focus {
+    border-color: rgba(99, 102, 241, 0.5);
+}
+
+.dr-chat-input::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.dr-chat-send {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-color-hover));
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 200ms;
+    flex-shrink: 0;
+}
+
+.dr-chat-send:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* ── Commission Info ── */
+.dr-commission-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dr-commission-item {
+    text-align: center;
+}
+
+.dr-commission-pct {
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.dr-commission-label {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ── Light theme overrides ── */
+body:not([data-theme="dark"]) .dr-page {
+    background: #f8f9fb;
+}
+
+body:not([data-theme="dark"]) .dr-chat {
+    background: #fff;
+    border-color: #eef0f3;
+}
+
+body:not([data-theme="dark"]) .dr-chat-header {
+    border-color: #eef0f3;
+}
+
+body:not([data-theme="dark"]) .dr-chat-title {
+    color: #111827;
+}
+
+body:not([data-theme="dark"]) .dr-chat-input {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #111827;
+}
+
+body:not([data-theme="dark"]) .dr-chat-input::placeholder {
+    color: #9ca3af;
+}
+
+body:not([data-theme="dark"]) .dr-chat-name {
+    color: var(--accent-gradient-start);
+}
+
+body:not([data-theme="dark"]) .dr-chat-text {
+    color: #374151;
+}
+
+body:not([data-theme="dark"]) .dr-chat-input-wrap {
+    border-color: #eef0f3;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .dr-room {
+        grid-template-columns: 1fr;
+    }
+
+    .dr-chat {
+        max-height: 400px;
+    }
+
+    .dr-product-showcase {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .dr-product-details {
+        text-align: center;
+    }
+
+    .dr-product-price-row {
+        justify-content: center;
+    }
+}

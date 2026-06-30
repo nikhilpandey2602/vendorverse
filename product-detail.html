@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shop premium products on VendorVerse — India's trusted multi-vendor marketplace with free delivery and easy returns.">
+    <title>Product Detail — VendorVerse</title>
+    <!-- Theme Initialization to prevent flash of wrong theme -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('vendorverse_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+            document.documentElement.classList.add('theme-' + savedTheme);
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="homepage.css">
+    <style>
+        /* ═══════════════════════════════════════════
+           PRODUCT DETAIL PAGE — DARK PREMIUM
+        ═══════════════════════════════════════════ */
+        .pd-body {
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* ── Two-Column Layout ── */
+        .pd-container {
+            display: flex;
+            gap: 48px;
+            padding: 32px 80px 80px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+        .pd-left {
+            width: 55%;
+            flex-shrink: 0;
+        }
+        .pd-right {
+            width: 45%;
+            position: relative;
+        }
+        .pd-right-inner {
+            position: sticky;
+            top: 100px;
+        }
+
+        /* ── IMAGE GALLERY ── */
+        .pd-main-img-wrap {
+            width: 100%;
+            height: 520px;
+            background: #111118;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .pd-main-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 40px;
+            transition: opacity 0.3s ease, transform 0.4s ease;
+            will-change: transform, opacity;
+        }
+        .pd-main-img-wrap:hover img {
+            transform: scale(1.1);
+        }
+        .pd-main-img-wrap img.fade-out {
+            opacity: 0;
+        }
+        .pd-thumbnails {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .pd-thumb {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            flex-shrink: 0;
+        }
+        .pd-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .pd-thumb.active {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+        }
+
+        /* ── PRODUCT TABS ── */
+        .pd-tabs {
+            margin-top: 40px;
+        }
+        .pd-tab-bar {
+            display: flex;
+            background: #111118;
+            border-radius: 12px;
+            padding: 6px;
+        }
+        .pd-tab-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .pd-tab-btn.active {
+            background: #fff;
+            color: #000;
+            font-weight: 600;
+        }
+        .pd-tab-content {
+            display: none;
+            animation: pdTabIn 0.35s ease forwards;
+            padding-top: 24px;
+        }
+        .pd-tab-content.active {
+            display: block;
+        }
+        @keyframes pdTabIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Description Tab */
+        .pd-desc p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+        .pd-features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 24px;
+        }
+        .pd-feature-item {
+            background: #111118;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .pd-feature-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(124,58,237,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .pd-feature-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--accent-color);
+            fill: none;
+            stroke-width: 2;
+        }
+        .pd-feature-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .pd-feature-text {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.4;
+        }
+
+        /* Specifications Tab */
+        .pd-spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .pd-spec-table tr:nth-child(odd) { background: #111118; }
+        .pd-spec-table tr:nth-child(even) { background: #0a0a0f; }
+        .pd-spec-table td {
+            padding: 14px 20px;
+            font-size: 14px;
+        }
+        .pd-spec-table td:first-child {
+            color: rgba(255,255,255,0.6);
+            width: 40%;
+        }
+        .pd-spec-table td:last-child {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* Reviews Tab */
+        .pd-review-overview {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .pd-review-big {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+        }
+        .pd-review-stars {
+            color: #f59e0b;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+        .pd-review-count {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+        }
+        .pd-rating-bars {
+            margin-bottom: 28px;
+        }
+        .pd-rating-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .pd-rating-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+            width: 40px;
+            text-align: right;
+        }
+        .pd-rating-bar-bg {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .pd-rating-bar-fill {
+            height: 100%;
+            background: var(--accent-color);
+            border-radius: 4px;
+            transition: width 0.6s ease;
+        }
+        .pd-rating-bar-count {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            width: 30px;
+        }
+        .pd-review-card {
+            background: #111118;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 14px;
+        }
+        .pd-review-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .pd-reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), #6d28d9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .pd-reviewer-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .pd-reviewer-date {
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+        }
+        .pd-review-stars-sm {
+            color: #f59e0b;
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-left: auto;
+        }
+        .pd-review-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
+        }
+
+        /* ── RIGHT COLUMN — PURCHASE PANEL ── */
+        .pd-breadcrumb {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+        }
+        .pd-breadcrumb a {
+            color: rgba(255,255,255,0.4);
+            transition: color 0.2s;
+        }
+        .pd-breadcrumb a:hover {
+            color: var(--accent-color);
+        }
+        .pd-product-name {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-top: 12px;
+            color: #fff;
+        }
+
+        /* Vendor Row */
+        .pd-vendor-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .pd-vendor-icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--accent-color);
+            fill: none;
+            stroke-width: 2;
+        }
+        .pd-vendor-name {
+            font-size: 14px;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+        .pd-verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(34,197,94,0.15);
+            color: #22c55e;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 50px;
+        }
+        .pd-follow-btn {
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 50px;
+            padding: 4px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .pd-follow-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+        }
+
+        /* Rating Row */
+        .pd-rating-row-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+        .pd-stars-gold {
+            color: #f59e0b;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+        .pd-rating-num {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .pd-rating-count-text {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+        .pd-see-reviews {
+            font-size: 13px;
+            color: var(--accent-color);
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            background: none;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.2s;
+        }
+        .pd-see-reviews:hover {
+            color: #a78bfa;
+        }
+
+        /* Price */
+        .pd-price-section {
+            margin-top: 20px;
+        }
+        .pd-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .pd-price-current {
+            font-size: 36px;
+            font-weight: 800;
+        }
+        .pd-price-original {
+            font-size: 18px;
+            color: rgba(255,255,255,0.4);
+            text-decoration: line-through;
+        }
+        .pd-savings-badge {
+            background: rgba(34,197,94,0.15);
+            color: #22c55e;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 50px;
+        }
+        .pd-emi-row {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pd-emi-row svg {
+            width: 14px;
+            height: 14px;
+            stroke: rgba(255,255,255,0.4);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* Variant Selector */
+        .pd-variant-section {
+            margin-top: 24px;
+        }
+        .pd-variant-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+        }
+        .pd-color-options {
+            display: flex;
+            gap: 12px;
+        }
+        .pd-color-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            outline: 3px solid transparent;
+            outline-offset: 2px;
+            transition: outline-color 0.3s ease, border-color 0.3s ease;
+        }
+        .pd-color-dot.active {
+            outline-color: #fff;
+        }
+
+        /* Quantity */
+        .pd-qty-section {
+            margin-top: 24px;
+        }
+        .pd-qty-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+        }
+        .pd-qty-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .pd-qty-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: transparent;
+            color: #fff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .pd-qty-btn:hover {
+            border-color: var(--accent-color);
+            background: rgba(124,58,237,0.1);
+        }
+        .pd-qty-btn:active {
+            transform: scale(0.9);
+        }
+        .pd-qty-value {
+            width: 52px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Stock */
+        .pd-stock {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+        .pd-stock-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .pd-stock.in-stock .pd-stock-dot { background: #22c55e; }
+        .pd-stock.in-stock { color: #22c55e; }
+        .pd-stock.low-stock .pd-stock-dot { background: #f59e0b; }
+        .pd-stock.low-stock { color: #f59e0b; }
+
+        /* Buttons */
+        .pd-add-cart {
+            width: 100%;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent-color), #6d28d9);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .pd-add-cart:hover {
+            filter: brightness(1.15);
+            box-shadow: 0 8px 30px rgba(124,58,237,0.4);
+        }
+        .pd-add-cart:active {
+            transform: scale(0.97);
+        }
+        .pd-add-cart.added {
+            background: #22c55e;
+        }
+
+        .pd-buy-now {
+            width: 100%;
+            height: 56px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            margin-top: 12px;
+            transition: all 0.3s ease;
+        }
+        .pd-buy-now:hover {
+            background: #e5e5e5;
+        }
+
+        /* Wishlist & Share */
+        .pd-action-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .pd-action-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .pd-action-btn:hover {
+            border-color: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.08);
+        }
+        .pd-action-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .pd-action-btn.wishlisted {
+            color: #ef4444;
+        }
+        .pd-action-btn.wishlisted svg {
+            fill: #ef4444;
+            stroke: #ef4444;
+        }
+
+        /* Delivery Info Card */
+        .pd-delivery-card {
+            background: #111118;
+            border-radius: 14px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .pd-delivery-row {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 10px 0;
+        }
+        .pd-delivery-row:not(:last-child) {
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .pd-delivery-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(124,58,237,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .pd-delivery-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--accent-color);
+            fill: none;
+            stroke-width: 2;
+        }
+        .pd-delivery-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .pd-delivery-sub {
+            font-size: 13px;
+            color: rgba(255,255,255,0.45);
+            margin-top: 2px;
+        }
+
+        /* Vendor Card */
+        .pd-vendor-card {
+            background: #111118;
+            border-radius: 14px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+        .pd-vc-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .pd-vc-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), #6d28d9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .pd-vc-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .pd-vc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(34,197,94,0.12);
+            color: #22c55e;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 50px;
+            margin-left: 8px;
+        }
+        .pd-vc-stats {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 12px;
+        }
+        .pd-visit-store {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .pd-visit-store:hover {
+            background: var(--accent-color);
+            color: #fff;
+        }
+
+        /* ── Toast ── */
+        .pd-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #1e1e2e;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.35s ease;
+            pointer-events: none;
+            border: 1px solid rgba(124,58,237,0.3);
+        }
+        .pd-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ── Flying Cart Animation ── */
+        .pd-fly-icon {
+            position: fixed;
+            z-index: 10000;
+            pointer-events: none;
+            font-size: 22px;
+            transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+            opacity: 1;
+        }
+        .pd-fly-icon.fly {
+            opacity: 0;
+            transform: scale(0.3);
+        }
+
+        /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .pd-container {
+                flex-direction: column;
+                padding: 16px;
+                gap: 24px;
+            }
+            .pd-left, .pd-right {
+                width: 100%;
+            }
+            .pd-right-inner {
+                position: static;
+            }
+            .pd-main-img-wrap {
+                height: 320px;
+            }
+            .pd-main-img-wrap img {
+                padding: 20px;
+            }
+            .pd-product-name {
+                font-size: 22px;
+            }
+            .pd-price-current {
+                font-size: 28px;
+            }
+            .pd-features-grid {
+                grid-template-columns: 1fr;
+            }
+            .pd-tabs {
+                order: 3;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pd-thumbnails {
+                gap: 8px;
+            }
+            .pd-thumb {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body data-theme="dark" class="pd-body">
+
+    <!-- ═══ NAVBAR (cloned from index.html) ═══ -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+            <a href="index.html" class="logo">
+                <div id="dynamic-logo" style="display:flex;align-items:center;">
+                    <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+                        <path d="M20 4L36 20L20 36L4 20L20 4Z" fill="var(--accent-color)" stroke="#a78bfa" stroke-width="1.5"/>
+                        <path d="M20 10L30 20L20 30L10 20L20 10Z" fill="var(--accent-gradient-start)"/>
+                    </svg>
+                    <span style="margin-left:8px;font-size:16px;font-weight:700;color:#fff;">VendorVerse</span>
+                </div>
+            </a>
+            <div class="search-container" style="display:flex;flex:1;max-width:520px;margin:0 20px;">
+                <div class="search-wrapper">
+                    <select class="category-select" aria-label="Category" style="display:block;">
+                        <option value="all">All</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="home">Home</option>
+                    </select>
+                    <input type="search" class="search-input" placeholder="Search products..." aria-label="Search">
+                    <button class="search-btn" aria-label="Search">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="theme-switcher-container">
+                    <select id="theme-switcher" class="theme-select" aria-label="Select theme">
+                        <option value="light">☀️ Light</option>
+                        <option value="dark">🌙 Dark</option>
+                        <option value="blue">💎 Blue</option>
+                    </select>
+                </div>
+                <a href="wishlist.html" class="header-action wishlist-action" aria-label="Wishlist">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    <span class="wishlist-badge" id="wishlist-badge">0</span>
+                </a>
+                <a href="cart.html" class="header-action cart-action" id="nav-cart-icon" aria-label="Cart">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-badge" id="cart-badge">0</span>
+                </a>
+                <a href="vendor-dashboard.html" class="header-action" aria-label="Dashboard">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                </a>
+                <div class="auth-section" id="auth-section">
+                    <div class="auth-buttons" id="auth-buttons">
+                        <button class="auth-btn auth-btn-login" id="login-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span>Login</span>
+                        </button>
+                        <button class="auth-btn auth-btn-register">Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main id="main-content">
+        <div class="pd-container">
+
+            <!-- ══ LEFT COLUMN ══ -->
+            <div class="pd-left">
+                <!-- Image Gallery -->
+                <div class="pd-main-img-wrap" id="pd-main-img-wrap">
+                    <img id="pd-main-img" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop" alt="Product Image">
+                </div>
+                <div class="pd-thumbnails" id="pd-thumbnails">
+                    <div class="pd-thumb active" data-idx="0"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=150&h=150&fit=crop" alt="Thumb 1"></div>
+                    <div class="pd-thumb" data-idx="1"><img src="https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=150&h=150&fit=crop" alt="Thumb 2"></div>
+                    <div class="pd-thumb" data-idx="2"><img src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=150&h=150&fit=crop" alt="Thumb 3"></div>
+                    <div class="pd-thumb" data-idx="3"><img src="https://images.unsplash.com/photo-1509941943102-10c232535736?w=150&h=150&fit=crop" alt="Thumb 4"></div>
+                </div>
+
+                <!-- Product Tabs -->
+                <div class="pd-tabs">
+                    <div class="pd-tab-bar">
+                        <button class="pd-tab-btn active" data-tab="description">Description</button>
+                        <button class="pd-tab-btn" data-tab="specifications">Specifications</button>
+                        <button class="pd-tab-btn" data-tab="reviews">Reviews</button>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="pd-tab-content active" id="tab-description">
+                        <div class="pd-desc">
+                            <p>Crafted with precision engineering and premium materials, this product represents the pinnacle of modern design. Every detail has been meticulously refined to deliver an experience that goes beyond expectations — from the aerospace-grade casing to the whisper-quiet mechanism inside.</p>
+                            <p>Whether you're a professional seeking reliability or an enthusiast craving performance, this is built to adapt to your lifestyle. Advanced sensor technology, intelligent power management, and seamless connectivity make it a companion you can depend on day after day.</p>
+                            <p>Backed by our commitment to sustainability, each unit is manufactured using eco-friendly processes and packaged in 100% recycled materials. When you choose this product, you're investing in quality that lasts and values that matter.</p>
+                        </div>
+                        <div class="pd-features-grid">
+                            <div class="pd-feature-item">
+                                <div class="pd-feature-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 10 10-12h-9l1-10z"/></svg></div>
+                                <div><div class="pd-feature-title">Lightning Fast</div><div class="pd-feature-text">Next-gen processor delivers 40% faster performance</div></div>
+                            </div>
+                            <div class="pd-feature-item">
+                                <div class="pd-feature-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                                <div><div class="pd-feature-title">Built to Last</div><div class="pd-feature-text">IP68 water & dust resistant with Gorilla Glass</div></div>
+                            </div>
+                            <div class="pd-feature-item">
+                                <div class="pd-feature-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+                                <div><div class="pd-feature-title">All-Day Battery</div><div class="pd-feature-text">72-hour standby with rapid charging support</div></div>
+                            </div>
+                            <div class="pd-feature-item">
+                                <div class="pd-feature-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="10"/></svg></div>
+                                <div><div class="pd-feature-title">Smart Connect</div><div class="pd-feature-text">Bluetooth 5.3 + WiFi 6E for seamless pairing</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Specifications -->
+                    <div class="pd-tab-content" id="tab-specifications">
+                        <table class="pd-spec-table">
+                            <tr><td>Brand</td><td id="spec-brand">VendorVerse Originals</td></tr>
+                            <tr><td>Material</td><td>Aerospace-grade Aluminium & Ceramic</td></tr>
+                            <tr><td>Weight</td><td>168 grams</td></tr>
+                            <tr><td>Dimensions</td><td>42 × 36 × 10.7 mm</td></tr>
+                            <tr><td>Battery Life</td><td>Up to 72 hours</td></tr>
+                            <tr><td>Warranty</td><td>2 Years Manufacturer Warranty</td></tr>
+                            <tr><td>Country of Origin</td><td>India</td></tr>
+                        </table>
+                    </div>
+
+                    <!-- Reviews -->
+                    <div class="pd-tab-content" id="tab-reviews">
+                        <div class="pd-review-overview">
+                            <div class="pd-review-big">4.8</div>
+                            <div>
+                                <div class="pd-review-stars">★★★★★</div>
+                                <div class="pd-review-count">Based on 2,847 reviews</div>
+                            </div>
+                        </div>
+                        <div class="pd-rating-bars">
+                            <div class="pd-rating-row"><span class="pd-rating-label">5 ★</span><div class="pd-rating-bar-bg"><div class="pd-rating-bar-fill" style="width:78%"></div></div><span class="pd-rating-bar-count">2,221</span></div>
+                            <div class="pd-rating-row"><span class="pd-rating-label">4 ★</span><div class="pd-rating-bar-bg"><div class="pd-rating-bar-fill" style="width:14%"></div></div><span class="pd-rating-bar-count">399</span></div>
+                            <div class="pd-rating-row"><span class="pd-rating-label">3 ★</span><div class="pd-rating-bar-bg"><div class="pd-rating-bar-fill" style="width:5%"></div></div><span class="pd-rating-bar-count">142</span></div>
+                            <div class="pd-rating-row"><span class="pd-rating-label">2 ★</span><div class="pd-rating-bar-bg"><div class="pd-rating-bar-fill" style="width:2%"></div></div><span class="pd-rating-bar-count">57</span></div>
+                            <div class="pd-rating-row"><span class="pd-rating-label">1 ★</span><div class="pd-rating-bar-bg"><div class="pd-rating-bar-fill" style="width:1%"></div></div><span class="pd-rating-bar-count">28</span></div>
+                        </div>
+                        <div class="pd-review-card">
+                            <div class="pd-review-header">
+                                <div class="pd-reviewer-avatar">RK</div>
+                                <div><div class="pd-reviewer-name">Rajesh Kumar</div><div class="pd-reviewer-date">28 May 2026</div></div>
+                                <span class="pd-review-stars-sm">★★★★★</span>
+                            </div>
+                            <div class="pd-review-text">Absolutely stunning product. The build quality is top-notch and it arrived a day earlier than expected. VendorVerse packaging was premium too. Highly recommend for anyone looking for quality.</div>
+                        </div>
+                        <div class="pd-review-card">
+                            <div class="pd-review-header">
+                                <div class="pd-reviewer-avatar">PS</div>
+                                <div><div class="pd-reviewer-name">Priya Sharma</div><div class="pd-reviewer-date">22 May 2026</div></div>
+                                <span class="pd-review-stars-sm">★★★★★</span>
+                            </div>
+                            <div class="pd-review-text">Best purchase I've made this year. The battery life is incredible — I use it daily and still have juice after three days. The smart features sync perfectly with my phone.</div>
+                        </div>
+                        <div class="pd-review-card">
+                            <div class="pd-review-header">
+                                <div class="pd-reviewer-avatar">AM</div>
+                                <div><div class="pd-reviewer-name">Aarav Mehta</div><div class="pd-reviewer-date">15 May 2026</div></div>
+                                <span class="pd-review-stars-sm">★★★★☆</span>
+                            </div>
+                            <div class="pd-review-text">Great value for the price. Design is sleek and modern. Only minor wish — would love to see more color options in the next iteration. Otherwise, a solid 4.5 from me.</div>
+                        </div>
+                        <div class="pd-review-card">
+                            <div class="pd-review-header">
+                                <div class="pd-reviewer-avatar">NK</div>
+                                <div><div class="pd-reviewer-name">Neha Kapoor</div><div class="pd-reviewer-date">10 May 2026</div></div>
+                                <span class="pd-review-stars-sm">★★★★★</span>
+                            </div>
+                            <div class="pd-review-text">Gifted this to my husband and he absolutely loves it. The packaging was beautiful and felt very premium. Customer service was responsive when I had a question about delivery.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══ RIGHT COLUMN — PURCHASE PANEL ══ -->
+            <div class="pd-right">
+                <div class="pd-right-inner">
+                    <nav class="pd-breadcrumb" id="pd-breadcrumb">
+                        <a href="index.html">Home</a> &gt; <a href="product.html">Marketplace</a> &gt; <span id="breadcrumb-name">Product</span>
+                    </nav>
+
+                    <h1 class="pd-product-name" id="pd-product-name">Premium Smart Watch</h1>
+
+                    <!-- Vendor -->
+                    <div class="pd-vendor-row">
+                        <svg class="pd-vendor-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span class="pd-vendor-name">TechNova India</span>
+                        <span class="pd-verified-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="#22c55e" stroke="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01" fill="none" stroke="#22c55e" stroke-width="2"/></svg>
+                            Verified
+                        </span>
+                        <button class="pd-follow-btn">Follow</button>
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="pd-rating-row-top">
+                        <span class="pd-stars-gold">★★★★★</span>
+                        <span class="pd-rating-num">4.8</span>
+                        <span class="pd-rating-count-text">(2,847 reviews)</span>
+                        <button class="pd-see-reviews" id="pd-see-reviews">See all reviews</button>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="pd-price-section">
+                        <div class="pd-price-row">
+                            <span class="pd-price-current" id="pd-price">₹4,999</span>
+                            <span class="pd-price-original" id="pd-price-orig">₹6,999</span>
+                            <span class="pd-savings-badge" id="pd-savings">Save ₹2,000</span>
+                        </div>
+                        <div class="pd-emi-row">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                            From ₹416/month · No-cost EMI available
+                        </div>
+                    </div>
+
+                    <!-- Color Variant -->
+                    <div class="pd-variant-section">
+                        <div class="pd-variant-label">Color</div>
+                        <div class="pd-color-options" id="pd-colors">
+                            <div class="pd-color-dot active" style="background:#1a1a2e;" data-color="Midnight Black" title="Midnight Black"></div>
+                            <div class="pd-color-dot" style="background:#c0c0c0;" data-color="Silver Mist" title="Silver Mist"></div>
+                            <div class="pd-color-dot" style="background:var(--accent-color);" data-color="Cosmic Violet" title="Cosmic Violet"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="pd-qty-section">
+                        <div class="pd-qty-label">Quantity</div>
+                        <div class="pd-qty-row">
+                            <button class="pd-qty-btn" id="pd-qty-minus">−</button>
+                            <span class="pd-qty-value" id="pd-qty">1</span>
+                            <button class="pd-qty-btn" id="pd-qty-plus">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Stock -->
+                    <div class="pd-stock in-stock" id="pd-stock">
+                        <span class="pd-stock-dot"></span>
+                        In Stock — 47 units left
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <button class="pd-add-cart" id="pd-add-cart">Add to Cart</button>
+                    <button class="pd-buy-now" id="pd-buy-now">Buy Now</button>
+
+                    <!-- Wishlist & Share -->
+                    <div class="pd-action-row">
+                        <button class="pd-action-btn" id="pd-wishlist-btn">
+                            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            <span id="pd-wishlist-text">Save to Wishlist</span>
+                        </button>
+                        <button class="pd-action-btn" id="pd-share-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share
+                        </button>
+                    </div>
+
+                    <!-- Delivery Info -->
+                    <div class="pd-delivery-card">
+                        <div class="pd-delivery-row">
+                            <div class="pd-delivery-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+                            <div><div class="pd-delivery-title">Free Delivery</div><div class="pd-delivery-sub">Estimated delivery in 3–5 days</div></div>
+                        </div>
+                        <div class="pd-delivery-row">
+                            <div class="pd-delivery-icon"><svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></div>
+                            <div><div class="pd-delivery-title">Easy Returns</div><div class="pd-delivery-sub">7-day hassle-free returns</div></div>
+                        </div>
+                        <div class="pd-delivery-row">
+                            <div class="pd-delivery-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                            <div><div class="pd-delivery-title">Secure Payment</div><div class="pd-delivery-sub">SSL encrypted checkout</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Vendor Card -->
+                    <div class="pd-vendor-card">
+                        <div class="pd-vc-header">
+                            <div class="pd-vc-avatar">TN</div>
+                            <div>
+                                <div class="pd-vc-name">TechNova India <span class="pd-vc-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="#22c55e" stroke="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01" fill="none" stroke="#22c55e" stroke-width="2"/></svg> Verified Vendor</span></div>
+                                <div class="pd-vc-stats">⭐ 4.9 Rating · 12,400+ Sales</div>
+                            </div>
+                        </div>
+                        <button class="pd-visit-store">Visit Store</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ═══ FOOTER (cloned from index.html) ═══ -->
+    <footer class="hp-footer">
+        <div class="hp-footer-inner">
+            <div class="hp-footer-brand"><h3>💎 VendorVerse</h3><p>India's AI-powered ecommerce platform connecting vendors, creators, and millions of customers.</p></div>
+            <div class="hp-footer-col"><h4>Platform</h4><a href="index.html">Marketplace</a><a href="vendor-dashboard.html">Dashboard</a><a href="creator-studio.html">Creator Studio</a><a href="drop-room.html">Drop Rooms</a></div>
+            <div class="hp-footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Press</a></div>
+            <div class="hp-footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Contact</a><a href="#">Terms</a><a href="#">Privacy</a></div>
+        </div>
+        <div class="hp-footer-bottom">© 2026 VendorVerse. Made with 💜 in India. All rights reserved.</div>
+    </footer>
+
+    <!-- Toast -->
+    <div class="pd-toast" id="pd-toast"></div>
+
+    <script src="theme.js"></script>
+    <script>
+    (function() {
+        'use strict';
+
+        var CART_KEY = 'vendorverse_cart';
+        var WISH_KEY = 'vendorverse_wishlist';
+
+        // ═══ URL PARAMS ═══
+        var params = new URLSearchParams(window.location.search);
+        var productName = params.get('name') || 'Premium Smart Watch';
+        var productPrice = parseInt(params.get('price')) || 4999;
+        var productImage = params.get('image') || '';
+        var productVendor = params.get('vendor') || 'TechNova India';
+        var originalPrice = Math.round(productPrice * 1.4);
+        var savings = originalPrice - productPrice;
+
+        // Gallery images — use the URL image param as primary if provided
+        var defaultGallery = [
+            'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1509941943102-10c232535736?w=600&h=600&fit=crop'
+        ];
+        var galleryImages;
+        if (productImage) {
+            // Build a gallery from the provided image (use higher res version as main)
+            var hiRes = productImage.replace(/w=\d+/, 'w=600').replace(/h=\d+/, 'h=600');
+            galleryImages = [hiRes, hiRes, hiRes, hiRes];
+        } else {
+            galleryImages = defaultGallery;
+        }
+
+        var quantity = 1;
+
+        // ═══ INJECT URL DATA ═══
+        function initPageData() {
+            document.title = productName + ' — VendorVerse';
+            document.getElementById('pd-product-name').textContent = productName;
+            document.getElementById('breadcrumb-name').textContent = productName;
+            document.getElementById('pd-price').textContent = '₹' + productPrice.toLocaleString('en-IN');
+            document.getElementById('pd-price-orig').textContent = '₹' + originalPrice.toLocaleString('en-IN');
+            document.getElementById('pd-savings').textContent = 'Save ₹' + savings.toLocaleString('en-IN');
+
+            // Update main image from URL param
+            var mainImg = document.getElementById('pd-main-img');
+            if (mainImg) mainImg.src = galleryImages[0];
+
+            // Update thumbnails
+            var thumbs = document.querySelectorAll('.pd-thumb img');
+            thumbs.forEach(function(img, i) {
+                if (galleryImages[i]) {
+                    var thumbSrc = galleryImages[i].replace(/w=\d+/, 'w=150').replace(/h=\d+/, 'h=150');
+                    img.src = thumbSrc;
+                }
+            });
+
+            // Update vendor name
+            var vendorNameEl = document.querySelector('.pd-vendor-name');
+            if (vendorNameEl) vendorNameEl.textContent = productVendor;
+
+            // Update vendor card name and avatar
+            var vcName = document.querySelector('.pd-vc-name');
+            if (vcName) {
+                // Preserve the badge HTML
+                var badge = vcName.querySelector('.pd-vc-badge');
+                vcName.textContent = productVendor + ' ';
+                if (badge) vcName.appendChild(badge);
+            }
+            var vcAvatar = document.querySelector('.pd-vc-avatar');
+            if (vcAvatar) {
+                // Set initials from vendor name
+                var words = productVendor.split(' ');
+                var initials = words.length >= 2 ? words[0][0] + words[1][0] : words[0].substring(0, 2);
+                vcAvatar.textContent = initials.toUpperCase();
+            }
+
+            // Update spec brand
+            var specBrand = document.getElementById('spec-brand');
+            if (specBrand) specBrand.textContent = productVendor;
+        }
+
+        // ═══ THUMBNAIL GALLERY ═══
+        function initGallery() {
+            var thumbs = document.querySelectorAll('.pd-thumb');
+            var mainImg = document.getElementById('pd-main-img');
+
+            thumbs.forEach(function(thumb) {
+                thumb.addEventListener('click', function() {
+                    var idx = parseInt(thumb.dataset.idx);
+                    thumbs.forEach(function(t) { t.classList.remove('active'); });
+                    thumb.classList.add('active');
+                    mainImg.classList.add('fade-out');
+                    setTimeout(function() {
+                        mainImg.src = galleryImages[idx];
+                        mainImg.classList.remove('fade-out');
+                    }, 150);
+                });
+            });
+        }
+
+        // ═══ TABS ═══
+        function initTabs() {
+            var btns = document.querySelectorAll('.pd-tab-btn');
+            var contents = document.querySelectorAll('.pd-tab-content');
+
+            btns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var tab = btn.dataset.tab;
+                    btns.forEach(function(b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    contents.forEach(function(c) {
+                        c.classList.remove('active');
+                        if (c.id === 'tab-' + tab) {
+                            c.style.animation = 'none';
+                            c.offsetHeight;
+                            c.style.animation = '';
+                            c.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            document.getElementById('pd-see-reviews').addEventListener('click', function() {
+                btns.forEach(function(b) { b.classList.remove('active'); });
+                contents.forEach(function(c) { c.classList.remove('active'); });
+                document.querySelector('[data-tab="reviews"]').classList.add('active');
+                document.getElementById('tab-reviews').classList.add('active');
+                document.querySelector('.pd-tabs').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+
+        // ═══ COLOR VARIANT ═══
+        function initColors() {
+            var dots = document.querySelectorAll('.pd-color-dot');
+            dots.forEach(function(dot) {
+                dot.addEventListener('click', function() {
+                    dots.forEach(function(d) { d.classList.remove('active'); });
+                    dot.classList.add('active');
+                });
+            });
+        }
+
+        // ═══ QUANTITY ═══
+        function initQuantity() {
+            var qtyEl = document.getElementById('pd-qty');
+            document.getElementById('pd-qty-minus').addEventListener('click', function() {
+                if (quantity > 1) {
+                    quantity--;
+                    qtyEl.textContent = quantity;
+                    this.style.transform = 'scale(0.85)';
+                    var self = this;
+                    setTimeout(function() { self.style.transform = ''; }, 150);
+                }
+            });
+            document.getElementById('pd-qty-plus').addEventListener('click', function() {
+                if (quantity < 10) {
+                    quantity++;
+                    qtyEl.textContent = quantity;
+                    this.style.transform = 'scale(0.85)';
+                    var self = this;
+                    setTimeout(function() { self.style.transform = ''; }, 150);
+                }
+            });
+        }
+
+        // ═══ CART HELPERS ═══
+        function getCart() {
+            try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch(e) { return []; }
+        }
+        function saveCart(cart) {
+            localStorage.setItem(CART_KEY, JSON.stringify(cart));
+            updateCartBadge();
+        }
+        function updateCartBadge() {
+            var cart = getCart();
+            var count = cart.reduce(function(s, i) { return s + (i.quantity || i.qty || 1); }, 0);
+            var badge = document.getElementById('cart-badge');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        // ═══ WISHLIST HELPERS ═══
+        function getWishlist() {
+            try { return JSON.parse(localStorage.getItem(WISH_KEY)) || []; } catch(e) { return []; }
+        }
+        function saveWishlist(list) {
+            localStorage.setItem(WISH_KEY, JSON.stringify(list));
+            updateWishlistBadge();
+        }
+        function updateWishlistBadge() {
+            var count = getWishlist().length;
+            var badge = document.getElementById('wishlist-badge');
+            if (badge) badge.textContent = count;
+        }
+        function isInWishlist() {
+            return getWishlist().some(function(i) { return i.name === productName; });
+        }
+
+        // ═══ ADD TO CART ═══
+        function initAddToCart() {
+            var btn = document.getElementById('pd-add-cart');
+            btn.addEventListener('click', function() {
+                var cart = getCart();
+                var existing = cart.find(function(i) { return i.name === productName || i.title === productName; });
+                if (existing) {
+                    existing.quantity = (existing.quantity || existing.qty || 1) + quantity;
+                } else {
+                    cart.push({
+                        id: 'pd_' + Date.now(),
+                        name: productName,
+                        title: productName,
+                        price: productPrice,
+                        image: galleryImages[0],
+                        quantity: quantity,
+                        qty: quantity
+                    });
+                }
+                saveCart(cart);
+                flyCartIcon(btn);
+                btn.textContent = 'Added to Cart ✓';
+                btn.classList.add('added');
+                setTimeout(function() {
+                    btn.textContent = 'Add to Cart';
+                    btn.classList.remove('added');
+                }, 2000);
+            });
+        }
+
+        function flyCartIcon(sourceBtn) {
+            var icon = document.createElement('div');
+            icon.className = 'pd-fly-icon';
+            icon.textContent = '🛒';
+            document.body.appendChild(icon);
+            var btnRect = sourceBtn.getBoundingClientRect();
+            var cartIcon = document.getElementById('nav-cart-icon');
+            var cartRect = cartIcon ? cartIcon.getBoundingClientRect() : { top: 20, left: window.innerWidth - 80, width: 40, height: 40 };
+            icon.style.left = (btnRect.left + btnRect.width / 2) + 'px';
+            icon.style.top = btnRect.top + 'px';
+            requestAnimationFrame(function() {
+                icon.style.left = (cartRect.left + cartRect.width / 2) + 'px';
+                icon.style.top = (cartRect.top + cartRect.height / 2) + 'px';
+                icon.classList.add('fly');
+            });
+            setTimeout(function() { icon.remove(); }, 800);
+        }
+
+        // ═══ BUY NOW ═══
+        function initBuyNow() {
+            document.getElementById('pd-buy-now').addEventListener('click', function() {
+                var cart = getCart();
+                var existing = cart.find(function(i) { return i.name === productName || i.title === productName; });
+                if (existing) {
+                    existing.quantity = (existing.quantity || existing.qty || 1) + quantity;
+                } else {
+                    cart.push({
+                        id: 'pd_' + Date.now(),
+                        name: productName,
+                        title: productName,
+                        price: productPrice,
+                        image: galleryImages[0],
+                        quantity: quantity,
+                        qty: quantity
+                    });
+                }
+                saveCart(cart);
+                window.location.href = 'cart.html';
+            });
+        }
+
+        // ═══ WISHLIST TOGGLE ═══
+        function initWishlist() {
+            var btn = document.getElementById('pd-wishlist-btn');
+            var text = document.getElementById('pd-wishlist-text');
+
+            function refreshUI() {
+                if (isInWishlist()) {
+                    btn.classList.add('wishlisted');
+                    text.textContent = 'Saved';
+                } else {
+                    btn.classList.remove('wishlisted');
+                    text.textContent = 'Save to Wishlist';
+                }
+            }
+            refreshUI();
+
+            btn.addEventListener('click', function() {
+                var list = getWishlist();
+                if (isInWishlist()) {
+                    list = list.filter(function(i) { return i.name !== productName; });
+                    saveWishlist(list);
+                    showToast('Removed from wishlist');
+                } else {
+                    list.push({
+                        id: 'wl_' + Date.now(),
+                        name: productName,
+                        vendor: productVendor,
+                        price: productPrice,
+                        orig: originalPrice,
+                        sale: true,
+                        saleText: '-' + Math.round((1 - productPrice / originalPrice) * 100) + '%',
+                        rating: 4.8,
+                        reviews: 2847,
+                        stock: true,
+                        image: galleryImages[0],
+                        addedAt: Date.now()
+                    });
+                    saveWishlist(list);
+                    showToast('Added to wishlist ❤️');
+                }
+                refreshUI();
+            });
+        }
+
+        // ═══ SHARE ═══
+        function initShare() {
+            document.getElementById('pd-share-btn').addEventListener('click', function() {
+                var url = window.location.href;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(url).then(function() { showToast('Link copied!'); });
+                } else {
+                    var ta = document.createElement('textarea');
+                    ta.value = url;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    ta.remove();
+                    showToast('Link copied!');
+                }
+            });
+        }
+
+        // ═══ TOAST ═══
+        function showToast(msg) {
+            var toast = document.getElementById('pd-toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(function() { toast.classList.remove('show'); }, 2500);
+        }
+
+        // ═══ INIT ═══
+        document.addEventListener('DOMContentLoaded', function() {
+            initPageData();
+            initGallery();
+            initTabs();
+            initColors();
+            initQuantity();
+            initAddToCart();
+            initBuyNow();
+            initWishlist();
+            initShare();
+            updateCartBadge();
+            updateWishlistBadge();
+        });
+    })();
+    </script>
+</body>
+
+</html>

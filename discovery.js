@@ -299,8 +299,10 @@ function initLiveSearch() {
 
         resultsEl.innerHTML = filtered.map(p => `
             <div class="search-result-card" data-product-id="${p.id}">
-                <img src="${p.image}" alt="${p.title}" loading="lazy">
-                <div class="search-result-name">${p.title}</div>
+                <a href="product-detail.html?name=${encodeURIComponent(p.title)}&price=${p.price}&image=${encodeURIComponent(p.image)}&vendor=${encodeURIComponent(p.brand)}">
+                    <img src="${p.image}" alt="${p.title}" loading="lazy">
+                </a>
+                <a href="product-detail.html?name=${encodeURIComponent(p.title)}&price=${p.price}&image=${encodeURIComponent(p.image)}&vendor=${encodeURIComponent(p.brand)}" class="search-result-name" style="color:inherit;text-decoration:none;display:block;">${p.title}</a>
                 <div class="search-result-price">${fmt(p.price)}</div>
             </div>
         `).join('');
@@ -382,7 +384,9 @@ function renderDiscoverGrid() {
         <article class="product-card lazy-reveal" data-product-id="${p.id}"
                  style="animation-delay:${i * 60}ms">
             <div class="product-image-container">
-                <img src="${p.image}" alt="${p.title}" class="product-image" loading="lazy">
+                <a href="product-detail.html?name=${encodeURIComponent(p.title)}&price=${p.price}&image=${encodeURIComponent(p.image)}&vendor=${encodeURIComponent(p.brand)}">
+                    <img src="${p.image}" alt="${p.title}" class="product-image" loading="lazy">
+                </a>
                 ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
                 <button class="wishlist-btn${wishlisted ? ' wishlisted' : ''}"
                         data-id="${p.id}" aria-label="Toggle wishlist">
@@ -411,7 +415,7 @@ function renderDiscoverGrid() {
             </div>
             <div class="product-info">
                 <span class="product-brand">${p.brand}</span>
-                <h3 class="product-title">${p.title}</h3>
+                <a href="product-detail.html?name=${encodeURIComponent(p.title)}&price=${p.price}&image=${encodeURIComponent(p.image)}&vendor=${encodeURIComponent(p.brand)}" style="color:inherit;text-decoration:none;"><h3 class="product-title">${p.title}</h3></a>
                 <div class="product-rating">
                     <div class="interactive-stars" data-product-id="${p.id}">
                         ${[1,2,3,4,5].map(n => `

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendorVerse — Sell Smarter. Grow Faster.</title>
+    <!-- Theme Initialization to prevent flash of wrong theme -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('vendorverse_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+            document.documentElement.classList.add('theme-' + savedTheme);
+        })();
+    </script>
+    <link rel="stylesheet" href="styles.css">
+<meta name="description" content="India's most powerful ecommerce platform for vendors and creators. AI-powered tools, creator drops, and smart analytics to grow your business.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-primary:#0a0a0f;--bg-secondary:#0d0b1e;--bg-tertiary:#13102a;
+  --accent:var(--accent-gradient-start);--accent-light:var(--accent-color-hover);--accent-lighter:#a78bfa;
+  --text:#e2e8f0;--text-dim:#94a3b8;--text-bright:#f8fafc;
+  --glass:rgba(99,102,241,.08);--glass-border:rgba(99,102,241,.15);
+  --glow:0 0 40px rgba(99,102,241,.3);
+}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--accent) var(--bg-primary)}
+body{font-family:'Inter',sans-serif;background:var(--bg-primary);color:var(--text);overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg-primary)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+/* CANVAS */
+#particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* NAVBAR */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);background:rgba(10,10,15,.7);border-bottom:1px solid var(--glass-border);transition:all .3s}
+.navbar.scrolled{padding:.6rem 2rem;background:rgba(10,10,15,.92)}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo .diamond{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent-lighter));transform:rotate(45deg);border-radius:6px;display:flex;align-items:center;justify-content:center;box-shadow:var(--glow)}
+.nav-logo .diamond span{transform:rotate(-45deg);font-weight:800;font-size:1rem;color:#fff}
+.nav-logo h1{font-size:1.25rem;font-weight:700;color:var(--text-bright);letter-spacing:-.5px}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .3s;position:relative}
+.nav-links a:hover{color:var(--text-bright)}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.btn-cta{padding:.65rem 1.5rem;border-radius:10px;font-weight:600;font-size:.875rem;cursor:pointer;transition:all .3s;text-decoration:none;border:none;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-light));color:#fff;box-shadow:0 0 25px rgba(99,102,241,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(99,102,241,.55)}
+.btn-secondary{background:transparent;color:var(--text-bright);border:1px solid var(--glass-border)}
+.btn-secondary:hover{border-color:var(--accent);background:var(--glass)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden}
+.hero-bg-glow{position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(150px);opacity:.25;pointer-events:none}
+.hero-bg-glow.g1{background:var(--accent);top:-10%;left:10%}
+.hero-bg-glow.g2{background:var(--accent-color);bottom:0;right:5%}
+.hero-content{text-align:center;position:relative;z-index:2;max-width:900px}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;border-radius:50px;background:var(--glass);border:1px solid var(--glass-border);font-size:.8rem;color:var(--accent-lighter);margin-bottom:2rem;backdrop-filter:blur(10px)}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h2{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem}
+.gradient-text{background:linear-gradient(135deg,#fff 0%,var(--accent-lighter) 50%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:gradient-shift 4s ease infinite}
+@keyframes gradient-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero p{font-size:1.15rem;color:var(--text-dim);max-width:580px;margin:0 auto 2.5rem;line-height:1.7}
+.hero-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hero-buttons .btn-cta{padding:.85rem 2rem;font-size:1rem;border-radius:12px}
+
+/* FLOATING CARDS */
+.floating-cards{position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none;z-index:1}
+.float-card{position:absolute;width:180px;padding:1rem;border-radius:16px;background:rgba(99,102,241,.06);border:1px solid var(--glass-border);backdrop-filter:blur(15px);transform:perspective(800px) rotateY(10deg) rotateX(5deg);animation:float-anim 6s ease-in-out infinite}
+.float-card img{width:100%;height:100px;object-fit:cover;border-radius:10px;margin-bottom:.5rem;background:linear-gradient(135deg,var(--bg-tertiary),var(--accent))}
+.float-card .fc-title{font-size:.75rem;font-weight:600;color:var(--text-bright)}
+.float-card .fc-price{font-size:.7rem;color:var(--accent-lighter)}
+.float-card:nth-child(1){top:15%;left:5%;animation-delay:0s}
+.float-card:nth-child(2){top:20%;right:8%;animation-delay:-2s;transform:perspective(800px) rotateY(-12deg) rotateX(8deg)}
+.float-card:nth-child(3){bottom:15%;left:8%;animation-delay:-4s;transform:perspective(800px) rotateY(8deg) rotateX(-5deg)}
+.float-card:nth-child(4){bottom:20%;right:5%;animation-delay:-1s}
+@keyframes float-anim{0%,100%{transform:perspective(800px) rotateY(10deg) rotateX(5deg) translateY(0)}50%{transform:perspective(800px) rotateY(10deg) rotateX(5deg) translateY(-20px)}}
+
+/* STATS */
+.stats-bar{position:relative;z-index:2;padding:3rem 2rem;display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);background:rgba(13,11,30,.5);backdrop-filter:blur(10px)}
+.stat-item{text-align:center;min-width:150px}
+.stat-number{font-size:2.5rem;font-weight:800;color:var(--text-bright);letter-spacing:-1px}
+.stat-number .accent{color:var(--accent-lighter)}
+.stat-label{font-size:.85rem;color:var(--text-dim);margin-top:.25rem}
+
+/* SECTIONS SHARED */
+.section{padding:7rem 2rem;position:relative;z-index:2}
+.section-header{text-align:center;margin-bottom:4rem}
+.section-header .overline{font-size:.8rem;text-transform:uppercase;letter-spacing:3px;color:var(--accent-lighter);margin-bottom:1rem;display:block}
+.section-header h3{font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--text-bright);letter-spacing:-1px}
+.section-header p{color:var(--text-dim);max-width:550px;margin:1rem auto 0;font-size:1rem}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
+.feature-card{padding:2rem;border-radius:20px;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(15px);transition:all .4s;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .4s}
+.feature-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:var(--glow)}
+.feature-card:hover::before{opacity:1}
+.feature-icon{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(139,92,246,.15));display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.25rem}
+.feature-card h4{font-size:1.15rem;font-weight:700;color:var(--text-bright);margin-bottom:.5rem}
+.feature-card p{font-size:.9rem;color:var(--text-dim);line-height:1.6}
+
+/* HOW IT WORKS */
+.steps-container{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:3rem}
+.step{display:flex;align-items:center;gap:2.5rem;padding:2rem;border-radius:20px;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(10px);transition:all .4s}
+.step:hover{border-color:var(--accent);box-shadow:var(--glow)}
+.step-number{min-width:70px;height:70px;border-radius:18px;background:linear-gradient(135deg,var(--accent),var(--accent-light));display:flex;align-items:center;justify-content:center;font-size:1.75rem;font-weight:800;color:#fff;flex-shrink:0}
+.step h4{font-size:1.2rem;font-weight:700;color:var(--text-bright);margin-bottom:.4rem}
+.step p{font-size:.9rem;color:var(--text-dim)}
+
+/* TESTIMONIALS */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}
+.testimonial-card{padding:2rem;border-radius:20px;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(15px);transition:all .4s}
+.testimonial-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.testimonial-card .stars{color:#fbbf24;font-size:.9rem;margin-bottom:1rem}
+.testimonial-card blockquote{font-size:.95rem;color:var(--text);line-height:1.7;margin-bottom:1.5rem;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:1rem}
+.testimonial-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-lighter));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:1rem}
+.testimonial-info .name{font-weight:600;color:var(--text-bright);font-size:.9rem}
+.testimonial-info .role{font-size:.8rem;color:var(--text-dim)}
+
+/* FINAL CTA */
+.final-cta{text-align:center;padding:7rem 2rem;position:relative;z-index:2}
+.final-cta h3{font-size:clamp(2rem,4vw,3rem);font-weight:800;color:var(--text-bright);margin-bottom:1rem}
+.final-cta p{color:var(--text-dim);margin-bottom:2.5rem;font-size:1.05rem}
+.btn-glow{padding:1rem 3rem;font-size:1.1rem;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:#fff;border:none;font-weight:700;cursor:pointer;font-family:inherit;position:relative;transition:all .3s;box-shadow:0 0 30px rgba(99,102,241,.4)}
+.btn-glow:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 60px rgba(99,102,241,.6)}
+.btn-glow::after{content:'';position:absolute;inset:-3px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-lighter));z-index:-1;filter:blur(15px);opacity:.5;transition:opacity .3s}
+.btn-glow:hover::after{opacity:.8}
+
+/* FOOTER */
+footer{border-top:1px solid var(--glass-border);padding:3rem 2rem 1.5rem;position:relative;z-index:2;background:rgba(10,10,15,.6);backdrop-filter:blur(10px)}
+.footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem}
+.footer-brand h3{font-size:1.15rem;font-weight:700;color:var(--text-bright);margin-bottom:.5rem}
+.footer-brand p{font-size:.8rem;color:var(--text-dim);max-width:280px;line-height:1.6}
+.footer-col h4{font-size:.85rem;font-weight:600;color:var(--text-bright);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:1px}
+.footer-col a{display:block;color:var(--text-dim);text-decoration:none;font-size:.85rem;margin-bottom:.5rem;transition:color .3s}
+.footer-col a:hover{color:var(--accent-lighter)}
+.social-links{display:flex;gap:.75rem;margin-top:1rem}
+.social-links a{width:36px;height:36px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;color:var(--text-dim);text-decoration:none;font-size:.85rem;transition:all .3s}
+.social-links a:hover{border-color:var(--accent);color:var(--accent-lighter);transform:translateY(-2px)}
+.footer-bottom{text-align:center;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--glass-border);font-size:.8rem;color:var(--text-dim)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero h2{font-size:2.5rem}
+  .floating-cards{display:none}
+  .stats-bar{gap:1.5rem}
+  .stat-number{font-size:1.8rem}
+  .features-grid{grid-template-columns:1fr}
+  .step{flex-direction:column;text-align:center}
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<canvas id="particles-canvas"></canvas>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="diamond"><span>V</span></div>
+    <h1>VendorVerse</h1>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="index.html">Marketplace</a></li>
+    <li><a href="vendor-dashboard.html" class="btn-cta btn-primary">Start Selling</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-glow g1"></div>
+  <div class="hero-bg-glow g2"></div>
+  <div class="floating-cards">
+    <div class="float-card"><div class="fc-img" style="width:100%;height:100px;border-radius:10px;background:linear-gradient(135deg,#1a1040,var(--accent-gradient-start));margin-bottom:.5rem"></div><div class="fc-title">Artisan Kurta</div><div class="fc-price">₹1,299</div></div>
+    <div class="float-card"><div class="fc-img" style="width:100%;height:100px;border-radius:10px;background:linear-gradient(135deg,#0f172a,var(--accent-color-hover));margin-bottom:.5rem"></div><div class="fc-title">Silver Jhumkas</div><div class="fc-price">₹899</div></div>
+    <div class="float-card"><div class="fc-img" style="width:100%;height:100px;border-radius:10px;background:linear-gradient(135deg,#13102a,#a78bfa);margin-bottom:.5rem"></div><div class="fc-title">Mysore Silk</div><div class="fc-price">₹3,499</div></div>
+    <div class="float-card"><div class="fc-img" style="width:100%;height:100px;border-radius:10px;background:linear-gradient(135deg,#1e1b4b,var(--accent-gradient-start));margin-bottom:.5rem"></div><div class="fc-title">Organic Spices</div><div class="fc-price">₹599</div></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> India's #1 Vendor Platform</div>
+    <h2><span class="gradient-text">Sell Smarter.</span><br>Grow Faster.</h2>
+    <p>The AI-powered ecommerce platform built for Indian vendors and creators. Launch your store, reach millions, and scale with intelligent tools.</p>
+    <div class="hero-buttons">
+      <a href="vendor-dashboard.html" class="btn-cta btn-primary">Start Selling Today →</a>
+      <a href="index.html" class="btn-cta btn-secondary">Explore Marketplace</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar" id="stats">
+  <div class="stat-item"><div class="stat-number"><span class="counter" data-target="10">0</span><span class="accent">K+</span></div><div class="stat-label">Active Vendors</div></div>
+  <div class="stat-item"><div class="stat-number"><span class="counter" data-target="50">0</span><span class="accent">K+</span></div><div class="stat-label">Products Listed</div></div>
+  <div class="stat-item"><div class="stat-number"><span class="counter" data-target="1">0</span><span class="accent">M+</span></div><div class="stat-label">Happy Customers</div></div>
+  <div class="stat-item"><div class="stat-number">₹<span class="counter" data-target="50">0</span><span class="accent">Cr+</span></div><div class="stat-label">Total Sales</div></div>
+</div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-header">
+    <span class="overline">Powerful Features</span>
+    <h3>Everything You Need to Succeed</h3>
+    <p>AI-powered tools designed specifically for Indian vendors and creators to scale their business.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">🤖</div><h4>AI Copilot</h4><p>Get AI-powered product descriptions, pricing suggestions, and sales strategies tailored for your store.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎨</div><h4>Creator Drops</h4><p>Launch exclusive limited-edition drops with creators. Build hype, create urgency, and sell out fast.</p></div>
+    <div class="feature-card"><div class="feature-icon">✨</div><h4>Smart Feed</h4><p>AI-curated product discovery that matches buyers with the perfect products from your store.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎯</div><h4>Drop Rooms</h4><p>Live interactive shopping events where vendors showcase products and interact with customers in real-time.</p></div>
+    <div class="feature-card"><div class="feature-icon">📊</div><h4>Vendor Dashboard</h4><p>Real-time analytics, inventory management, and business insights all in one beautiful dashboard.</p></div>
+    <div class="feature-card"><div class="feature-icon">🤝</div><h4>Creator Matching</h4><p>Our AI matches you with the perfect creators and influencers to promote your products to the right audience.</p></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works" style="background:var(--bg-secondary)">
+  <div class="section-header">
+    <span class="overline">Simple Process</span>
+    <h3>Start Selling in 3 Steps</h3>
+    <p>From registration to your first sale — it takes less than 10 minutes.</p>
+  </div>
+  <div class="steps-container">
+    <div class="step"><div class="step-number">1</div><div><h4>Create Your Store</h4><p>Sign up for free, set up your brand profile, and customize your storefront in minutes. No coding needed.</p></div></div>
+    <div class="step"><div class="step-number">2</div><div><h4>List Your Products</h4><p>Upload products with AI-generated descriptions and smart pricing. Our AI optimizes your listings for maximum reach.</p></div></div>
+    <div class="step"><div class="step-number">3</div><div><h4>Start Earning</h4><p>Reach millions of customers, collaborate with creators, and watch your sales grow with real-time analytics.</p></div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" id="testimonials">
+  <div class="section-header">
+    <span class="overline">Success Stories</span>
+    <h3>Loved by Indian Vendors</h3>
+    <p>Hear from vendors who transformed their business with VendorVerse.</p>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>"VendorVerse transformed my small handicraft business. The AI Copilot helped me write better descriptions and the Creator Drops feature 3x'd my revenue in just 2 months."</blockquote>
+      <div class="testimonial-author"><div class="testimonial-avatar">R</div><div class="testimonial-info"><div class="name">Rajesh Kumar</div><div class="role">Handicraft Vendor, Jaipur</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>"The Smart Feed algorithm brought me customers I never could have reached on my own. My organic spice business went from 20 orders/day to 200+ in three months."</blockquote>
+      <div class="testimonial-author"><div class="testimonial-avatar">P</div><div class="testimonial-info"><div class="name">Priya Sharma</div><div class="role">Organic Foods, Kerala</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>"Drop Rooms are a game-changer. I sold ₹5 lakhs worth of textiles in a single live session. The platform's analytics helped me understand my customers like never before."</blockquote>
+      <div class="testimonial-author"><div class="testimonial-avatar">A</div><div class="testimonial-info"><div class="name">Ananya Reddy</div><div class="role">Textile Designer, Hyderabad</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="hero-bg-glow g1" style="width:400px;height:400px;left:30%;top:20%"></div>
+  <h3>Join <span class="gradient-text">10,000+ Vendors</span> Today</h3>
+  <p>Start your journey on India's fastest-growing ecommerce platform. Zero setup fees.</p>
+  <button class="btn-glow" onclick="window.location.href='vendor-dashboard.html'">Start Selling for Free →</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>💎 VendorVerse</h3>
+      <p>India's AI-powered ecommerce platform connecting vendors, creators, and millions of customers.</p>
+      <div class="social-links">
+        <a href="#" title="Twitter">𝕏</a>
+        <a href="#" title="Instagram">IG</a>
+        <a href="#" title="LinkedIn">in</a>
+        <a href="#" title="YouTube">▶</a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Platform</h4><a href="index.html">Marketplace</a><a href="vendor-dashboard.html">Vendor Dashboard</a><a href="creator-studio.html">Creator Studio</a><a href="drop-room.html">Drop Rooms</a></div>
+    <div class="footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Press</a></div>
+    <div class="footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Contact</a><a href="#">Terms</a><a href="#">Privacy</a></div>
+  </div>
+  <div class="footer-bottom">© 2026 VendorVerse. Made with 💜 in India. All rights reserved.</div>
+</footer>
+
+<script>
+/* ========== PARTICLE BACKGROUND ========== */
+const canvas=document.getElementById('particles-canvas'),ctx=canvas.getContext('2d');
+let particles=[],mouseX=0,mouseY=0;
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+window.addEventListener('resize',resizeCanvas);resizeCanvas();
+document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY});
+class Particle{
+  constructor(){this.reset()}
+  reset(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.size=Math.random()*2+.5;this.speedX=(Math.random()-.5)*.3;this.speedY=(Math.random()-.5)*.3;this.opacity=Math.random()*.5+.1;this.color=Math.random()>.5?'139,92,246':'99,102,241'}
+  update(){this.x+=this.speedX;this.y+=this.speedY;if(this.x<0||this.x>canvas.width)this.speedX*=-1;if(this.y<0||this.y>canvas.height)this.speedY*=-1;const dx=mouseX-this.x,dy=mouseY-this.y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<150){this.x-=dx*.01;this.y-=dy*.01}}
+  draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle=`rgba(${this.color},${this.opacity})`;ctx.fill()}
+}
+for(let i=0;i<100;i++)particles.push(new Particle());
+function drawLines(){for(let i=0;i<particles.length;i++){for(let j=i+1;j<particles.length;j++){const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(99,102,241,${.08*(1-dist/120)})`;ctx.lineWidth=.5;ctx.stroke()}}}}
+function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw()});drawLines();requestAnimationFrame(animateParticles)}
+animateParticles();
+
+/* ========== NAVBAR SCROLL ========== */
+window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50)});
+
+/* ========== GSAP ANIMATIONS ========== */
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero entrance
+gsap.from('.hero-badge',{opacity:0,y:30,duration:1,delay:.3});
+gsap.from('.hero h2',{opacity:0,y:50,duration:1,delay:.5});
+gsap.from('.hero p',{opacity:0,y:30,duration:1,delay:.7});
+gsap.from('.hero-buttons',{opacity:0,y:30,duration:1,delay:.9});
+
+// Floating cards
+gsap.utils.toArray('.float-card').forEach((card,i)=>{
+  gsap.from(card,{opacity:0,scale:.5,rotation:20,duration:1.2,delay:1+i*.2,ease:'back.out(1.5)'});
+});
+
+// Stats counter
+const counters=document.querySelectorAll('.counter');
+const statsObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      counters.forEach(counter=>{
+        const target=+counter.dataset.target;
+        const increment=target/60;
+        let current=0;
+        const updateCounter=()=>{current+=increment;if(current<target){counter.textContent=Math.ceil(current);requestAnimationFrame(updateCounter)}else{counter.textContent=target}};
+        updateCounter();
+      });
+      statsObserver.disconnect();
+    }
+  });
+},{threshold:.5});
+statsObserver.observe(document.getElementById('stats'));
+
+// Feature cards
+gsap.utils.toArray('.feature-card').forEach((card,i)=>{
+  gsap.from(card,{scrollTrigger:{trigger:card,start:'top 85%',toggleActions:'play none none none'},opacity:0,y:60,duration:.8,delay:i*.1,ease:'power3.out'});
+});
+
+// Steps
+gsap.utils.toArray('.step').forEach((step,i)=>{
+  gsap.from(step,{scrollTrigger:{trigger:step,start:'top 85%'},opacity:0,x:i%2===0?-80:80,duration:.8,ease:'power3.out'});
+});
+
+// Testimonials
+gsap.utils.toArray('.testimonial-card').forEach((card,i)=>{
+  gsap.from(card,{scrollTrigger:{trigger:card,start:'top 85%'},opacity:0,y:50,duration:.8,delay:i*.15,ease:'power3.out'});
+});
+
+// Final CTA
+gsap.from('.final-cta h3',{scrollTrigger:{trigger:'.final-cta',start:'top 80%'},opacity:0,y:40,duration:1});
+gsap.from('.final-cta p',{scrollTrigger:{trigger:'.final-cta',start:'top 80%'},opacity:0,y:30,duration:1,delay:.2});
+gsap.from('.btn-glow',{scrollTrigger:{trigger:'.final-cta',start:'top 80%'},opacity:0,scale:.8,duration:1,delay:.4,ease:'back.out(1.7)'});
+</script>
+<script src="theme.js"></script>
+    </body>
+</html>

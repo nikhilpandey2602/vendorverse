@@ -71,14 +71,22 @@ function initHeroCarousel() {
         if (index < 0) index = slideCount - 1;
         if (index >= slideCount) index = 0;
 
+        const prevIndex = currentIndex;
+        const direction = index > prevIndex ? 'left' : 'right';
         currentIndex = index;
 
         // Update track position
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-        // Update slides
+        // 3D rotation exit class on previous slide
         slides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === currentIndex);
+            slide.classList.remove('active', 'slide-exit-left', 'slide-exit-right');
+            if (i === prevIndex && i !== currentIndex) {
+                slide.classList.add(direction === 'left' ? 'slide-exit-left' : 'slide-exit-right');
+            }
+            if (i === currentIndex) {
+                slide.classList.add('active');
+            }
         });
 
         // Update dots
@@ -221,11 +229,11 @@ function initStickyHeader() {
     const updateHeader = () => {
         const currentScrollY = window.scrollY;
 
-        // Add shadow on scroll
+        // Add scrolled state for enhanced glassmorphism
         if (currentScrollY > 10) {
-            header.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            header.classList.add('scrolled');
         } else {
-            header.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
+            header.classList.remove('scrolled');
         }
 
         lastScrollY = currentScrollY;
@@ -462,22 +470,8 @@ document.querySelectorAll('.product-card').forEach(card => {
         // Create product ID
         const productId = 'prod_' + title.toLowerCase().replace(/\s+/g, '_').substring(0, 15);
 
-        // Build URL with product data
-        const params = new URLSearchParams({
-            id: productId,
-            title: title,
-            brand: brand,
-            price: price,
-            originalPrice: originalPrice,
-            discount: discount,
-            image: image,
-            rating: '4.5',
-            reviews: ratingCount,
-            category: 'Electronics'
-        });
-
-        // Navigate to product page
-        window.location.href = 'product.html?' + params.toString();
+        // Navigate to product detail page
+        window.location.href = 'product-detail.html?name=' + encodeURIComponent(title) + '&price=' + price + '&image=' + encodeURIComponent(image) + '&vendor=' + encodeURIComponent(brand);
     });
 
     // Make cards keyboard accessible

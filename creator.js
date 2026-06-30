@@ -1,12 +1,41 @@
 /**
  * VendorVerse — Creator Studio
- * All dashboard logic: activation, wizard, products, orders, analytics
+ * All dashboard logic: activation, wizard, products, orders, analytics, drops
  */
 
 /* ═══════ Constants ═══════ */
 const VENDOR_PRODUCTS_KEY = 'vendorverse_vendor_products';
 const CREATOR_MODE_KEY = 'vendorverse_creator_mode';
-const VENDOR_ID = 'vendor_' + (Math.random().toString(36).slice(2, 8));
+const CREATOR_ID_KEY = 'vendorverse_creator_id';
+const CREATORS_KEY_GLOBAL = 'vendorverse_creators';
+const COLLAB_INVITES_KEY = 'vendorverse_collab_invites';
+const PRODUCT_DROPS_KEY = 'vendorverse_product_drops';
+
+function getCurrentCreatorId() {
+    let existing = localStorage.getItem(CREATOR_ID_KEY);
+    if (existing) return existing;
+
+    // Prefer an existing seeded creator if available
+    try {
+        const creators = JSON.parse(localStorage.getItem(CREATORS_KEY_GLOBAL) || '[]');
+        if (Array.isArray(creators) && creators.length > 0 && creators[0].creatorId) {
+            existing = creators[0].creatorId;
+        }
+    } catch {
+        existing = null;
+    }
+
+    if (!existing) {
+        // Fallback demo creator id
+        existing = 'creator_artisan';
+    }
+
+    localStorage.setItem(CREATOR_ID_KEY, existing);
+    return existing;
+}
+
+// Treat the current creator as the "vendor" for locally created products
+const VENDOR_ID = getCurrentCreatorId();
 
 const WIZARD_CATEGORIES = [
     { id: 'tech', label: 'Tech', icon: '⚡' },
@@ -37,6 +66,25 @@ function activateCreatorMode() {
     localStorage.setItem(CREATOR_MODE_KEY, 'true');
 }
 
+/* ═══════ Collaboration Invites & Drops Storage ═══════ */
+function getCollabInvites() {
+    try { return JSON.parse(localStorage.getItem(COLLAB_INVITES_KEY) || '[]'); }
+    catch { return []; }
+}
+
+function saveCollabInvites(invites) {
+    localStorage.setItem(COLLAB_INVITES_KEY, JSON.stringify(invites));
+}
+
+function getProductDrops() {
+    try { return JSON.parse(localStorage.getItem(PRODUCT_DROPS_KEY) || '[]'); }
+    catch { return []; }
+}
+
+function saveProductDrops(drops) {
+    localStorage.setItem(PRODUCT_DROPS_KEY, JSON.stringify(drops));
+}
+
 /* ═══════ SIDEBAR NAVIGATION ═══════ */
 function initSidebar() {
     const links = document.querySelectorAll('.sidebar-link[data-view]');
@@ -48,6 +96,7 @@ function initSidebar() {
         overview: { title: 'Overview', subtitle: 'Your studio at a glance' },
         add: { title: 'Add Product', subtitle: 'Create something new' },
         products: { title: 'My Products', subtitle: 'Manage your creations' },
+        drops: { title: 'Drops', subtitle: 'Collabs & product drops' },
         orders: { title: 'Orders', subtitle: 'Track incoming orders' },
         analytics: { title: 'Analytics', subtitle: 'Performance insights' },
         settings: { title: 'Settings', subtitle: 'Creator preferences' }
@@ -68,6 +117,7 @@ function initSidebar() {
             // Refresh view data
             if (view === 'overview') renderOverview();
             if (view === 'products') renderMyProducts();
+            if (view === 'drops') renderDropsView();
             if (view === 'orders') renderOrders();
             if (view === 'analytics') renderAnalytics();
         });
@@ -454,6 +504,300 @@ function toast(message, type) {
     } else {
         console.log('[Toast]', message);
     }
+}
+
+/* ═══════ DROPS VIEW (Collabs + Active Drops) ═══════ */
+function formatDropCountdown(endsAt) {
+    if (!endsAt) return 'Ended';
+    const endTime = new Date(endsAt).getTime();
+    const now = Date.now();
+    const diffMs = endTime - now;
+    if (diffMs <= 0) return 'Ended';
+    const totalSec = Math.floor(diffMs / 1000);
+    const hours = Math.floor(totalSec / 3600);
+    const mins = Math.floor((totalSec % 3600) / 60);
+    const secs = totalSec % 60;
+    if (hours > 0) return `${hours}h ${mins}m left`;
+    if (mins > 0) return `${mins}m ${secs}s left`;
+    return `${secs}s left`;
+}
+
+function acceptInviteAndCreateDrop(inviteId) {
+    const invites = getCollabInvites();
+    const idx = invites.findIndex(i => i.id === inviteId);
+    if (idx === -1) return;
+
+    const invite = invites[idx];
+    const products = getVendorProducts();
+    const product = products.find(p => p.id === invite.productId);
+    if (!product) {
+        toast('Product no longer exists for this invite', 'warning');
+        return;
+    }
+
+    invites[idx].status = 'accepted';
+    invites[idx].acceptedAt = new Date().toISOString();
+    saveCollabInvites(invites);
+
+    const drops = getProductDrops();
+    const now = new Date();
+    const endsAt = new Date(now.getTime() + 60 * 60 * 1000).toISOString(); // 1 hour drop
+    const commissionPct = typeof invite.commissionPct === 'number' ? invite.commissionPct : 10;
+
+    drops.push({
+        id: 'drop_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        creatorId: invite.creatorId,
+        vendorId: product.vendorId || VENDOR_ID,
+        productId: product.id,
+        title: product.name,
+        price: product.price,
+        originalPrice: product.originalPrice || null,
+        image: product.image,
+        badge: 'Drop',
+        createdAt: now.toISOString(),
+        endsAt,
+        status: 'live',
+        commissionPct,
+        soldQuantity: 0,
+        salesAmount: 0
+    });
+    saveProductDrops(drops);
+
+    toast('Drop created! Your followers will see it in Smart Feed.', 'success');
+    renderDropsView();
+}
+
+function declineInvite(inviteId) {
+    const invites = getCollabInvites();
+    const idx = invites.findIndex(i => i.id === inviteId);
+    if (idx === -1) return;
+    invites[idx].status = 'declined';
+    invites[idx].declinedAt = new Date().toISOString();
+    saveCollabInvites(invites);
+    toast('Invite declined', 'info');
+    renderDropsView();
+}
+
+function trackDropSaleForCreator(dropId, amount) {
+    const drops = getProductDrops();
+    const idx = drops.findIndex(d => d.id === dropId);
+    if (idx === -1) return;
+    const d = drops[idx];
+    d.soldQuantity = (d.soldQuantity || 0) + 1;
+    d.salesAmount = (d.salesAmount || 0) + (amount || 0);
+    saveProductDrops(drops);
+}
+
+function renderDropsView() {
+    const invitesContainer = document.getElementById('drops-invites-list');
+    const activeContainer = document.getElementById('drops-active-list');
+    if (!invitesContainer || !activeContainer) return;
+
+    const creatorId = VENDOR_ID;
+    const allInvites = getCollabInvites().filter(i => i.creatorId === creatorId);
+    const products = getVendorProducts();
+
+    // Earnings stats
+    const dropsAll = getProductDrops().filter(d => d.creatorId === creatorId);
+    const nowTs = Date.now();
+    const activeCount = dropsAll.filter(d => d.status === 'live' && new Date(d.endsAt).getTime() > nowTs).length;
+    const totalSalesAmount = dropsAll.reduce((sum, d) => sum + (d.salesAmount || 0), 0);
+    const totalCommission = dropsAll.reduce((sum, d) => {
+        const pct = typeof d.commissionPct === 'number' ? d.commissionPct : 10;
+        return sum + (d.salesAmount || 0) * (pct / 100);
+    }, 0);
+
+    const statActiveEl = document.getElementById('drops-stat-active');
+    const statSalesEl = document.getElementById('drops-stat-sales');
+    const statCommEl = document.getElementById('drops-stat-commission');
+    if (statActiveEl) statActiveEl.textContent = activeCount;
+    if (statSalesEl) statSalesEl.textContent = '₹' + totalSalesAmount.toLocaleString('en-IN');
+    if (statCommEl) statCommEl.textContent = '₹' + Math.round(totalCommission).toLocaleString('en-IN');
+
+    const pendingInvites = allInvites.filter(i => i.status === 'pending');
+    if (pendingInvites.length === 0) {
+        invitesContainer.innerHTML = `
+            <div class="drops-empty">
+                <div class="drops-empty-icon">🤝</div>
+                <p>No new collaboration invites yet.</p>
+                <p class="drops-empty-sub">When vendors invite you to promote products, they’ll appear here.</p>
+            </div>`;
+    } else {
+        invitesContainer.innerHTML = pendingInvites.map(inv => {
+            const product = products.find(p => p.id === inv.productId);
+            if (!product) return '';
+            const commission = typeof inv.commissionPct === 'number' ? inv.commissionPct : 10;
+            return `
+            <div class="drops-invite-card">
+                <div class="drops-invite-main">
+                    <img class="drops-invite-img" src="${product.image}" alt="${product.name}" loading="lazy">
+                    <div class="drops-invite-body">
+                        <div class="drops-invite-title-row">
+                            <h3 class="drops-invite-title">${product.name}</h3>
+                            <span class="drops-invite-pill">New invite</span>
+                        </div>
+                        <div class="drops-invite-price">₹${product.price.toLocaleString('en-IN')}</div>
+                        <p class="drops-invite-copy">Promote this product to your followers with a timed Drop and earn <strong>${commission}%</strong> commission.</p>
+                    </div>
+                </div>
+                <div class="drops-invite-actions">
+                    <button class="drops-btn-secondary" data-invite-decline="${inv.id}">Skip</button>
+                    <button class="drops-btn-primary" data-invite-accept="${inv.id}">Accept & Create Drop</button>
+                </div>
+            </div>`;
+        }).join('');
+
+        invitesContainer.querySelectorAll('[data-invite-accept]').forEach(btn => {
+            btn.addEventListener('click', () => acceptInviteAndCreateDrop(btn.dataset.inviteAccept));
+        });
+        invitesContainer.querySelectorAll('[data-invite-decline]').forEach(btn => {
+            btn.addEventListener('click', () => declineInvite(btn.dataset.inviteDecline));
+        });
+    }
+
+    const now = Date.now();
+    const drops = getProductDrops().filter(d => d.creatorId === creatorId);
+    const activeDrops = drops.filter(d => d.status === 'live' && new Date(d.endsAt).getTime() > now);
+
+    if (activeDrops.length === 0) {
+        activeContainer.innerHTML = `
+            <div class="drops-empty">
+                <div class="drops-empty-icon">✨</div>
+                <p>No active drops right now.</p>
+                <p class="drops-empty-sub">Accept a collaboration invite to launch your first Product Drop.</p>
+            </div>`;
+    } else {
+        activeContainer.innerHTML = activeDrops.map(drop => {
+            const pct = typeof drop.commissionPct === 'number' ? drop.commissionPct : 10;
+            return `
+            <article class="drops-active-card">
+                <div class="drops-active-main">
+                    <img class="drops-active-img" src="${drop.image}" alt="${drop.title}" loading="lazy">
+                    <div class="drops-active-body">
+                        <h3 class="drops-active-title">${drop.title}</h3>
+                        <div class="drops-active-price-row">
+                            <span class="drops-active-price">₹${drop.price.toLocaleString('en-IN')}</span>
+                            ${drop.originalPrice ? `<span class="drops-active-orig">₹${drop.originalPrice.toLocaleString('en-IN')}</span>` : ''}
+                        </div>
+                        <div class="drops-active-meta">
+                            <span class="drops-countdown" data-drop-countdown="${drop.id}">${formatDropCountdown(drop.endsAt)}</span>
+                            <span class="drops-meta-pill">Live Drop</span>
+                            <span class="drops-meta-pill">Commission ${pct}%</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="drops-buy-btn" data-drop-buy="${drop.productId}" data-drop-id="${drop.id}">Buy from Drop</button>
+                <button class="drops-buy-btn" data-room-start="${drop.id}" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);margin-top:6px">🎥 Start Drop Room</button>
+            </article>
+        `;
+        }).join('');
+
+        // Buy → send to cart via existing helpers
+        activeContainer.querySelectorAll('[data-drop-buy]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const productId = btn.dataset.dropBuy;
+                const dropId = btn.dataset.dropId;
+                const product = products.find(p => p.id === productId);
+                if (!product) return;
+
+                if (typeof addToDiscoverCart === 'function') {
+                    addToDiscoverCart({
+                        id: product.id,
+                        productId: product.id,
+                        title: product.name,
+                        brand: 'Creator',
+                        price: product.price,
+                        image: product.image
+                    });
+                } else if (typeof addToCart === 'function') {
+                    addToCart({
+                        id: product.id,
+                        productId: product.id,
+                        title: product.name,
+                        price: product.price,
+                        image: product.image
+                    });
+                }
+
+                // Track drop sale for earnings
+                if (dropId) {
+                    trackDropSaleForCreator(dropId, product.price);
+                    renderDropsView();
+                }
+            });
+        });
+
+        // Lightweight countdown refresh
+        setTimeout(() => {
+            activeContainer.querySelectorAll('[data-drop-countdown]').forEach(el => {
+                const dropId = el.dataset.dropCountdown;
+                const updated = getProductDrops().find(d => d.id === dropId);
+                if (!updated) return;
+                el.textContent = formatDropCountdown(updated.endsAt);
+            });
+        }, 1000);
+    }
+
+    // ── Active Drop Rooms section ──
+    const liveRooms = typeof drGetRooms === 'function' ? drGetRooms().filter(r => r.status !== 'ended') : [];
+    if (liveRooms.length > 0) {
+        const roomsHtml = `
+        <section class="drops-panel" style="margin-top:20px">
+            <div class="drops-panel-header">
+                <div>
+                    <h2 class="drops-panel-title">🎥 Active Drop Rooms</h2>
+                    <p class="drops-panel-sub">Your live drop rooms with viewers and performance.</p>
+                </div>
+            </div>
+            <div class="drops-list">
+                ${liveRooms.map(r => {
+            const statusLabel = r.status === 'live' ? '● LIVE' : '⏱ WAITING';
+            const statusColor = r.status === 'live' ? '#ef4444' : '#f59e0b';
+            return `
+                    <div class="drops-active-card" style="padding:16px">
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+                            <div>
+                                <div style="font-weight:700;color:var(--color-text-primary,#111827);margin-bottom:4px">${r.title}</div>
+                                <div style="display:flex;gap:8px;align-items:center">
+                                    <span style="background:${statusColor};color:#fff;padding:3px 10px;border-radius:10px;font-size:0.65rem;font-weight:800;text-transform:uppercase">${statusLabel}</span>
+                                    <span style="color:var(--color-text-secondary,#6b7280);font-size:0.78rem">👁 ${r.viewers || 0} viewers</span>
+                                    <span style="color:var(--color-text-secondary,#6b7280);font-size:0.78rem">💬 ${(r.chatMessages || []).length} msgs</span>
+                                </div>
+                            </div>
+                            <a href="drop-room?id=${r.id}" style="padding:8px 18px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:10px;font-size:0.8rem;font-weight:700;text-decoration:none">Open Room</a>
+                        </div>
+                    </div>`;
+        }).join('')}
+            </div>
+        </section>`;
+
+        // Append rooms section to the drops layout
+        const dropsLayout = activeContainer.closest('.drops-layout');
+        if (dropsLayout) {
+            const existing = dropsLayout.querySelector('.dr-rooms-section');
+            if (existing) existing.remove();
+            const wrapper = document.createElement('div');
+            wrapper.className = 'dr-rooms-section';
+            wrapper.innerHTML = roomsHtml;
+            dropsLayout.appendChild(wrapper);
+        }
+    }
+
+    // Start Drop Room button handlers
+    document.querySelectorAll('[data-room-start]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const dropId = btn.dataset.roomStart;
+            if (typeof drCreateRoom === 'function') {
+                const room = drCreateRoom(dropId);
+                if (room) {
+                    toast('🎥 Drop Room created!', 'success');
+                    window.location.href = 'drop-room?id=' + room.id;
+                }
+            } else {
+                toast('Drop room system not available', 'warning');
+            }
+        });
+    });
 }
 
 /* ═══════ INTEGRATION — merge vendor products into PRODUCT_DATA ═══════ */

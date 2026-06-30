@@ -1,7 +1,7 @@
-/* ============================================
+/* 
    VendorVerse — Creator Studio Styles
    Stripe / Notion / Linear inspired design
-   ============================================ */
+    */
 
 /* ── Layout ── */
 .creator-layout {
@@ -40,7 +40,7 @@
 .sidebar-brand-icon {
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-color-hover));
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -98,7 +98,7 @@
 
 .sidebar-link.active {
     background: rgba(99, 102, 241, 0.1);
-    color: #6366f1;
+    color: var(--accent-gradient-start);
     font-weight: 600;
 }
 
@@ -247,7 +247,7 @@
 
 .stat-badge.up {
     background: rgba(99, 102, 241, 0.1);
-    color: #6366f1;
+    color: var(--accent-gradient-start);
 }
 
 .stat-icon {
@@ -320,7 +320,7 @@
 }
 
 .wizard-step-indicator.active .wizard-step-circle {
-    background: #6366f1;
+    background: var(--accent-gradient-start);
     color: #fff;
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
 }
@@ -339,7 +339,7 @@
 }
 
 .wizard-step-indicator.active .wizard-step-label {
-    color: #6366f1;
+    color: var(--accent-gradient-start);
 }
 
 .wizard-step-indicator.done .wizard-step-label {
@@ -400,7 +400,7 @@
 .wizard-input:focus,
 .wizard-textarea:focus,
 .wizard-select:focus {
-    border-color: #6366f1;
+    border-color: var(--accent-gradient-start);
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
@@ -430,14 +430,14 @@
 }
 
 .wizard-cat-btn:hover {
-    border-color: #6366f1;
-    color: #6366f1;
+    border-color: var(--accent-gradient-start);
+    color: var(--accent-gradient-start);
 }
 
 .wizard-cat-btn.selected {
-    border-color: #6366f1;
+    border-color: var(--accent-gradient-start);
     background: rgba(99, 102, 241, 0.08);
-    color: #6366f1;
+    color: var(--accent-gradient-start);
 }
 
 /* Preview card */
@@ -468,7 +468,7 @@
 .wizard-preview-price {
     font-size: 1.1rem;
     font-weight: 800;
-    color: #6366f1;
+    color: var(--accent-gradient-start);
 }
 
 /* Wizard actions */
@@ -504,7 +504,7 @@
 }
 
 .wizard-btn-primary {
-    background: #6366f1;
+    background: var(--accent-gradient-start);
     color: #fff;
     box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
 }
@@ -586,7 +586,7 @@
 .my-product-price {
     font-size: 1rem;
     font-weight: 800;
-    color: #6366f1;
+    color: var(--accent-gradient-start);
     margin-bottom: 8px;
 }
 
@@ -620,7 +620,7 @@
 
 .mp-btn-edit {
     background: rgba(99, 102, 241, 0.1);
-    color: #6366f1;
+    color: var(--accent-gradient-start);
 }
 
 .mp-btn-edit:hover {
@@ -709,7 +709,7 @@
 }
 
 .edit-input:focus {
-    border-color: #6366f1;
+    border-color: var(--accent-gradient-start);
 }
 
 .edit-actions {
@@ -768,7 +768,7 @@
 .order-total {
     font-size: 0.95rem;
     font-weight: 800;
-    color: #6366f1;
+    color: var(--accent-gradient-start);
 }
 
 .order-status {
@@ -842,7 +842,7 @@
 }
 
 .progress-fill.purple {
-    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-color-hover));
 }
 
 .progress-fill.green {
@@ -889,6 +889,285 @@
     color: var(--color-text-muted, #9ca3af);
 }
 
+/* ── Drops (Collaborations & Product Drops) ── */
+.drops-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.drops-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.drops-stat-card {
+    background: var(--color-surface, #fff);
+    border-radius: 14px;
+    border: 1px solid var(--color-border-light, #f3f4f6);
+    padding: 12px 14px;
+}
+
+.drops-stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-text-muted, #9ca3af);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+}
+
+.drops-stat-value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #1f2937);
+}
+
+.drops-panel {
+    background: var(--color-surface, #fff);
+    border: 1px solid var(--color-border-light, #f3f4f6);
+    border-radius: 18px;
+    padding: 22px 22px 20px;
+}
+
+.drops-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.drops-panel-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #1f2937);
+}
+
+.drops-panel-sub {
+    font-size: 0.78rem;
+    color: var(--color-text-muted, #9ca3af);
+    margin-top: 2px;
+}
+
+.drops-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.drops-empty {
+    text-align: left;
+    padding: 28px 4px 8px;
+    color: var(--color-text-muted, #9ca3af);
+}
+
+.drops-empty-icon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.drops-empty-sub {
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+
+.drops-invite-card {
+    border-radius: 14px;
+    border: 1px dashed var(--color-border, #e5e7eb);
+    padding: 14px 14px 12px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(59, 130, 246, 0.02));
+}
+
+.drops-invite-main {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.drops-invite-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.drops-invite-body {
+    flex: 1;
+}
+
+.drops-invite-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.drops-invite-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #1f2937);
+}
+
+.drops-invite-pill {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(99, 102, 241, 0.12);
+    color: #4f46e5;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+}
+
+.drops-invite-price {
+    font-size: 0.96rem;
+    font-weight: 800;
+    color: var(--accent-gradient-start);
+    margin-bottom: 2px;
+}
+
+.drops-invite-copy {
+    font-size: 0.78rem;
+    color: var(--color-text-secondary, #6b7280);
+}
+
+.drops-invite-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.drops-btn-secondary,
+.drops-btn-primary {
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 180ms ease;
+}
+
+.drops-btn-secondary {
+    background: var(--color-border-light, #f3f4f6);
+    color: var(--color-text-secondary, #6b7280);
+}
+
+.drops-btn-secondary:hover {
+    background: var(--color-border, #e5e7eb);
+}
+
+.drops-btn-primary {
+    background: linear-gradient(135deg, var(--accent-gradient-start), #4f46e5);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+.drops-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.4);
+}
+
+.drops-active-card {
+    border-radius: 14px;
+    border: 1px solid var(--color-border-light, #e5e7eb);
+    padding: 12px 14px 12px;
+    background: var(--color-bg, #fafafa);
+}
+
+.drops-active-main {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.drops-active-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.drops-active-body {
+    flex: 1;
+}
+
+.drops-active-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #1f2937);
+    margin-bottom: 2px;
+}
+
+.drops-active-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.drops-active-price {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: #111827;
+}
+
+.drops-active-orig {
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #9ca3af);
+    text-decoration: line-through;
+}
+
+.drops-active-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+}
+
+.drops-countdown {
+    font-weight: 600;
+    color: #dc2626;
+}
+
+.drops-meta-pill {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.12);
+    color: #16a34a;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.drops-buy-btn {
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    transition: all 180ms ease;
+}
+
+.drops-buy-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
 /* Toggle switch */
 .toggle {
     width: 44px;
@@ -903,7 +1182,7 @@
 }
 
 .toggle.on {
-    background: #6366f1;
+    background: var(--accent-gradient-start);
 }
 
 .toggle::after {
@@ -970,6 +1249,10 @@
     }
 
     .my-products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .drops-layout {
         grid-template-columns: 1fr;
     }
 

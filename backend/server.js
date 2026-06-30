@@ -18,6 +18,7 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
 // Initialize Express app
 const app = express();
@@ -25,9 +26,9 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
-// ============================================
+// 
 // Middleware
-// ============================================
+// 
 
 // Enable CORS
 app.use(cors({
@@ -51,9 +52,9 @@ if (process.env.NODE_ENV === 'development') {
     });
 }
 
-// ============================================
+// 
 // Routes
-// ============================================
+// 
 
 // Test route
 app.get('/api/test', (req, res) => {
@@ -80,11 +81,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/ai', aiRoutes);
 
-// ============================================
+// 
 // Error Handling
-// ============================================
-
 // 404 handler
 app.use((req, res, next) => {
     res.status(404).json({
@@ -132,9 +132,9 @@ app.use((err, req, res, next) => {
     });
 });
 
-// ============================================
+//
 // Start Server
-// ============================================
+// 
 
 const PORT = process.env.PORT || 5000;
 

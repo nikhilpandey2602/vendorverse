@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - VendorVerse</title>
+    <!-- Theme Initialization to prevent flash of wrong theme -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('vendorverse_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+            document.documentElement.classList.add('theme-' + savedTheme);
+        })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -277,7 +286,7 @@
             width: 100%;
             padding: var(--space-4);
             margin-top: var(--space-5);
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, var(--accent-gradient-start) 0%, var(--accent-color-hover) 100%);
             color: white;
             font-size: var(--font-size-base);
             font-weight: 600;
@@ -583,19 +592,8 @@
             }
         }
 
-        // Proceed to checkout with premium loading state
-        async function proceedToCheckout() {
-            const token = localStorage.getItem(TOKEN_KEY);
-            if (!token) {
-                if (typeof showToast === 'function') {
-                    showToast('Please login to checkout', 'warning');
-                }
-                if (typeof openAuthModal === 'function') {
-                    openAuthModal('login');
-                }
-                return;
-            }
-
+        // Proceed to checkout page
+        function proceedToCheckout() {
             const cart = getCart();
             if (cart.length === 0) {
                 if (typeof showToast === 'function') {
@@ -604,70 +602,7 @@
                 return;
             }
 
-            const btn = document.getElementById('checkout-btn');
-            if (typeof setButtonLoading === 'function') {
-                setButtonLoading(btn, true);
-            }
-
-            try {
-                const items = cart.map(item => ({
-                    productId: item.productId || item.id,
-                    title: item.title,
-                    price: item.price,
-                    quantity: item.quantity,
-                    image: item.image
-                }));
-
-                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const shipping = subtotal > 499 ? 0 : 40;
-                const tax = Math.round(subtotal * 0.18);
-                const total = subtotal + shipping + tax;
-
-                const response = await fetch(API_BASE + '/api/orders/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: JSON.stringify({
-                        items: items,
-                        shippingAddress: {
-                            fullName: 'Customer',
-                            phone: '9999999999',
-                            addressLine1: 'Address',
-                            city: 'City',
-                            state: 'State',
-                            pincode: '000000'
-                        },
-                        paymentMethod: 'cod',
-                        totalAmount: total
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.success) {
-                    clearCart();
-
-                    if (typeof showToast === 'function') {
-                        showToast('Order placed successfully! 🎉', 'success');
-                    }
-
-                    setTimeout(() => {
-                        window.location.href = 'orders.html';
-                    }, 1500);
-                } else {
-                    throw new Error(data.message || 'Order failed');
-                }
-            } catch (error) {
-                console.error('Checkout error:', error);
-                if (typeof showToast === 'function') {
-                    showToast('Order failed: ' + error.message, 'error');
-                }
-                if (typeof setButtonLoading === 'function') {
-                    setButtonLoading(btn, false);
-                }
-            }
+            window.location.href = 'checkout.html';
         }
 
         // Initialize
@@ -681,6 +616,5 @@
             }
         });
     </script>
-</body>
-
-</html>
+<script src="theme.js"></script>
+    </body>

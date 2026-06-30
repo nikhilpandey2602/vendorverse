@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="VendorVerse Creator Drop — Exclusive limited-time product launches by your favorite creators.">
+    <title>Creator Drop — VendorVerse</title>
+    <!-- Theme Initialization to prevent flash of wrong theme -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('vendorverse_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+            document.documentElement.classList.add('theme-' + savedTheme);
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="creator-drops.css">
+    <link rel="stylesheet" href="ai-copilot.css">
+</head>
+
+<body class="drop-page">
+    <div class="drop-container" id="drop-page-content">
+        <!-- Rendered by creator-drops.js -->
+    </div>
+
+    <script src="theme.js"></script>
+    <script src="script.js"></script>
+    <script src="creator-drops.js"></script>
+    <script src="ai-copilot.js"></script>
+</body>
+
+</html>

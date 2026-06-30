@@ -1,0 +1,282 @@
+/* ============================================
+   VendorVerse — AI Panel Dashboard Styles
+   ============================================ */
+
+.aip-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 24px 80px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ── Back ── */
+.aip-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-secondary, #6b7280);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    transition: color 200ms;
+}
+.aip-back:hover { color: var(--color-text-primary, #111827); }
+
+/* ── Header ── */
+.aip-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+.aip-header-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(168,85,247,0.12));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+.aip-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+    letter-spacing: -0.03em;
+}
+.aip-subtitle {
+    color: var(--color-text-secondary, #6b7280);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* ── Stats Row ── */
+.aip-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.aip-stat-card {
+    background: var(--color-surface, #fff);
+    border: 1px solid var(--color-border, #eef0f3);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    animation: aipFadeIn 400ms ease both;
+}
+
+.aip-stat-icon {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+}
+.aip-stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+    margin-bottom: 2px;
+}
+.aip-stat-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--color-text-muted, #9ca3af);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+@keyframes aipFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Grid ── */
+.aip-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.aip-full-width { grid-column: 1 / -1; }
+
+/* ── Sections ── */
+.aip-section {
+    background: var(--color-surface, #fff);
+    border: 1px solid var(--color-border, #eef0f3);
+    border-radius: 18px;
+    overflow: hidden;
+    animation: aipFadeIn 400ms ease both;
+}
+
+.aip-section-title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+    padding: 18px 20px 0;
+    margin-bottom: 12px;
+}
+
+.aip-section-body {
+    padding: 0 20px 20px;
+}
+
+/* ── Drop Items ── */
+.aip-drop-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-border, #eef0f3);
+}
+.aip-drop-item:last-child { border-bottom: none; }
+
+.aip-drop-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.aip-drop-info { flex: 1; }
+.aip-drop-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    margin-bottom: 2px;
+}
+.aip-drop-meta {
+    font-size: 0.68rem;
+    color: var(--color-text-secondary, #6b7280);
+}
+.aip-drop-price {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--accent-gradient-start);
+}
+
+/* ── Creator Items ── */
+.aip-creator-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-border, #eef0f3);
+}
+.aip-creator-item:last-child { border-bottom: none; }
+
+.aip-creator-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.aip-creator-info { flex: 1; }
+.aip-creator-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+}
+.aip-creator-niche {
+    font-size: 0.65rem;
+    color: var(--accent-gradient-start);
+    font-weight: 600;
+}
+.aip-creator-stats {
+    font-size: 0.65rem;
+    color: var(--color-text-muted, #9ca3af);
+}
+
+/* ── Category Bars ── */
+.aip-cat-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+}
+.aip-cat-label {
+    width: 100px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    text-transform: capitalize;
+    flex-shrink: 0;
+}
+.aip-cat-bar-wrap {
+    flex: 1;
+    height: 12px;
+    background: rgba(99,102,241,0.08);
+    border-radius: 6px;
+    overflow: hidden;
+}
+.aip-cat-bar {
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-color-hover));
+    transition: width 800ms ease;
+}
+.aip-cat-count {
+    width: 32px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--color-text-secondary, #6b7280);
+    text-align: right;
+}
+
+/* ── Insight Cards ── */
+.aip-insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+}
+.aip-insight-card {
+    padding: 16px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(168,85,247,0.04));
+    border: 1px solid rgba(99,102,241,0.1);
+}
+.aip-insight-icon {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+.aip-insight-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    margin-bottom: 4px;
+}
+.aip-insight-text {
+    font-size: 0.7rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary, #6b7280);
+}
+
+/* ── Empty ── */
+.aip-empty {
+    text-align: center;
+    padding: 24px;
+    color: var(--color-text-muted, #9ca3af);
+    font-size: 0.8rem;
+}
+
+/* ── Dark Theme ── */
+body[data-theme="dark"] .aip-stat-card,
+body[data-theme="dark"] .aip-section {
+    background: #1e293b;
+    border-color: rgba(148,163,184,0.1);
+}
+body[data-theme="dark"] .aip-drop-item,
+body[data-theme="dark"] .aip-creator-item {
+    border-color: rgba(148,163,184,0.08);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .aip-stats { grid-template-columns: 1fr 1fr; }
+    .aip-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+    .aip-stats { grid-template-columns: 1fr; }
+}

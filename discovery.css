@@ -1,11 +1,11 @@
-/* ============================================
+/* 
    VendorVerse — Discovery Module Styles
    Covers: Search Overlay, Category Chips,
    Filter Panel, Wishlist, Ratings,
    Quick View, Micro-animations
-   ============================================ */
+    */
 
-/* ===================== 1. LIVE SEARCH OVERLAY ===================== */
+/*  1. LIVE SEARCH OVERLAY  */
 
 #search-overlay {
     position: fixed;
@@ -164,7 +164,7 @@
     transform: scale(1.05);
 }
 
-/* ===================== 2. CATEGORY CHIPS ===================== */
+/* 2. CATEGORY CHIPS */
 
 .discover-section {
     padding: 28px 0 4px;
@@ -266,13 +266,13 @@
     font-size: 0.95rem;
 }
 
-/* ===================== 3. FLOATING FILTER PANEL ===================== */
+/* 3. FLOATING FILTER PANEL  */
 
 /* FAB Trigger */
 .filter-fab {
     position: fixed;
-    bottom: 28px;
-    right: 28px;
+    bottom: 90px;
+    right: 24px;
     z-index: 800;
     display: inline-flex;
     align-items: center;
@@ -517,7 +517,7 @@ body[data-theme="dark"] #filter-panel {
     background: var(--color-border);
 }
 
-/* ===================== 4. WISHLIST SYSTEM ===================== */
+/* 4. WISHLIST SYSTEM  */
 
 /* Upgraded wishlist button on cards */
 .product-card .wishlist-btn {
@@ -592,7 +592,7 @@ body[data-theme="dark"] #filter-panel {
     }
 }
 
-/* ===================== 5. INTERACTIVE RATINGS ===================== */
+/* 5. INTERACTIVE RATINGS  */
 
 .interactive-stars {
     display: inline-flex;
@@ -642,7 +642,7 @@ body[data-theme="dark"] #filter-panel {
     transition-delay: 100ms;
 }
 
-/* ===================== 6. QUICK VIEW SYSTEM ===================== */
+/* 6. QUICK VIEW SYSTEM  */
 
 /* Hover action overlay on card */
 .product-card {
@@ -965,7 +965,7 @@ body[data-theme="dark"] #filter-panel {
     transform: scale(1.1);
 }
 
-/* ===================== 7. MICRO-ANIMATIONS ===================== */
+/* 7. MICRO-ANIMATIONS = */
 
 /* Button ripple effect */
 .ripple-container {
@@ -1054,7 +1054,7 @@ body[data-theme="dark"] #filter-panel {
     animation: chipSlideIn 300ms ease both;
 }
 
-/* ===================== RESPONSIVE ===================== */
+/* RESPONSIVE */
 
 @media (max-width: 768px) {
     #filter-panel {

@@ -1,11 +1,11 @@
-/* ============================================
+/* 
    VendorVerse - E-Commerce Marketplace Styles
    Mobile-First Responsive Design
-   ============================================ */
+    */
 
-/* ============================================
+/* 
    CSS Custom Properties (Design Tokens)
-   ============================================ */
+    */
 :root {
     /* Colors */
     --color-primary: #6C3CE1;
@@ -17,6 +17,11 @@
     --color-warning: #F59E0B;
     --color-error: #EF4444;
 
+    /* Accent Colors (theme-switchable) */
+    --accent-color: #7c3aed;
+    --accent-color-hover: #8b5cf6;
+    --accent-gradient-start: #6366f1;
+
     /* Neutrals */
     --color-bg: #FAFAFA;
     --color-surface: #FFFFFF;
@@ -27,7 +32,7 @@
     --color-border-light: #F3F4F6;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #6C3CE1 0%, #8B5CF6 100%);
+    --gradient-primary: linear-gradient(135deg, var(--accent-gradient-start) 0%, var(--accent-color-hover) 100%);
     --gradient-secondary: linear-gradient(135deg, #FF6B35 0%, #FF8F65 100%);
     --gradient-hero-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --gradient-hero-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -86,11 +91,15 @@
     --z-toast: 9999;
 }
 
-/* ============================================
+/* 
    Theme System - Light (Default)
-   ============================================ */
+    */
 body[data-theme="light"],
-body:not([data-theme]) {
+body:not([data-theme]),
+html[data-theme="light"] body,
+html:not([data-theme]) body,
+html.theme-light body,
+html.theme-light {
     --theme-bg: #FAFAFA;
     --theme-surface: #FFFFFF;
     --theme-text-primary: #1F2937;
@@ -101,12 +110,18 @@ body:not([data-theme]) {
     --theme-primary: #6C3CE1;
     --theme-primary-dark: #5429C7;
     --theme-accent: #6366f1;
+    --accent-color: #7c3aed;
+    --accent-color-hover: #8b5cf6;
+    --accent-gradient-start: #6366f1;
 }
 
-/* ============================================
+/* 
    Theme System - Dark
-   ============================================ */
-body[data-theme="dark"] {
+    */
+body[data-theme="dark"],
+html[data-theme="dark"] body,
+html.theme-dark body,
+html.theme-dark {
     --theme-bg: #0f172a;
     --theme-surface: #1e293b;
     --theme-text-primary: #F9FAFB;
@@ -117,6 +132,9 @@ body[data-theme="dark"] {
     --theme-primary: #8b5cf6;
     --theme-primary-dark: #7c3aed;
     --theme-accent: #a78bfa;
+    --accent-color: #7c3aed;
+    --accent-color-hover: #8b5cf6;
+    --accent-gradient-start: #6366f1;
 
     /* Override global colors */
     --color-bg: #0f172a;
@@ -128,34 +146,43 @@ body[data-theme="dark"] {
     --color-border-light: #1e293b;
 }
 
-/* ============================================
-   Theme System - Blue/Accent
-   ============================================ */
-body[data-theme="blue"] {
-    --theme-bg: #eff6ff;
-    --theme-surface: #FFFFFF;
-    --theme-text-primary: #1e3a8a;
-    --theme-text-secondary: #1e40af;
-    --theme-text-muted: #6b7280;
-    --theme-border: #dbeafe;
-    --theme-border-light: #f0f9ff;
+/* 
+   Theme System - Blue (Dark bg + Blue accent)
+    */
+body[data-theme="blue"],
+html[data-theme="blue"] body,
+html.theme-blue body,
+html.theme-blue {
+    --theme-bg: #0f172a;
+    --theme-surface: #1e293b;
+    --theme-text-primary: #F9FAFB;
+    --theme-text-secondary: #D1D5DB;
+    --theme-text-muted: #9CA3AF;
+    --theme-border: #334155;
+    --theme-border-light: #1e293b;
     --theme-primary: #3b82f6;
     --theme-primary-dark: #2563eb;
     --theme-accent: #60a5fa;
+    --accent-color: #2563eb;
+    --accent-color-hover: #3b82f6;
+    --accent-gradient-start: #1d4ed8;
 
     /* Override global colors */
-    --color-bg: #eff6ff;
-    --color-surface: #FFFFFF;
-    --color-text-primary: #1e3a8a;
-    --color-text-secondary: #1e40af;
-    --color-border: #dbeafe;
-    --color-border-light: #f0f9ff;
-    --color-primary: #3b82f6;
+    --color-bg: #0f172a;
+    --color-surface: #1e293b;
+    --color-text-primary: #F9FAFB;
+    --color-text-secondary: #D1D5DB;
+    --color-text-muted: #9CA3AF;
+    --color-border: #334155;
+    --color-border-light: #1e293b;
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-primary-light: #3b82f6;
 }
 
-/* ============================================
+/* 
    Premium Animations & Keyframes
-   ============================================ */
+    */
 
 @keyframes fadeInUp {
     from {
@@ -237,9 +264,31 @@ body[data-theme="blue"] {
     }
 }
 
-/* ============================================
+@keyframes diamondFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4); }
+    50% { transform: scale(1.1); box-shadow: 0 0 8px 2px rgba(255, 107, 53, 0.25); }
+}
+
+@keyframes fireEmoji {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.2) rotate(-5deg); }
+    50% { transform: scale(1.1) rotate(5deg); }
+    75% { transform: scale(1.15) rotate(-3deg); }
+}
+
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(99, 102, 241, 0.3); }
+    50% { box-shadow: 0 0 18px rgba(99, 102, 241, 0.5); }
+}
+
+/* 
    Reset & Base Styles
-   ============================================ */
+   */
 *,
 *::before,
 *::after {
@@ -309,15 +358,43 @@ ul {
     padding: 0 var(--space-4);
 }
 
-/* ============================================
-   Header Styles
-   ============================================ */
+/* 
+   Header Styles — Glassmorphism
+    */
 .header {
     position: sticky;
     top: 0;
-    background: var(--color-surface);
-    box-shadow: var(--shadow-sm);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid rgba(99, 102, 241, 0.15);
+    box-shadow: none;
     z-index: var(--z-sticky);
+    transition: background 0.3s, border-color 0.3s;
+}
+
+body[data-theme="dark"] .header {
+    background: rgba(10, 8, 20, 0.85);
+    border-bottom: 0.5px solid rgba(99, 102, 241, 0.3);
+}
+
+body[data-theme="blue"] .header {
+    background: rgba(239, 246, 255, 0.85);
+    border-bottom: 0.5px solid rgba(59, 130, 246, 0.2);
+}
+
+.header.scrolled {
+    background: rgba(255, 255, 255, 0.92);
+    border-bottom-color: rgba(99, 102, 241, 0.2);
+}
+
+body[data-theme="dark"] .header.scrolled {
+    background: rgba(10, 8, 20, 0.95);
+    border-bottom-color: rgba(99, 102, 241, 0.4);
+}
+
+body[data-theme="blue"] .header.scrolled {
+    background: rgba(239, 246, 255, 0.92);
 }
 
 .header-container {
@@ -366,6 +443,12 @@ ul {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: diamondFloat 3s ease-in-out infinite;
+}
+
+/* Animate the SVG diamond in dynamic logo too */
+#dynamic-logo svg {
+    animation: diamondFloat 3s ease-in-out infinite;
 }
 
 .logo-text {
@@ -381,15 +464,30 @@ ul {
     display: flex;
     align-items: center;
     background: var(--color-border-light);
-    border-radius: var(--radius-full);
+    border-radius: 50px;
     overflow: hidden;
     border: 2px solid transparent;
-    transition: var(--transition-base);
+    transition: all 0.3s ease;
+}
+
+.search-wrapper:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
 }
 
 .search-wrapper:focus-within {
     border-color: var(--color-primary);
     background: var(--color-surface);
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
+}
+
+body[data-theme="dark"] .search-wrapper {
+    background: rgba(30, 41, 59, 0.8);
+}
+
+body[data-theme="dark"] .search-wrapper:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
 }
 
 .category-select {
@@ -491,12 +589,22 @@ ul {
     gap: 2px;
     padding: var(--space-2);
     color: var(--color-text-secondary);
-    transition: var(--transition-fast);
+    transition: all 0.25s ease;
     position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    justify-content: center;
 }
 
 .header-action:hover {
     color: var(--color-primary);
+    background: rgba(99, 102, 241, 0.08);
+    transform: scale(1.1);
+}
+
+body[data-theme="dark"] .header-action:hover {
+    background: rgba(139, 92, 246, 0.15);
 }
 
 .action-label {
@@ -504,7 +612,8 @@ ul {
     font-size: var(--font-size-xs);
 }
 
-.cart-badge {
+.cart-badge,
+.wishlist-badge {
     position: absolute;
     top: 0;
     right: 0;
@@ -518,15 +627,18 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: badgePulse 2s ease-in-out infinite;
+    z-index: 2;
 }
 
-/* Category Navigation */
+/* Category Navigation — Glowing Pills */
 .category-nav {
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border-light);
+    background: transparent;
+    border-top: none;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    padding: 2px 0;
 }
 
 .category-nav::-webkit-scrollbar {
@@ -535,7 +647,7 @@ ul {
 
 .category-nav-container {
     display: flex;
-    gap: var(--space-1);
+    gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
     max-width: 1280px;
     margin: 0 auto;
@@ -545,17 +657,55 @@ ul {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
+    padding: 8px 16px;
     font-size: var(--font-size-sm);
+    font-weight: 500;
     color: var(--color-text-secondary);
     white-space: nowrap;
     border-radius: var(--radius-full);
-    transition: var(--transition-fast);
+    border: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
 }
 
 .category-link:hover {
-    background: var(--color-border-light);
+    border-color: var(--color-primary);
     color: var(--color-text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.category-link.active {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(108, 60, 225, 0.35);
+}
+
+body[data-theme="dark"] .category-link {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(99, 102, 241, 0.15);
+    color: var(--color-text-secondary);
+}
+
+body[data-theme="dark"] .category-link:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--theme-accent);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+}
+
+body[data-theme="blue"] .category-link {
+    background: rgba(239, 246, 255, 0.7);
+    border-color: rgba(59, 130, 246, 0.15);
+}
+
+body[data-theme="blue"] .category-link:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(59, 130, 246, 0.08);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
 .category-icon {
@@ -563,8 +713,27 @@ ul {
 }
 
 .deals-link {
-    color: var(--color-secondary);
+    color: #ef4444;
     font-weight: 600;
+    border-color: rgba(239, 68, 68, 0.25);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.deals-link:hover {
+    border-color: rgba(239, 68, 68, 0.5);
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.deals-link .category-icon {
+    animation: fireEmoji 1.5s ease-in-out infinite;
+}
+
+body[data-theme="dark"] .deals-link {
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.3);
+    background: rgba(239, 68, 68, 0.08);
 }
 
 /* Mobile Search */
@@ -596,33 +765,50 @@ ul {
     padding: var(--space-1);
 }
 
-/* ============================================
+/* 
    Hero Carousel
-   ============================================ */
+   */
 .hero-carousel {
     background: var(--color-surface);
     overflow: hidden;
+    perspective: 1200px;
 }
 
 .carousel-container {
     position: relative;
     max-width: 1280px;
     margin: 0 auto;
+    perspective: 1200px;
 }
 
 .carousel-track {
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
 }
 
 .carousel-slide {
     min-width: 100%;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: rotateY(40deg) scale(0.85);
+    transform-origin: center center;
+    backface-visibility: hidden;
 }
 
 .carousel-slide.active {
     opacity: 1;
+    transform: rotateY(0deg) scale(1);
+}
+
+.carousel-slide.slide-exit-left {
+    transform: rotateY(-40deg) scale(0.85);
+    opacity: 0;
+}
+
+.carousel-slide.slide-exit-right {
+    transform: rotateY(40deg) scale(0.85);
+    opacity: 0;
 }
 
 .slide-content {
@@ -740,22 +926,31 @@ ul {
 }
 
 .dot {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5);
-    transition: var(--transition-fast);
+    background: rgba(255, 255, 255, 0.35);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: none;
+}
+
+.dot:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(1.15);
 }
 
 .dot.active {
-    background: white;
-    width: 24px;
+    background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-color-hover));
+    width: 32px;
     border-radius: var(--radius-full);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+    animation: glowPulse 2s ease-in-out infinite;
 }
 
-/* ============================================
+/* 
    Quick Categories
-   ============================================ */
+    */
 .quick-categories {
     padding: var(--space-4) 0;
     background: var(--color-surface);
@@ -816,9 +1011,9 @@ ul {
     }
 }
 
-/* ============================================
+/* 
    Product Sections
-   ============================================ */
+   */
 .product-section {
     padding: var(--space-6) 0;
 }
@@ -912,9 +1107,9 @@ ul {
     border-color: var(--color-primary);
 }
 
-/* ============================================
+/* 
    Product Card
-   ============================================ */
+  */
 .product-card {
     flex: 0 0 160px;
     scroll-snap-align: start;
@@ -1024,6 +1219,7 @@ ul {
     color: var(--color-text-primary);
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     line-height: 1.4;
@@ -1095,9 +1291,9 @@ ul {
     background: var(--color-primary-dark);
 }
 
-/* ============================================
+/*
    Best Seller Categories
-   ============================================ */
+   */
 .best-seller-section {
     padding: var(--space-6) 0;
     background: var(--color-border-light);
@@ -1191,9 +1387,9 @@ ul {
     opacity: 0.6;
 }
 
-/* ============================================
+/* 
    Promo Banner (VendorVerse Plus)
-   ============================================ */
+   */
 .promo-banner {
     padding: var(--space-6) 0;
     background: var(--color-surface);
@@ -1282,16 +1478,16 @@ ul {
     border: 4px solid rgba(255, 255, 255, 0.3);
 }
 
-/* ============================================
+/* 
    Local Section
-   ============================================ */
+    */
 .local-section {
     background: linear-gradient(180deg, var(--color-surface) 0%, #FEF3C7 100%);
 }
 
-/* ============================================
+/* 
    Footer
-   ============================================ */
+  */
 .footer {
     background: var(--color-text-primary);
     color: white;
@@ -1399,9 +1595,9 @@ ul {
     color: var(--color-text-muted);
 }
 
-/* ============================================
+/* 
    Mobile Navigation
-   ============================================ */
+  */
 .mobile-nav {
     position: fixed;
     top: 0;
@@ -1514,9 +1710,9 @@ ul {
     color: var(--color-text-primary);
 }
 
-/* ============================================
+/* 
    Responsive Breakpoints
-   ============================================ */
+  */
 
 /* Tablet (768px+) */
 @media (min-width: 768px) {
@@ -1543,7 +1739,12 @@ ul {
     }
 
     .action-label {
-        display: block;
+        display: none;
+    }
+
+    .header-action {
+        width: 44px;
+        height: 44px;
     }
 
     .mobile-search {

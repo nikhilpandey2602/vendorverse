@@ -8,6 +8,7 @@ const CREATORS_KEY = 'vendorverse_creators';
 const VENDOR_PRODUCTS_KEY_CP = 'vendorverse_vendor_products';
 const WISHLIST_KEY_CP = 'vendorverse_wishlist';
 const CART_KEY_CP = 'vendorverse_cart';
+const FOLLOW_KEY_CP = 'vendorverse_followed_creators';
 
 /* ═══════ DEFAULT CREATORS ═══════ */
 const DEFAULT_CREATORS = [
@@ -18,7 +19,9 @@ const DEFAULT_CREATORS = [
         avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=AS&backgroundColor=6366f1&textColor=ffffff',
         joinDate: '2025-03-15',
         rating: 4.8,
-        followers: 12400
+        followers: 12400,
+        niche: 'Minimal & Lifestyle',
+        nicheCategory: 'minimal'
     },
     {
         creatorId: 'creator_techpro',
@@ -27,7 +30,9 @@ const DEFAULT_CREATORS = [
         avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=TP&backgroundColor=0ea5e9&textColor=ffffff',
         joinDate: '2024-11-01',
         rating: 4.6,
-        followers: 8700
+        followers: 8700,
+        niche: 'Creator Tech & Gear',
+        nicheCategory: 'tech'
     },
     {
         creatorId: 'creator_zenspace',
@@ -36,7 +41,9 @@ const DEFAULT_CREATORS = [
         avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=ZH&backgroundColor=10b981&textColor=ffffff',
         joinDate: '2025-01-20',
         rating: 4.9,
-        followers: 5300
+        followers: 5300,
+        niche: 'Home & Smart Living',
+        nicheCategory: 'smart-living'
     }
 ];
 
@@ -90,6 +97,15 @@ function getWishlistCP() {
 
 function saveWishlistCP(wl) { localStorage.setItem(WISHLIST_KEY_CP, JSON.stringify(wl)); }
 
+function getFollowedCreatorsCP() {
+    try { return JSON.parse(localStorage.getItem(FOLLOW_KEY_CP) || '[]'); }
+    catch { return []; }
+}
+
+function saveFollowedCreatorsCP(list) {
+    localStorage.setItem(FOLLOW_KEY_CP, JSON.stringify(list));
+}
+
 /* ═══════ HELPERS ═══════ */
 function fmtPrice(n) { return '₹' + n.toLocaleString('en-IN'); }
 
@@ -122,6 +138,31 @@ function toggleWishlistCP(productId, btn) {
         toastCP('Removed from wishlist', 'info');
     }
     saveWishlistCP(wl);
+}
+
+/* ═══════ FOLLOW CREATOR ═══════ */
+function toggleFollowCreatorCP(creatorId) {
+    let followed = getFollowedCreatorsCP();
+    const idx = followed.indexOf(creatorId);
+    const btn = document.getElementById('cp-follow-btn');
+
+    if (idx === -1) {
+        followed.push(creatorId);
+        saveFollowedCreatorsCP(followed);
+        if (btn) {
+            btn.textContent = 'Following';
+            btn.classList.add('following');
+        }
+        toastCP('You are now following this creator', 'success');
+    } else {
+        followed.splice(idx, 1);
+        saveFollowedCreatorsCP(followed);
+        if (btn) {
+            btn.textContent = 'Follow';
+            btn.classList.remove('following');
+        }
+        toastCP('You unfollowed this creator', 'info');
+    }
 }
 
 /* ═══════ ADD TO CART ═══════ */
@@ -168,6 +209,14 @@ function renderCreatorProfile() {
     document.getElementById('cp-followers').textContent = creator.followers.toLocaleString();
     document.getElementById('cp-rating-stars').textContent = starsString(creator.rating);
     document.getElementById('cp-rating-num').textContent = creator.rating.toFixed(1);
+
+    const followBtn = document.getElementById('cp-follow-btn');
+    if (followBtn) {
+        const followed = getFollowedCreatorsCP().includes(creator.creatorId);
+        followBtn.textContent = followed ? 'Following' : 'Follow';
+        followBtn.classList.toggle('following', !!followed);
+        followBtn.onclick = () => toggleFollowCreatorCP(creator.creatorId);
+    }
 
     // Featured product
     const featuredSection = document.getElementById('cp-featured');

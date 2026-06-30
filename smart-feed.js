@@ -8,6 +8,9 @@
 const SF_CLICKS_KEY = 'vendorverse_clicks';
 // Relies on WL_KEY from discovery.js and PRODUCT_DATA from discovery.js
 // Also relies on VENDOR_PRODUCTS_KEY_CP from creator-profile.js if available
+const SF_DROPS_KEY = 'vendorverse_product_drops';
+const SF_FOLLOW_KEY = 'vendorverse_followed_creators';
+const SF_CREATORS_KEY = 'vendorverse_creators';
 
 /* ═══ UTILITIES ═══ */
 function getSFClicks() {
@@ -28,6 +31,80 @@ function sfStars(rating) {
     let s = '';
     for (let i = 1; i <= 5; i++) s += i <= Math.round(rating) ? '★' : '☆';
     return s;
+}
+
+function getSFDrops() {
+    let drops = [];
+    try { drops = JSON.parse(localStorage.getItem(SF_DROPS_KEY) || '[]'); } catch { }
+    // Also merge drops from creator-drops.js storage (vendorverse_drops)
+    try {
+        const cdDrops = JSON.parse(localStorage.getItem('vendorverse_drops') || '[]');
+        const existingIds = new Set(drops.map(d => d.id));
+        cdDrops.forEach(d => { if (!existingIds.has(d.id)) drops.push(d); });
+    } catch { }
+    return drops;
+}
+
+function saveSFDrops(drops) {
+    localStorage.setItem(SF_DROPS_KEY, JSON.stringify(drops));
+}
+
+function getSFFollowedCreators() {
+    try { return JSON.parse(localStorage.getItem(SF_FOLLOW_KEY) || '[]'); }
+    catch { return []; }
+}
+
+function sfFormatCountdown(endsAt) {
+    if (!endsAt) return 'Ended';
+    const end = new Date(endsAt).getTime();
+    const now = Date.now();
+    const diff = end - now;
+    if (diff <= 0) return 'Ended';
+    const totalSec = Math.floor(diff / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    if (h > 0) return `${h}h ${m}m left`;
+    if (m > 0) return `${m}m ${s}s left`;
+    return `${s}s left`;
+}
+
+function getCreatorNameByIdSF(creatorId) {
+    if (!creatorId) return 'Creator';
+    try {
+        const creators = JSON.parse(localStorage.getItem(SF_CREATORS_KEY) || '[]');
+        const match = creators.find(c => c.creatorId === creatorId);
+        return match?.name || 'Creator';
+    } catch {
+        return 'Creator';
+    }
+}
+
+function getActiveDropsForFollowedCreators() {
+    const drops = getSFDrops();
+    const followed = new Set(getSFFollowedCreators());
+    const now = Date.now();
+    const active = [];
+    let changed = false;
+
+    drops.forEach(d => {
+        const end = new Date(d.endsAt).getTime();
+        if (end <= now) {
+            if (d.status !== 'ended') {
+                d.status = 'ended';
+                changed = true;
+            }
+            return;
+        }
+        if (d.status !== 'live') return;
+        if (!followed.has(d.creatorId)) return;
+        active.push(d);
+    });
+
+    if (changed) saveSFDrops(drops);
+
+    active.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return active;
 }
 
 /* ═══ PERSONALIZATION ENGINE ═══ */
@@ -91,12 +168,91 @@ function renderSmartFeed() {
     allProducts.forEach(p => uniqueMap.set(p.id, p));
     allProducts = Array.from(uniqueMap.values());
 
-    // Score and sort
-    const scoredProducts = allProducts.map(scoreProduct);
+    // Active drops — show all live drops (not just followed creators)
+    const allDrops = getSFDrops();
+    const now = Date.now();
+    const activeDrops = allDrops.filter(d => {
+        const end = new Date(d.endsAt).getTime();
+        return end > now && d.status === 'live';
+    });
+    activeDrops.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const dropProductIds = new Set(activeDrops.map(d => d.productId));
+
+    // Score and sort non-drop products
+    const baseProducts = allProducts.filter(p => !dropProductIds.has(p.id));
+    const scoredProducts = baseProducts.map(scoreProduct);
     scoredProducts.sort((a, b) => b.score - a.score);
 
-    // Render cards
-    grid.innerHTML = scoredProducts.map((item, i) => {
+    // Live Drop Room cards (at very top)
+    let liveRoomsHtml = '';
+    if (typeof drGetLiveRooms === 'function') {
+        const liveRooms = drGetLiveRooms();
+        const drops = getSFDrops();
+        liveRoomsHtml = liveRooms.map((room, i) => {
+            const drop = drops.find(d => d.id === room.dropId);
+            if (!drop) return '';
+            const creatorName = getCreatorNameByIdSF(room.creatorId);
+            const dropPrice = drop.dropPrice || drop.price || 0;
+            const isLive = room.status === 'live';
+            const statusClass = isLive ? 'live' : 'waiting';
+            const statusText = isLive ? '● LIVE' : '⏱ STARTING SOON';
+            const unlockTime = new Date(room.unlockAt).getTime();
+            const countdown = isLive ? 'Drop is LIVE!' : sfFormatCountdown(room.unlockAt);
+            return `
+            <article class="sf-live-room ${statusClass}" style="animation-delay:${i * 60}ms">
+                <div class="sf-lr-header">
+                    <span class="sf-lr-badge ${statusClass}">
+                        ${isLive ? '<span class="sf-lr-dot"></span>' : ''}
+                        ${statusText}
+                    </span>
+                    <span class="sf-lr-viewers"><span class="sf-lr-viewer-dot"></span> ${room.viewers || 0} watching</span>
+                </div>
+                <div class="sf-lr-body">
+                    <img class="sf-lr-img" src="${drop.image}" alt="${drop.title}" loading="lazy">
+                    <div class="sf-lr-info">
+                        <div class="sf-lr-label">DROP ROOM</div>
+                        <h3 class="sf-lr-title">${drop.title}</h3>
+                        <div class="sf-lr-creator">🎨 ${creatorName}</div>
+                        <div class="sf-lr-price">${sfFmt(dropPrice)} ${drop.originalPrice ? '<span class="sf-lr-orig">' + sfFmt(drop.originalPrice) + '</span>' : ''}</div>
+                        <div class="sf-lr-countdown">${countdown}</div>
+                    </div>
+                </div>
+                <a href="drop-room?id=${room.id}" class="sf-lr-join">🎥 Join Room →</a>
+            </article>`;
+        }).join('');
+    }
+
+    // Render Drop cards (if any) followed by regular smart feed cards
+    const dropsHtml = activeDrops.length ? activeDrops.map((drop, i) => {
+        const creatorName = getCreatorNameByIdSF(drop.creatorId);
+        const dropPrice = drop.dropPrice || drop.price || 0;
+        return `
+        <article class="sf-drop-card" data-drop-id="${drop.id}" style="animation-delay:${i * 40}ms;">
+            <div class="sf-drop-main">
+                <div class="sf-drop-pill-row">
+                    <span class="sf-drop-pill">🔥 Creator Drop</span>
+                    <span class="sf-drop-creator">${creatorName}</span>
+                </div>
+                <h3 class="sf-drop-title">${drop.title}</h3>
+                <p class="sf-drop-promo">Limited-time collab · Creator 12% · Platform 7% · Vendor 81%</p>
+                <div class="sf-drop-price-row">
+                    <span class="sf-drop-price">${sfFmt(dropPrice)}</span>
+                    ${drop.originalPrice ? `<span class="sf-drop-orig">${sfFmt(drop.originalPrice)}</span>` : ''}
+                </div>
+                <div class="sf-drop-timer-row">
+                    <span class="sf-drop-timer-label">Ends in</span>
+                    <span class="sf-drop-countdown" data-drop-countdown="${drop.id}">${sfFormatCountdown(drop.endsAt)}</span>
+                </div>
+                <a href="creator-drops?id=${drop.id}" class="sf-drop-buy-btn">View Drop →</a>
+            </div>
+            <div class="sf-drop-image-wrap">
+                <img src="${drop.image}" alt="${drop.title}" class="sf-drop-img" loading="lazy">
+            </div>
+        </article>
+        `;
+    }).join('') : '';
+
+    const productsHtml = scoredProducts.map((item, i) => {
         const p = item.product;
         // Determine if wishlisted
         let wishlisted = false;
@@ -162,7 +318,10 @@ function renderSmartFeed() {
         `;
     }).join('');
 
-    attachSmartFeedHandlers(grid, allProducts);
+    grid.innerHTML = liveRoomsHtml + dropsHtml + productsHtml;
+
+    attachSmartFeedHandlers(grid, baseProducts);
+    attachDropHandlers(grid, allProducts);
 }
 
 /* ═══ HANDLERS ═══ */
@@ -251,6 +410,74 @@ function attachSmartFeedHandlers(grid, feedProducts) {
             window.location.href = `creator.html?id=${vendorId}`;
         });
     });
+}
+
+function attachDropHandlers(grid, feedProducts) {
+    // Buy from Drop → cart
+    grid.querySelectorAll('.sf-drop-buy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const productId = e.currentTarget.dataset.dropBuy;
+            const dropId = e.currentTarget.dataset.dropId;
+            const p = feedProducts.find(x => x.id === productId);
+            const fallbackProduct = p || null;
+
+            const payload = fallbackProduct ? {
+                id: fallbackProduct.id,
+                productId: fallbackProduct.id,
+                title: fallbackProduct.title || fallbackProduct.name,
+                brand: fallbackProduct.brand || 'Creator',
+                price: fallbackProduct.price,
+                image: fallbackProduct.image
+            } : null;
+
+            if (!payload) return;
+
+            if (typeof addToDiscoverCart === 'function') {
+                addToDiscoverCart({
+                    id: payload.id,
+                    productId: payload.id,
+                    title: payload.title,
+                    brand: payload.brand,
+                    price: payload.price,
+                    image: payload.image
+                });
+            } else if (typeof addToCart === 'function') {
+                addToCart(payload);
+            }
+
+            if (dropId) {
+                trackDropSaleSF(dropId, payload.price);
+            }
+        });
+    });
+
+    // Countdown updater
+    const countdownEls = grid.querySelectorAll('.sf-drop-countdown');
+    if (countdownEls.length === 0) return;
+
+    const updateCountdowns = () => {
+        const drops = getSFDrops();
+        countdownEls.forEach(el => {
+            const dropId = el.dataset.dropCountdown;
+            const d = drops.find(x => x.id === dropId);
+            if (!d) return;
+            el.textContent = sfFormatCountdown(d.endsAt);
+        });
+    };
+
+    updateCountdowns();
+    setInterval(updateCountdowns, 1000);
+}
+
+function trackDropSaleSF(dropId, amount) {
+    const drops = getSFDrops();
+    const idx = drops.findIndex(d => d.id === dropId);
+    if (idx === -1) return;
+    const d = drops[idx];
+    d.soldQuantity = (d.soldQuantity || 0) + 1;
+    d.salesAmount = (d.salesAmount || 0) + (amount || 0);
+    saveSFDrops(drops);
 }
 
 function interceptCategoryChipsClicks() {

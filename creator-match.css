@@ -1,0 +1,260 @@
+/* ============================================
+   VendorVerse — AI Creator Matchmaking Styles
+   ============================================ */
+
+/* ── Match Cards Grid ── */
+.cm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* ── Match Card ── */
+.cm-card {
+    background: var(--color-surface, #fff);
+    border: 1px solid var(--color-border, #eef0f3);
+    border-radius: 18px;
+    overflow: hidden;
+    animation: cmFadeIn 400ms ease both;
+    transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.cm-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(99,102,241,0.1);
+}
+
+@keyframes cmFadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Card Header: Score Ring ── */
+.cm-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px 12px;
+    gap: 4px;
+}
+
+.cm-score-ring {
+    position: relative;
+    width: 72px;
+    height: 72px;
+}
+
+.cm-ring-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.cm-ring-bg {
+    fill: none;
+    stroke: rgba(99,102,241,0.1);
+    stroke-width: 3;
+}
+
+.cm-ring-fill {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dasharray 800ms ease;
+}
+
+.cm-score-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+}
+
+.cm-score-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* ── Card Body ── */
+.cm-card-body {
+    text-align: center;
+    padding: 4px 20px 16px;
+}
+
+.cm-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 2px solid rgba(99,102,241,0.2);
+}
+
+.cm-name {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+    margin-bottom: 2px;
+}
+
+.cm-niche {
+    font-size: 0.72rem;
+    color: var(--accent-gradient-start);
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+/* ── Stats Row ── */
+.cm-stats {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.cm-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.cm-stat-val {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+}
+
+.cm-stat-lbl {
+    font-size: 0.55rem;
+    color: var(--color-text-muted, #9ca3af);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ── Product Tag ── */
+.cm-product-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--color-text-secondary, #6b7280);
+    background: rgba(99,102,241,0.06);
+    padding: 4px 12px;
+    border-radius: 8px;
+    margin-top: 4px;
+}
+
+/* ── Card Footer ── */
+.cm-card-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--color-border, #eef0f3);
+    text-align: center;
+}
+
+.cm-invite-btn {
+    width: 100%;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-color-hover));
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 200ms;
+    font-family: inherit;
+}
+
+.cm-invite-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(99,102,241,0.3);
+}
+
+.cm-invite-status {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.cm-invite-status.pending {
+    color: #f59e0b;
+    background: rgba(245,158,11,0.08);
+}
+
+.cm-invite-status.accepted {
+    color: #10b981;
+    background: rgba(16,185,129,0.08);
+}
+
+.cm-invite-status.declined {
+    color: #ef4444;
+    background: rgba(239,68,68,0.08);
+}
+
+/* ── AI Badge Decoration ── */
+.cm-ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.1));
+    color: var(--accent-gradient-start);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(99,102,241,0.15);
+}
+
+.cm-ai-badge::before {
+    content: '🤖';
+    font-size: 0.8rem;
+}
+
+/* ── Dark Theme ── */
+body[data-theme="dark"] .cm-card {
+    background: #1e293b;
+    border-color: rgba(148,163,184,0.12);
+}
+
+body[data-theme="dark"] .cm-card:hover {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+}
+
+body[data-theme="dark"] .cm-card-footer {
+    border-color: rgba(148,163,184,0.08);
+}
+
+body[data-theme="dark"] .cm-ring-bg {
+    stroke: rgba(148,163,184,0.12);
+}
+
+body[data-theme="dark"] .cm-product-tag {
+    background: rgba(99,102,241,0.12);
+    color: #94a3b8;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .cm-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .cm-card-header { padding: 16px 12px 8px; }
+    .cm-score-ring { width: 56px; height: 56px; }
+    .cm-score-num { font-size: 0.8rem; }
+    .cm-card-body { padding: 4px 12px 12px; }
+}
+
+@media (max-width: 480px) {
+    .cm-grid { grid-template-columns: 1fr; }
+}

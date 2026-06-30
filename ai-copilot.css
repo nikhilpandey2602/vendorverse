@@ -1,0 +1,553 @@
+/* ============================================
+   VendorVerse — AI Copilot Styles
+   Gemini-Powered Chat Assistant
+   ============================================ */
+
+/* ── Floating Bubble ── */
+.aic-bubble {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-gradient-start) 0%, var(--accent-color-hover) 100%);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 28px rgba(99, 102, 241, 0.4), 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 300ms ease;
+    animation: aicBubbleIn 600ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: 500ms;
+}
+
+.aic-bubble:hover {
+    transform: scale(1.06);
+    box-shadow: 0 8px 36px rgba(99, 102, 241, 0.5), 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.aic-bubble-icon,
+.aic-bubble-close {
+    width: 26px;
+    height: 26px;
+    position: absolute;
+    transition: opacity 300ms, transform 300ms;
+}
+
+.aic-bubble-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.aic-bubble-close {
+    opacity: 0;
+    transform: scale(0.5) rotate(-90deg);
+}
+
+.aic-bubble.open .aic-bubble-icon {
+    opacity: 0;
+    transform: scale(0.5) rotate(90deg);
+}
+
+.aic-bubble.open .aic-bubble-close {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Pulse ring */
+.aic-bubble-pulse {
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 2px solid rgba(99, 102, 241, 0.5);
+    animation: aicPulseRing 2.5s ease-out infinite;
+    pointer-events: none;
+}
+
+@keyframes aicBubbleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes aicPulseRing {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+/* ── Chat Panel ── */
+.aic-panel {
+    position: fixed;
+    bottom: 94px;
+    right: 24px;
+    width: 400px;
+    max-height: 600px;
+    border-radius: 20px;
+    background: var(--color-surface, #ffffff);
+    border: 1px solid var(--color-border, #e5e7eb);
+    box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.12),
+        0 8px 24px rgba(99, 102, 241, 0.08);
+    z-index: 9998;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1),
+        transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.aic-panel.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* ── Header ── */
+.aic-header {
+    padding: 16px 18px;
+    background: linear-gradient(135deg, var(--accent-gradient-start) 0%, var(--accent-color-hover) 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.aic-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.aic-header-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.aic-header-avatar svg {
+    width: 18px;
+    height: 18px;
+}
+
+.aic-header-title {
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.aic-header-sub {
+    font-size: 0.62rem;
+    opacity: 0.8;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.aic-online-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #34d399;
+    display: inline-block;
+    box-shadow: 0 0 6px rgba(52, 211, 153, 0.6);
+}
+
+.aic-header-close {
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 200ms, color 200ms;
+}
+
+.aic-header-close svg {
+    width: 14px;
+    height: 14px;
+}
+
+.aic-header-close:hover {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+}
+
+/* ── Messages Area ── */
+.aic-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: 380px;
+    min-height: 240px;
+    scroll-behavior: smooth;
+}
+
+.aic-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.aic-messages::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.15);
+    border-radius: 4px;
+}
+
+/* ── Message Bubbles ── */
+.aic-msg {
+    display: flex;
+    gap: 8px;
+    animation: aicMsgIn 350ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.aic-msg.user {
+    flex-direction: row-reverse;
+}
+
+@keyframes aicMsgIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.aic-msg-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-color-hover));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.aic-msg-avatar svg {
+    width: 14px;
+    height: 14px;
+}
+
+.aic-msg-content {
+    max-width: 82%;
+    min-width: 0;
+}
+
+.aic-msg-bubble {
+    padding: 11px 15px;
+    border-radius: 16px;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.aic-msg.ai .aic-msg-bubble {
+    background: var(--color-bg, #f3f4f6);
+    color: var(--color-text-primary, #111827);
+    border-bottom-left-radius: 4px;
+}
+
+.aic-msg.user .aic-msg-bubble {
+    background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-color-hover));
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.aic-msg-time {
+    font-size: 0.55rem;
+    color: var(--color-text-muted, #9ca3af);
+    margin-top: 4px;
+    padding: 0 4px;
+}
+
+.aic-msg.user .aic-msg-time {
+    text-align: right;
+}
+
+/* ── Markdown Styles in AI Messages ── */
+.aic-msg.ai .aic-msg-bubble strong {
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+}
+
+.aic-msg.ai .aic-msg-bubble em {
+    font-style: italic;
+}
+
+.aic-msg.ai .aic-msg-bubble .aic-code {
+    background: rgba(99, 102, 241, 0.08);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.78rem;
+}
+
+.aic-msg.ai .aic-msg-bubble .aic-list {
+    margin: 6px 0;
+    padding-left: 18px;
+    list-style: disc;
+}
+
+.aic-msg.ai .aic-msg-bubble .aic-list li {
+    margin: 3px 0;
+    line-height: 1.5;
+}
+
+/* ── Typing Indicator ── */
+.aic-typing {
+    display: flex;
+    gap: 5px;
+    padding: 12px 16px;
+    align-items: center;
+}
+
+.aic-typing-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-gradient-start);
+    animation: aicDotBounce 1.4s ease-in-out infinite;
+}
+
+.aic-typing-dot:nth-child(2) {
+    animation-delay: 0.16s;
+}
+
+.aic-typing-dot:nth-child(3) {
+    animation-delay: 0.32s;
+}
+
+@keyframes aicDotBounce {
+
+    0%,
+    80%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.35;
+    }
+
+    40% {
+        transform: translateY(-8px);
+        opacity: 1;
+    }
+}
+
+/* ── Quick Chips ── */
+.aic-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 16px 4px;
+    border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+.aic-chip {
+    padding: 7px 13px;
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    background: rgba(99, 102, 241, 0.04);
+    color: var(--accent-gradient-start);
+    font-size: 0.68rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 200ms;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.aic-chip:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-1px);
+}
+
+/* ── Input Area ── */
+.aic-input-wrap {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px 14px;
+    border-top: 1px solid var(--color-border, #e5e7eb);
+    flex-shrink: 0;
+}
+
+.aic-input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1.5px solid var(--color-border, #e2e8f0);
+    border-radius: 14px;
+    background: var(--color-bg, #f8f9fb);
+    color: var(--color-text-primary, #111827);
+    font-size: 0.82rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 200ms, box-shadow 200ms;
+}
+
+.aic-input:focus {
+    border-color: var(--accent-gradient-start);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.aic-input::placeholder {
+    color: var(--color-text-muted, #9ca3af);
+}
+
+.aic-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.aic-send {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-color-hover));
+    color: #fff;
+    cursor: pointer;
+    transition: all 200ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.aic-send svg {
+    width: 16px;
+    height: 16px;
+}
+
+.aic-send:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+
+.aic-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Cooldown countdown */
+.aic-cooldown {
+    font-size: 0.72rem;
+    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* ── Dark Theme ── */
+body[data-theme="dark"] .aic-panel {
+    background: #1e293b;
+    border-color: rgba(148, 163, 184, 0.12);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+body[data-theme="dark"] .aic-msg.ai .aic-msg-bubble {
+    background: rgba(99, 102, 241, 0.12);
+    color: #e2e8f0;
+}
+
+body[data-theme="dark"] .aic-msg.ai .aic-msg-bubble strong {
+    color: #f1f5f9;
+}
+
+body[data-theme="dark"] .aic-msg.ai .aic-msg-bubble .aic-code {
+    background: rgba(99, 102, 241, 0.18);
+    color: #c4b5fd;
+}
+
+body[data-theme="dark"] .aic-input {
+    background: #0f172a;
+    border-color: rgba(148, 163, 184, 0.18);
+    color: #e2e8f0;
+}
+
+body[data-theme="dark"] .aic-input:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.12);
+}
+
+body[data-theme="dark"] .aic-chips {
+    border-color: rgba(148, 163, 184, 0.08);
+}
+
+body[data-theme="dark"] .aic-chip {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.2);
+    color: #818cf8;
+}
+
+body[data-theme="dark"] .aic-input-wrap {
+    border-color: rgba(148, 163, 184, 0.08);
+}
+
+body[data-theme="dark"] .aic-messages::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.15);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+    .aic-panel {
+        right: 10px;
+        left: 10px;
+        width: auto;
+        bottom: 88px;
+        max-height: 72vh;
+        border-radius: 16px;
+    }
+
+    .aic-bubble {
+        right: 14px;
+        bottom: 14px;
+        width: 52px;
+        height: 52px;
+    }
+
+    .aic-messages {
+        max-height: 50vh;
+    }
+}

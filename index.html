@@ -7,17 +7,32 @@
     <meta name="description"
         content="VendorVerse - India's most trusted multi-vendor e-commerce marketplace. Shop from thousands of local and global sellers.">
     <title>VendorVerse - Local First, Global Reach</title>
+    <!-- Theme Initialization to prevent flash of wrong theme -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('vendorverse_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.documentElement.classList.remove('theme-light', 'theme-dark', 'theme-blue');
+            document.documentElement.classList.add('theme-' + savedTheme);
+        })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="homepage.css">
     <link rel="stylesheet" href="smart-feed.css">
     <link rel="stylesheet" href="discovery.css">
     <link rel="stylesheet" href="creator-profile.css">
+    <link rel="stylesheet" href="creator-drops.css">
+    <link rel="stylesheet" href="drop-room.css">
+    <link rel="stylesheet" href="ai-copilot.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 
 </head>
 
-<body>
+<body data-theme="dark">
     <!-- Skip Navigation -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -69,7 +84,7 @@
                     </select>
                 </div>
 
-                <a href="#" class="header-action wishlist-action" id="wishlist-nav-btn" aria-label="Wishlist">
+                <a href="wishlist.html" class="header-action wishlist-action" id="wishlist-nav-btn" aria-label="Wishlist">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path
                             d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
@@ -115,6 +130,8 @@
                     </svg>
                     <span class="action-label">Create</span>
                 </a>
+
+
 
                 <!-- Auth Section - Shows Login/Register when logged out -->
                 <div class="auth-section" id="auth-section">
@@ -193,46 +210,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
-
-        <!-- Category Navigation -->
-        <nav class="category-nav" aria-label="Product categories">
-            <div class="category-nav-container">
-                <a href="/electronics" class="category-link">
-                    <span class="category-icon">📱</span>
-                    Electronics
-                </a>
-                <a href="/fashion" class="category-link">
-                    <span class="category-icon">👗</span>
-                    Fashion
-                </a>
-                <a href="/home" class="category-link">
-                    <span class="category-icon">🏠</span>
-                    Home & Living
-                </a>
-                <a href="/beauty" class="category-link">
-                    <span class="category-icon">💄</span>
-                    Beauty
-                </a>
-                <a href="/grocery" class="category-link">
-                    <span class="category-icon">🛒</span>
-                    Grocery
-                </a>
-                <a href="/sports" class="category-link">
-                    <span class="category-icon">⚽</span>
-                    Sports
-                </a>
-                <a href="/books" class="category-link">
-                    <span class="category-icon">📚</span>
-                    Books
-                </a>
-                <a href="/deals" class="category-link deals-link">
-                    <span class="category-icon">🔥</span>
-                    Today's Deals
-                </a>
-            </div>
-        </nav>
     </header>
 
     <!-- Mobile Search (visible on mobile) -->
@@ -252,446 +230,371 @@
 
     <!-- Main Content -->
     <main id="main-content">
-        <!-- Hero Carousel -->
-        <section class="hero-carousel" aria-label="Featured promotions">
-            <div class="carousel-container">
-                <div class="carousel-track" id="carousel-track">
-                    <div class="carousel-slide active">
-                        <div class="slide-content">
-                            <div class="slide-text">
-                                <span class="slide-tag">New Arrivals</span>
-                                <h2 class="slide-title">Winter Collection 2024</h2>
-                                <p class="slide-desc">Up to 50% off on premium winter wear</p>
-                                <a href="/winter-sale" class="slide-cta">Shop Now</a>
-                            </div>
-                            <div class="slide-image">
-                                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=400&fit=crop"
-                                    alt="Winter fashion collection">
-                            </div>
+        <canvas id="particles-bg"></canvas>
+
+        <!-- ═══ DEEP SPACE AURORA HERO ═══ -->
+        <section class="dsa-hero" id="dsa-hero">
+            <!-- Glitch overlay -->
+            <div class="dsa-glitch" id="dsa-glitch"></div>
+
+            <!-- ══ SLIDE 1 — Deep Space Aurora ══ -->
+            <div class="dsa-slide dsa-slide-1 active">
+                <!-- Floating orbs -->
+                <div class="dsa-orb dsa-orb-1"></div>
+                <div class="dsa-orb dsa-orb-2"></div>
+                <div class="dsa-orb dsa-orb-3"></div>
+                <!-- Conic gradient overlay -->
+                <div class="dsa-conic"></div>
+
+                <div class="dsa-content">
+                    <!-- LEFT SIDE -->
+                    <div class="dsa-left">
+                        <span class="dsa-eyebrow dsa-fade-up" style="--delay:0ms">✦ 10,000+ Vendors. One Platform.</span>
+                        <h1 class="dsa-headline dsa-fade-up" style="--delay:120ms">Discover Products That Define You.</h1>
+                        <p class="dsa-sub dsa-fade-up" style="--delay:240ms">India's AI‑powered marketplace connecting you to handpicked vendors, artisan creators, and premium products — all in one place.</p>
+                        <div class="dsa-cta-row dsa-fade-up" style="--delay:400ms">
+                            <a href="product.html" class="dsa-btn-primary">Shop Now <span>→</span></a>
+                            <a href="vendor-dashboard.html" class="dsa-btn-secondary">Become a Vendor</a>
+                        </div>
+                        <div class="dsa-trust dsa-fade-up" style="--delay:400ms">
+                            <span class="dsa-trust-item">⭐ 4.9 Rating</span>
+                            <span class="dsa-trust-dot">·</span>
+                            <span class="dsa-trust-item">🚚 Free Delivery</span>
+                            <span class="dsa-trust-dot">·</span>
+                            <span class="dsa-trust-item">↩️ Easy Returns</span>
                         </div>
                     </div>
-                    <div class="carousel-slide">
-                        <div class="slide-content slide-content-alt">
-                            <div class="slide-text">
-                                <span class="slide-tag">Weekend Special</span>
-                                <h2 class="slide-title">Electronics Fest</h2>
-                                <p class="slide-desc">Latest gadgets at unbeatable prices</p>
-                                <a href="/electronics-fest" class="slide-cta">Explore Deals</a>
+
+                    <!-- RIGHT SIDE -->
+                    <div class="dsa-right">
+                        <div class="dsa-ring"></div>
+                        <div class="dsa-card">
+                            <div class="dsa-card-img-wrap">
+                                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop" alt="Premium Watch" class="dsa-card-img">
                             </div>
-                            <div class="slide-image">
-                                <img src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=600&h=400&fit=crop"
-                                    alt="Electronics gadgets">
+                            <div class="dsa-card-info">
+                                <h3 class="dsa-card-name">Premium Smart Watch</h3>
+                                <span class="dsa-card-price">₹4,999</span>
                             </div>
+                            <!-- Floating badges -->
+                            <span class="dsa-badge" style="top:6%;left:-12%;--dur:3.4s;--del:0s">FREE DELIVERY</span>
+                            <span class="dsa-badge" style="top:16%;right:-14%;--dur:4.2s;--del:0.6s">AI POWERED</span>
+                            <span class="dsa-badge" style="top:52%;left:-16%;--dur:3.8s;--del:1.2s">TOP RATED</span>
+                            <span class="dsa-badge" style="top:64%;right:-10%;--dur:4.6s;--del:0.3s">10K+ VENDORS</span>
+                            <span class="dsa-badge" style="bottom:18%;left:-8%;--dur:3.2s;--del:0.9s">FAST SHIPPING</span>
+                            <span class="dsa-badge" style="bottom:6%;right:-12%;--dur:5s;--del:1.5s">BEST PRICE</span>
                         </div>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="slide-content slide-content-green">
-                            <div class="slide-text">
-                                <span class="slide-tag">Local Finds</span>
-                                <h2 class="slide-title">Handcrafted Treasures</h2>
-                                <p class="slide-desc">Support local artisans across India</p>
-                                <a href="/local-finds" class="slide-cta">Discover Now</a>
-                            </div>
-                            <div class="slide-image">
-                                <img src="https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?w=600&h=400&fit=crop"
-                                    alt="Handcrafted items">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Previous slide">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M15 18l-6-6 6-6"></path>
-                    </svg>
-                </button>
-                <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Next slide">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 18l6-6-6-6"></path>
-                    </svg>
-                </button>
-                <div class="carousel-dots" id="carousel-dots">
-                    <button class="dot active" data-index="0" aria-label="Go to slide 1"></button>
-                    <button class="dot" data-index="1" aria-label="Go to slide 2"></button>
-                    <button class="dot" data-index="2" aria-label="Go to slide 3"></button>
-                </div>
-            </div>
-        </section>
-
-        <!-- ✦ Discover Section — Category Chips + Dynamic Product Grid -->
-        <section class="discover-section">
-            <div class="container">
-                <div class="discover-header">
-                    <span class="discover-title">✦ Discover Products</span>
-                </div>
-                <div class="category-chips-wrap" id="category-chips">
-                    <!-- Injected by discovery.js -->
-                </div>
-            </div>
-        </section>
-
-        <section class="discover-products-section">
-            <div class="container">
-                <div id="discover-grid">
-                    <!-- Injected by discovery.js -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Quick Categories -->
-        <section class="quick-categories">
-            <div class="container">
-                <div class="quick-category-grid">
-                    <a href="/mobiles" class="quick-category-item">
-                        <div class="quick-category-icon">📱</div>
-                        <span>Mobiles</span>
-                    </a>
-                    <a href="/fashion" class="quick-category-item">
-                        <div class="quick-category-icon">👗</div>
-                        <span>Fashion</span>
-                    </a>
-                    <a href="/home" class="quick-category-item">
-                        <div class="quick-category-icon">🏠</div>
-                        <span>Home</span>
-                    </a>
-                    <a href="/beauty" class="quick-category-item">
-                        <div class="quick-category-icon">💄</div>
-                        <span>Beauty</span>
-                    </a>
-                    <a href="/gaming" class="quick-category-item">
-                        <div class="quick-category-icon">🎮</div>
-                        <span>Gaming</span>
-                    </a>
-                    <a href="/books" class="quick-category-item">
-                        <div class="quick-category-icon">📚</div>
-                        <span>Books</span>
-                    </a>
-                    <a href="/grocery" class="quick-category-item">
-                        <div class="quick-category-icon">🛒</div>
-                        <span>Grocery</span>
-                    </a>
-                    <a href="/deals" class="quick-category-item highlight">
-                        <div class="quick-category-icon">⚡</div>
-                        <span>Deals</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Smart Feed Section (Replaces Static Carousels) -->
-        <section class="smart-feed-section">
-            <div class="container">
-                <div class="smart-feed-header">
-                    <h2 class="smart-feed-title">Recommended For You</h2>
-                    <p class="smart-feed-subtitle">Curated picks based on your style and interests</p>
-                </div>
-                <div id="smart-feed-grid">
-                    <!-- Cards injected by smart-feed.js -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Best Seller Categories (Kept intentionally) -->
-        <section class="best-seller-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <span class="title-icon">🏆</span>
-                        Best Seller Categories
-                    </h2>
-                </div>
-                <div class="category-banner-grid">
-                    <a href="/electronics" class="category-banner electronics">
-                        <div class="banner-content">
-                            <h3>Electronics</h3>
-                            <p>Gadgets & Accessories</p>
-                            <span class="banner-cta">Shop Now →</span>
-                        </div>
-                        <div class="banner-image">
-                            <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=300&fit=crop"
-                                alt="Electronics">
-                        </div>
-                    </a>
-                    <a href="/fashion" class="category-banner fashion">
-                        <div class="banner-content">
-                            <h3>Fashion</h3>
-                            <p>Trending Styles</p>
-                            <span class="banner-cta">Shop Now →</span>
-                        </div>
-                        <div class="banner-image">
-                            <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&h=300&fit=crop"
-                                alt="Fashion">
-                        </div>
-                    </a>
-                    <a href="/home" class="category-banner home-living">
-                        <div class="banner-content">
-                            <h3>Home & Living</h3>
-                            <p>Comfort & Style</p>
-                            <span class="banner-cta">Shop Now →</span>
-                        </div>
-                        <div class="banner-image">
-                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop"
-                                alt="Home Living">
-                        </div>
-                    </a>
-                    <a href="/beauty" class="category-banner beauty">
-                        <div class="banner-content">
-                            <h3>Beauty</h3>
-                            <p>Skincare & Makeup</p>
-                            <span class="banner-cta">Shop Now →</span>
-                        </div>
-                        <div class="banner-image">
-                            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=300&fit=crop"
-                                alt="Beauty">
-                        </div>
-                    </a>
-                    <a href="/grocery" class="category-banner grocery">
-                        <div class="banner-content">
-                            <h3>Grocery</h3>
-                            <p>Fresh & Essentials</p>
-                            <span class="banner-cta">Shop Now →</span>
-                        </div>
-                        <div class="banner-image">
-                            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&h=300&fit=crop"
-                                alt="Grocery">
-                        </div>
-                    </a>
-                    <a href="/sports" class="category-banner sports">
-                        <div class="banner-content">
-                            <h3>Sports</h3>
-                            <p>Gear & Equipment</p>
-                            <span class="banner-cta">Shop Now →</span>
-                        </div>
-                        <div class="banner-image">
-                            <img src="https://images.unsplash.com/photo-1461896836934- voices?w=400&h=300&fit=crop"
-                                alt="Sports">
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- VendorVerse Plus Banner -->
-        <section class="promo-banner">
-            <div class="container">
-                <div class="promo-content">
-                    <div class="promo-text">
-                        <span class="promo-tag">✨ VendorVerse Plus</span>
-                        <h2 class="promo-title">Unlimited Free Delivery & Exclusive Deals</h2>
-                        <p class="promo-desc">Join VendorVerse Plus at just ₹499/year and enjoy premium benefits</p>
-                        <div class="promo-features">
-                            <span>🚀 Free Delivery</span>
-                            <span>⚡ Early Access</span>
-                            <span>💎 Exclusive Deals</span>
-                        </div>
-                        <a href="/plus" class="promo-cta">Join Now - ₹499/year</a>
-                    </div>
-                    <div class="promo-graphic">
-                        <div class="promo-badge">PLUS</div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Local Finds Section -->
-        <section class="product-section local-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <span class="title-icon">🎨</span>
-                        Local Finds - Handcrafted Treasures
-                    </h2>
-                    <span class="section-subtitle">Support Indian artisans</span>
-                    <a href="/local-finds" class="view-all">View All →</a>
+            <!-- ══ SLIDE 2 — Editorial Textile ══ -->
+            <div class="dsa-slide dsa-slide-2">
+                <div class="s2-bg" style="background-image:url('https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=1400&h=900&fit=crop')"></div>
+                <div class="s2-overlay"></div>
+
+                <!-- Floating badges -->
+                <span class="s2-badge" style="top:18%;left:6%;--dur:3.6s;--del:0s">+ 100% Organic Cotton</span>
+                <span class="s2-badge" style="top:24%;right:7%;--dur:4.4s;--del:0.5s">+ Artisan Made</span>
+                <span class="s2-badge" style="bottom:32%;left:8%;--dur:3.2s;--del:1.1s">+ Zero Chemicals</span>
+                <span class="s2-badge" style="bottom:26%;right:5%;--dur:4.8s;--del:0.8s">+ Fair Trade Certified</span>
+
+                <!-- Center headline -->
+                <div class="s2-center">
+                    <h2 class="s2-headline">Handcrafted<br>Excellence</h2>
                 </div>
-                <div class="product-carousel">
-                    <button class="scroll-btn scroll-left" aria-label="Scroll left">‹</button>
-                    <div class="product-grid">
-                        <article class="product-card">
-                            <div class="product-image-container">
-                                <img src="https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?w=300&h=300&fit=crop"
-                                    alt="Handcrafted Pottery" class="product-image" loading="lazy">
-                                <span class="product-badge local">Local Artisan</span>
-                                <button class="wishlist-btn" aria-label="Add to wishlist">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path
-                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                        </path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="product-info">
-                                <span class="product-brand">Rajasthan Crafts</span>
-                                <h3 class="product-title">Hand-painted Clay Pottery Set</h3>
-                                <div class="product-rating">
-                                    <span class="stars">★★★★★</span>
-                                    <span class="rating-count">(234)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span class="current-price">₹1,299</span>
-                                </div>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </article>
 
-                        <article class="product-card">
-                            <div class="product-image-container">
-                                <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=300&h=300&fit=crop"
-                                    alt="Handwoven Textile" class="product-image" loading="lazy">
-                                <span class="product-badge local">Local Artisan</span>
-                                <button class="wishlist-btn" aria-label="Add to wishlist">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path
-                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                        </path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="product-info">
-                                <span class="product-brand">Kerala Weavers</span>
-                                <h3 class="product-title">Handwoven Cotton Saree</h3>
-                                <div class="product-rating">
-                                    <span class="stars">★★★★★</span>
-                                    <span class="rating-count">(567)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span class="current-price">₹2,499</span>
-                                </div>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </article>
-
-                        <article class="product-card">
-                            <div class="product-image-container">
-                                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=300&h=300&fit=crop"
-                                    alt="Brass Lamp" class="product-image" loading="lazy">
-                                <span class="product-badge local">Local Artisan</span>
-                                <button class="wishlist-btn" aria-label="Add to wishlist">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path
-                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                        </path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="product-info">
-                                <span class="product-brand">Moradabad Metalworks</span>
-                                <h3 class="product-title">Traditional Brass Lamp</h3>
-                                <div class="product-rating">
-                                    <span class="stars">★★★★☆</span>
-                                    <span class="rating-count">(189)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span class="current-price">₹899</span>
-                                </div>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </article>
-
-                        <article class="product-card">
-                            <div class="product-image-container">
-                                <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=300&h=300&fit=crop"
-                                    alt="Handmade Jewelry" class="product-image" loading="lazy">
-                                <span class="product-badge local">Local Artisan</span>
-                                <button class="wishlist-btn" aria-label="Add to wishlist">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path
-                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                        </path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="product-info">
-                                <span class="product-brand">Jaipur Gems</span>
-                                <h3 class="product-title">Kundan Jewelry Set</h3>
-                                <div class="product-rating">
-                                    <span class="stars">★★★★★</span>
-                                    <span class="rating-count">(423)</span>
-                                </div>
-                                <div class="product-price">
-                                    <span class="current-price">₹3,999</span>
-                                </div>
-                            </div>
-                            <button class="add-to-cart-btn">Add to Cart</button>
-                        </article>
+                <!-- Bottom bar -->
+                <div class="s2-bottom">
+                    <div class="s2-bottom-left">
+                        <h3 class="s2-product-name">Artisan Textile Collection</h3>
+                        <span class="s2-price">₹2,499</span>
                     </div>
-                    <button class="scroll-btn scroll-right" aria-label="Scroll right">›</button>
+                    <a href="product.html" class="s2-cta">Explore Collection →</a>
                 </div>
             </div>
+
+            <!-- ══ SLIDE 3 — VendorVerse Brand ══ -->
+            <div class="dsa-slide dsa-slide-3">
+                <div class="s3-bg" style="background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400&h=900&fit=crop')"></div>
+                <div class="s3-overlay"></div>
+
+                <!-- Center content -->
+                <div class="s3-center">
+                    <h2 class="s3-brand">VendorVerse</h2>
+                    <span class="s3-subtitle">India's Premium Marketplace</span>
+                    <div class="s3-stats">
+                        <div class="s3-stat">
+                            <span class="s3-stat-val" data-target="245" data-suffix="K+">0</span>
+                            <span class="s3-stat-lbl">Products</span>
+                        </div>
+                        <div class="s3-stat-divider"></div>
+                        <div class="s3-stat">
+                            <span class="s3-stat-val" data-target="10" data-suffix="K+">0</span>
+                            <span class="s3-stat-lbl">Vendors</span>
+                        </div>
+                        <div class="s3-stat-divider"></div>
+                        <div class="s3-stat">
+                            <span class="s3-stat-val" data-target="50" data-suffix="Cr+" data-prefix="₹">0</span>
+                            <span class="s3-stat-lbl">Sales</span>
+                        </div>
+                        <div class="s3-stat-divider"></div>
+                        <div class="s3-stat">
+                            <span class="s3-stat-val" data-target="1" data-suffix="M+">0</span>
+                            <span class="s3-stat-lbl">Customers</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom bar -->
+                <div class="s3-bottom">
+                    <div class="s3-bottom-left">
+                        <h3 class="s3-tagline">Join India's Fastest Growing Platform</h3>
+                    </div>
+                    <a href="vendor-dashboard.html" class="s2-cta">Start Selling →</a>
+                </div>
+            </div>
+
+            <!-- ══ HERO NAVIGATION ══ -->
+            <button class="dsa-arrow dsa-arrow-prev" id="dsa-prev"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="dsa-arrow dsa-arrow-next" id="dsa-next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+            <div class="dsa-dots">
+                <button class="dsa-dot active" data-idx="0"></button>
+                <button class="dsa-dot" data-idx="1"></button>
+                <button class="dsa-dot" data-idx="2"></button>
+            </div>
+        </section>
+
+        <!-- ═══ CATEGORY PILLS BAR ═══ -->
+        <nav class="category-nav" aria-label="Product categories">
+            <div class="category-nav-container">
+                <a href="/electronics" class="category-link"><span class="category-icon">📱</span>Electronics</a>
+                <a href="/fashion" class="category-link"><span class="category-icon">👗</span>Fashion</a>
+                <a href="/home" class="category-link"><span class="category-icon">🏠</span>Home & Living</a>
+                <a href="/beauty" class="category-link"><span class="category-icon">💄</span>Beauty</a>
+                <a href="/grocery" class="category-link"><span class="category-icon">🛒</span>Grocery</a>
+                <a href="/sports" class="category-link"><span class="category-icon">⚽</span>Sports</a>
+                <a href="/books" class="category-link"><span class="category-icon">📚</span>Books</a>
+                <a href="/deals" class="category-link deals-link"><span class="category-icon">🔥</span>Today's Deals</a>
+            </div>
+        </nav>
+
+        <!-- ═══ TRENDING PRODUCTS GRID ═══ -->
+        <section class="vv-product-section" id="trending-section">
+            <div class="vv-section-header">
+                <span class="vv-section-label">TRENDING NOW</span>
+                <h2 class="vv-section-title">Products That Move You</h2>
+                <p class="vv-section-subtitle">Discover what's hot — handpicked by our AI from thousands of vendors across India</p>
+            </div>
+            <div class="vv-section-toolbar">
+                <a href="product.html" class="vv-view-all-btn">View All →</a>
+            </div>
+            <div class="vv-product-grid">
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop" alt="Classic Analog Watch"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Classic Analog Watch</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> TimeVerse India</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★★</span> <span class="vv-rating-num">4.8</span> <span class="vv-review-count">(312)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹2,999</span><span class="vv-price-original">₹4,499</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop" alt="Studio Headphones"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Studio Headphones</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> SoundCraft Audio</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★☆</span> <span class="vv-rating-num">4.5</span> <span class="vv-review-count">(189)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹3,499</span><span class="vv-price-original">₹5,999</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop" alt="Air Zoom Sneakers"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Air Zoom Sneakers</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> StepUp Shoes</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★★</span> <span class="vv-rating-num">4.9</span> <span class="vv-review-count">(527)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹5,999</span><span class="vv-price-original">₹8,499</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400&h=300&fit=crop" alt="Luxe Eau de Parfum"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Luxe Eau de Parfum</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> FragranceHub</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★☆</span> <span class="vv-rating-num">4.3</span> <span class="vv-review-count">(98)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹1,799</span><span class="vv-price-original">₹2,499</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop" alt="Polaroid Camera"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Polaroid Camera</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> SnapStore</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★★</span> <span class="vv-rating-num">4.7</span> <span class="vv-review-count">(245)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹4,299</span><span class="vv-price-original">₹6,999</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&h=300&fit=crop" alt="Runner Pro Elite"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Runner Pro Elite</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Athletic Edge</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★★</span> <span class="vv-rating-num">4.9</span> <span class="vv-review-count">(412)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹6,499</span><span class="vv-price-original">₹9,999</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ═══ FEATURED PRODUCTS ═══ -->
+        <!-- ═══ FEATURED COLLECTION GRID ═══ -->
+        <section class="vv-product-section" id="featured-section">
+            <div class="vv-section-header">
+                <span class="vv-section-label">CURATED FOR YOU</span>
+                <h2 class="vv-section-title">Featured Collection</h2>
+                <p class="vv-section-subtitle">Handpicked products from India's finest vendors</p>
+            </div>
+            <div class="vv-section-toolbar">
+                <a href="product.html" class="vv-view-all-btn">View All →</a>
+            </div>
+            <div class="vv-product-grid">
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1606722590583-6951b5ea92ad?w=400&h=350&fit=crop" alt="Hand-painted Clay Pottery Set"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Hand-painted Clay Pottery Set</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Rajasthan Crafts</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★★</span> <span class="vv-rating-num">4.9</span> <span class="vv-review-count">(204)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹1,299</span><span class="vv-price-original">₹1,999</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=350&fit=crop" alt="Wireless Earbuds Pro Max"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Wireless Earbuds Pro Max</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> TechNova</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★☆</span> <span class="vv-rating-num">4.4</span> <span class="vv-review-count">(156)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹3,999</span><span class="vv-price-original">₹5,499</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&h=350&fit=crop" alt="Designer Ethnic Wear Collection"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Designer Ethnic Wear Collection</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> StyleVerse</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★★</span> <span class="vv-rating-num">4.8</span> <span class="vv-review-count">(389)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹5,499</span><span class="vv-price-original">₹7,999</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=350&fit=crop" alt="Premium Skincare Essentials Kit"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Premium Skincare Essentials Kit</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> GlowUp Beauty</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★★</span> <span class="vv-rating-num">4.7</span> <span class="vv-review-count">(273)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹1,899</span><span class="vv-price-original">₹2,999</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=400&h=350&fit=crop" alt="Kundan Jewelry Set"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Kundan Jewelry Set</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Jaipur Gems</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★★</span> <span class="vv-rating-num">4.9</span> <span class="vv-review-count">(412)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹3,999</span><span class="vv-price-original">₹5,999</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+                <article class="vv-product-card">
+                    <div class="vv-card-img-area"><img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400&h=350&fit=crop" alt="Traditional Brass Lamp"></div>
+                    <div class="vv-card-body">
+                        <h3 class="vv-card-name">Traditional Brass Lamp</h3>
+                        <div class="vv-card-vendor"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Moradabad Metalworks</div>
+                        <div class="vv-card-rating"><span class="vv-stars">★★★★☆</span> <span class="vv-rating-num">4.2</span> <span class="vv-review-count">(87)</span></div>
+                        <div class="vv-card-price-row"><span class="vv-price-current">₹899</span><span class="vv-price-original">₹1,499</span></div>
+                        <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ═══ CREATOR DROPS ═══ -->
+        <section class="drops-section">
+            <div class="drops-header gsap-fade-up">
+                <span class="overline">Exclusive Launches</span>
+                <h2>🔥 Creator Drops</h2>
+            </div>
+            <div class="drops-grid">
+                <div class="drop-card">
+                    <div class="drop-live">● LIVE</div>
+                    <div class="drop-card-top"><div class="drop-avatar">A</div><div class="drop-meta"><h4>Ananya's Studio</h4><span>Fashion Creator • 45K followers</span></div></div>
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=250&fit=crop" alt="Drop" class="drop-card-img">
+                    <div class="drop-timer"><div class="drop-timer-block"><span class="num">02</span><span class="unit">hrs</span></div><div class="drop-timer-block"><span class="num">34</span><span class="unit">min</span></div><div class="drop-timer-block"><span class="num">12</span><span class="unit">sec</span></div></div>
+                </div>
+                <div class="drop-card">
+                    <div class="drop-live">● LIVE</div>
+                    <div class="drop-card-top"><div class="drop-avatar">R</div><div class="drop-meta"><h4>Ravi's Spice Lab</h4><span>Food Creator • 32K followers</span></div></div>
+                    <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd053d?w=400&h=250&fit=crop" alt="Drop" class="drop-card-img">
+                    <div class="drop-timer"><div class="drop-timer-block"><span class="num">05</span><span class="unit">hrs</span></div><div class="drop-timer-block"><span class="num">12</span><span class="unit">min</span></div><div class="drop-timer-block"><span class="num">45</span><span class="unit">sec</span></div></div>
+                </div>
+                <div class="drop-card">
+                    <div class="drop-card-top"><div class="drop-avatar">P</div><div class="drop-meta"><h4>Priya's Closet</h4><span>Style Creator • 78K followers</span></div></div>
+                    <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=400&h=250&fit=crop" alt="Drop" class="drop-card-img">
+                    <div class="drop-timer"><div class="drop-timer-block"><span class="num">12</span><span class="unit">hrs</span></div><div class="drop-timer-block"><span class="num">00</span><span class="unit">min</span></div><div class="drop-timer-block"><span class="num">30</span><span class="unit">sec</span></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ TESTIMONIALS ═══ -->
+        <section class="testi-section">
+            <span class="overline">Success Stories</span>
+            <h2>Loved by Indian Vendors</h2>
+            <div class="testi-wrap">
+                <div class="testi-item active">
+                    <div class="testi-stars">★★★★★</div>
+                    <blockquote>"VendorVerse transformed my small handicraft business. The AI Copilot helped me write better descriptions and the Creator Drops feature 3x'd my revenue in just 2 months."</blockquote>
+                    <div class="testi-author"><div class="testi-avatar">R</div><div class="testi-author-info"><span class="name">Rajesh Kumar</span><span class="role">Handicraft Vendor, Jaipur</span></div></div>
+                </div>
+                <div class="testi-item">
+                    <div class="testi-stars">★★★★★</div>
+                    <blockquote>"The Smart Feed algorithm brought me customers I never could have reached. My organic spice business went from 20 orders/day to 200+ in three months."</blockquote>
+                    <div class="testi-author"><div class="testi-avatar">P</div><div class="testi-author-info"><span class="name">Priya Sharma</span><span class="role">Organic Foods, Kerala</span></div></div>
+                </div>
+                <div class="testi-item">
+                    <div class="testi-stars">★★★★★</div>
+                    <blockquote>"Drop Rooms are a game-changer. I sold ₹5 lakhs worth of textiles in a single live session. The analytics helped me understand my customers like never before."</blockquote>
+                    <div class="testi-author"><div class="testi-avatar">A</div><div class="testi-author-info"><span class="name">Ananya Reddy</span><span class="role">Textile Designer, Hyderabad</span></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ FINAL CTA ═══ -->
+        <section class="final-cta-section gsap-fade-up">
+            <h2>Join <span>10,000+ Vendors</span> Today</h2>
+            <p>Start your journey on India's fastest-growing ecommerce platform. Zero setup fees.</p>
+            <button class="cta-glow-btn" onclick="window.location.href='vendor-dashboard.html'">Start Selling for Free →</button>
         </section>
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>About VendorVerse</h4>
-                    <ul>
-                        <li><a href="/about">About Us</a></li>
-                        <li><a href="/careers">Careers</a></li>
-                        <li><a href="/press">Press</a></li>
-                        <li><a href="/blog">Blog</a></li>
-                        <li><a href="/seller">Sell on VendorVerse</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Help & Support</h4>
-                    <ul>
-                        <li><a href="/contact">Contact Us</a></li>
-                        <li><a href="/faq">FAQ</a></li>
-                        <li><a href="/track-order">Track Order</a></li>
-                        <li><a href="/returns">Returns</a></li>
-                        <li><a href="/seller-support">Seller Support</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Policies</h4>
-                    <ul>
-                        <li><a href="/return-policy">Return Policy</a></li>
-                        <li><a href="/terms">Terms of Use</a></li>
-                        <li><a href="/privacy">Privacy Policy</a></li>
-                        <li><a href="/shipping">Shipping Info</a></li>
-                        <li><a href="/security">Security</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Connect With Us</h4>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook" class="social-link">📘</a>
-                        <a href="#" aria-label="Instagram" class="social-link">📷</a>
-                        <a href="#" aria-label="Twitter" class="social-link">🐦</a>
-                        <a href="#" aria-label="YouTube" class="social-link">📺</a>
-                    </div>
-                    <div class="app-download">
-                        <h5>Download Our App</h5>
-                        <div class="app-buttons">
-                            <a href="#" class="app-btn">
-                                <span>App Store</span>
-                            </a>
-                            <a href="#" class="app-btn">
-                                <span>Google Play</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <div class="payment-methods">
-                    <span>We Accept:</span>
-                    <div class="payment-icons">
-                        <span class="payment-icon">💳 Visa</span>
-                        <span class="payment-icon">💳 Mastercard</span>
-                        <span class="payment-icon">📱 UPI</span>
-                        <span class="payment-icon">💵 COD</span>
-                    </div>
-                </div>
-                <p class="copyright">© 2024 VendorVerse. All Rights Reserved. | Made with ❤️ in India</p>
-            </div>
+    <footer class="hp-footer">
+        <div class="hp-footer-inner">
+            <div class="hp-footer-brand"><h3>💎 VendorVerse</h3><p>India's AI-powered ecommerce platform connecting vendors, creators, and millions of customers.</p></div>
+            <div class="hp-footer-col"><h4>Platform</h4><a href="index.html">Marketplace</a><a href="vendor-dashboard.html">Dashboard</a><a href="creator-studio.html">Creator Studio</a><a href="drop-room.html">Drop Rooms</a></div>
+            <div class="hp-footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Press</a></div>
+            <div class="hp-footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Contact</a><a href="#">Terms</a><a href="#">Privacy</a></div>
         </div>
+        <div class="hp-footer-bottom">© 2026 VendorVerse. Made with 💜 in India. All rights reserved.</div>
     </footer>
 
     <!-- Mobile Navigation -->
@@ -1145,14 +1048,16 @@
     <!-- Scripts -->
     <script src="theme.js"></script>
     <script src="animations.js"></script>
+    <script src="homepage.js"></script>
     <script src="script.js"></script>
     <script src="auth.js"></script>
-    <script src="animations.js"></script>
-    <script src="script.js"></script>
     <script src="discovery.js"></script>
     <script src="creator.js"></script>
     <script src="creator-profile.js"></script>
+    <script src="creator-drops.js"></script>
+    <script src="drop-room.js"></script>
     <script src="smart-feed.js"></script>
+    <script src="ai-copilot.js"></script>
 
     <!-- ══════════════════════════════════════════
          LIVE SEARCH OVERLAY
@@ -1273,7 +1178,59 @@
             </button>
         </div>
     </div>
-    <script src="smart-feed.js"></script>
+    <!-- Product Detail Link Injection -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function parsePriceText(text) {
+            return parseInt((text || '0').replace(/[₹,\s]/g, '')) || 0;
+        }
+        function buildLink(name, price, image, vendor) {
+            var url = 'product-detail.html?name=' + encodeURIComponent(name) + '&price=' + price;
+            if (image) url += '&image=' + encodeURIComponent(image);
+            if (vendor) url += '&vendor=' + encodeURIComponent(vendor);
+            return url;
+        }
+        function extractVendorText(el) {
+            if (!el) return '';
+            // The vendor div contains an SVG icon followed by text; extract just the text
+            return el.textContent.trim();
+        }
+        function wrapInAnchor(el, href) {
+            if (!el || el.parentElement.tagName === 'A') return;
+            var a = document.createElement('a');
+            a.href = href;
+            a.style.display = 'contents';
+            el.parentElement.insertBefore(a, el);
+            a.appendChild(el);
+        }
+
+        // ── Product Cards (Trending + Featured) ──
+        document.querySelectorAll('.vv-product-card').forEach(function(card) {
+            var name = card.querySelector('h3')?.textContent?.trim() || 'Product';
+            var price = parsePriceText(card.querySelector('.vv-price-current')?.textContent);
+            var imgEl = card.querySelector('.vv-card-img-area img');
+            var imageSrc = imgEl ? imgEl.src : '';
+            var vendor = extractVendorText(card.querySelector('.vv-card-vendor'));
+            var href = buildLink(name, price, imageSrc, vendor);
+            var h3 = card.querySelector('h3');
+            if (imgEl) wrapInAnchor(imgEl, href);
+            if (h3) wrapInAnchor(h3, href);
+        });
+
+        // ── Hero Product Card ──
+        var heroCard = document.querySelector('.dsa-card');
+        if (heroCard) {
+            var heroName = heroCard.querySelector('.dsa-card-name')?.textContent?.trim() || 'Product';
+            var heroPrice = parsePriceText(heroCard.querySelector('.dsa-card-price')?.textContent);
+            var heroImgEl = heroCard.querySelector('.dsa-card-img');
+            var heroImgSrc = heroImgEl ? heroImgEl.src : '';
+            var heroHref = buildLink(heroName, heroPrice, heroImgSrc, '');
+            var heroH3 = heroCard.querySelector('.dsa-card-name');
+            if (heroImgEl) wrapInAnchor(heroImgEl, heroHref);
+            if (heroH3) wrapInAnchor(heroH3, heroHref);
+        }
+    });
+    </script>
 </body>
 
 </html>

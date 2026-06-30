@@ -3,17 +3,17 @@
  * Manages shopping cart in localStorage and checkout flow
  */
 
-// ==============================================
+// 
 // Configuration
-// ==============================================
+// 
 
 const CART_KEY = 'vendorverse_cart';
 const API_BASE = 'http://localhost:5000';
 const TOKEN_KEY = 'vendorverse_token';
 
-// ==============================================
+// 
 // Cart Management (localStorage)
-// ==============================================
+//
 
 /**
  * Get cart from localStorage
@@ -130,9 +130,9 @@ function updateCartBadge() {
 }
 
 
-// ==============================================
+// 
 // Checkout Modal
-// ==============================================
+//
 
 /**
  * Open checkout modal
@@ -228,9 +228,9 @@ function updateCheckoutTotals() {
 }
 
 
-// ==============================================
+// 
 // Place Order
-// ==============================================
+// 
 
 /**
  * Place order - send to backend
@@ -368,9 +368,9 @@ function setCheckoutButtonLoading(isLoading) {
 }
 
 
-// ==============================================
+// 
 // Initialize & Event Listeners
-// ==============================================
+// 
 
 document.addEventListener('DOMContentLoaded', function () {
     // Update cart badge on load
@@ -426,21 +426,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const price = parseInt(priceText.replace(/[₹,]/g, '')) || 999;
             const originalPrice = parseInt(originalText.replace(/[₹,]/g, '')) || 1499;
 
-            // Navigate to product page with URL params
-            const params = new URLSearchParams({
-                id: 'prod_' + Date.now(),
-                title: title,
-                brand: brand,
-                price: price,
-                originalPrice: originalPrice,
-                discount: discount,
-                image: image,
-                rating: '4.5',
-                reviews: ratingCount,
-                category: 'Electronics'
-            });
-
-            window.location.href = 'product.html?' + params.toString();
+            // Navigate to product detail page
+            window.location.href = 'product-detail.html?name=' + encodeURIComponent(title) + '&price=' + price + '&image=' + encodeURIComponent(image) + '&vendor=' + encodeURIComponent(brand);
         });
     });
 
@@ -478,9 +465,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// ==============================================
-// Expose Functions Globally
-// ==============================================
+// Expose Functions Globally // 
+// 
 
 window.getCart = getCart;
 window.addToCart = addToCart;

@@ -1,0 +1,456 @@
+/* ============================================
+   VendorVerse — Creator Drop Page
+   ============================================ */
+
+/* ── Layout ── */
+.drop-page {
+    min-height: 100vh;
+    background: var(--color-bg, #f8f9fb);
+    font-family: 'Inter', sans-serif;
+}
+
+.drop-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+}
+
+/* ── Back Link ── */
+.drop-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-secondary, #6b7280);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 32px;
+    transition: color 200ms;
+}
+
+.drop-back:hover {
+    color: var(--color-text-primary, #111827);
+}
+
+/* ── Hero Card ── */
+.drop-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: var(--color-surface, #fff);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid var(--color-border-light, #eef0f3);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+}
+
+.drop-image-side {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--accent-gradient-start) 0%, #a855f7 100%);
+    min-height: 420px;
+}
+
+.drop-image-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: luminosity;
+    opacity: 0.85;
+    transition: transform 600ms ease;
+}
+
+.drop-hero:hover .drop-image-side img {
+    transform: scale(1.03);
+}
+
+.drop-badge-pill {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 6px 14px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    animation: dropPulse 2s ease-in-out infinite;
+}
+
+@keyframes dropPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
+    }
+}
+
+/* ── Info Side ── */
+.drop-info-side {
+    padding: 40px 40px 40px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.drop-creator-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.drop-creator-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-gradient-start);
+}
+
+.drop-creator-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.drop-creator-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-text-primary, #111827);
+}
+
+.drop-creator-niche {
+    font-size: 0.75rem;
+    color: var(--accent-gradient-start);
+    font-weight: 600;
+}
+
+.drop-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+    margin-bottom: 12px;
+}
+
+.drop-description {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary, #6b7280);
+    line-height: 1.65;
+    margin-bottom: 24px;
+}
+
+/* ── Countdown ── */
+.drop-countdown-wrap {
+    margin-bottom: 28px;
+}
+
+.drop-countdown-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted, #9ca3af);
+    margin-bottom: 10px;
+}
+
+.drop-countdown {
+    display: flex;
+    gap: 10px;
+}
+
+.drop-cd-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-bg, #f8f9fb);
+    border-radius: 14px;
+    padding: 12px 16px;
+    min-width: 62px;
+    border: 1px solid var(--color-border-light, #eef0f3);
+}
+
+.drop-cd-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.drop-cd-lbl {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-muted, #9ca3af);
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+}
+
+/* ── Price ── */
+.drop-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.drop-price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+}
+
+.drop-orig-price {
+    font-size: 1rem;
+    color: var(--color-text-muted, #9ca3af);
+    text-decoration: line-through;
+}
+
+.drop-discount {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+/* ── Buy Button ── */
+.drop-buy-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-color-hover));
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 200ms ease;
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+    margin-bottom: 16px;
+}
+
+.drop-buy-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(99, 102, 241, 0.4);
+}
+
+.drop-buy-btn:active {
+    transform: translateY(0);
+}
+
+.drop-buy-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* ── Revenue Split Info ── */
+.drop-split-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border-light, #eef0f3);
+}
+
+.drop-split-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.drop-split-pct {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+}
+
+.drop-split-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-text-muted, #9ca3af);
+    letter-spacing: 0.06em;
+}
+
+/* ── Drop Ended State ── */
+.drop-ended-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+
+.drop-ended-badge {
+    background: #111827;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 800;
+    padding: 12px 28px;
+    border-radius: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* ── Leaderboard ── */
+.drop-leaderboard-section {
+    padding: 60px 0;
+    background: var(--color-bg, #f8f9fb);
+}
+
+.drop-lb-header {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.drop-lb-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+    letter-spacing: -0.03em;
+}
+
+.drop-lb-subtitle {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary, #6b7280);
+    margin-top: 4px;
+}
+
+.drop-lb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.drop-lb-card {
+    background: var(--color-surface, #fff);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--color-border-light, #eef0f3);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.drop-lb-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.drop-lb-rank {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-gradient-start), #a855f7);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.drop-lb-rank.gold {
+    background: linear-gradient(135deg, #f59e0b, #f97316);
+}
+
+.drop-lb-rank.silver {
+    background: linear-gradient(135deg, #9ca3af, #6b7280);
+}
+
+.drop-lb-rank.bronze {
+    background: linear-gradient(135deg, #d97706, #b45309);
+}
+
+.drop-lb-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.drop-lb-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.drop-lb-name {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--color-text-primary, #111827);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.drop-lb-revenue {
+    font-size: 0.75rem;
+    color: #10b981;
+    font-weight: 700;
+}
+
+/* ── Dark Theme ── */
+body[data-theme="dark"] .drop-hero {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+body[data-theme="dark"] .drop-cd-unit {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+body[data-theme="dark"] .drop-lb-card {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .drop-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .drop-image-side {
+        min-height: 260px;
+    }
+
+    .drop-info-side {
+        padding: 28px 24px;
+    }
+
+    .drop-title {
+        font-size: 1.35rem;
+    }
+
+    .drop-price {
+        font-size: 1.5rem;
+    }
+
+    .drop-countdown {
+        flex-wrap: wrap;
+    }
+
+    .drop-lb-grid {
+        grid-template-columns: 1fr;
+    }
+}
