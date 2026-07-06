@@ -5,7 +5,7 @@
  */
 
 /* ═══ CONFIG ═══ */
-const AIC_API_URL = 'http://localhost:5000/api/ai/chat';
+const AIC_API_URL = 'https://vendorverse-ekf8.onrender.com/api/ai/chat';
 const AIC_HISTORY_KEY = 'vendorverse_aic_history';
 const AIC_MAX_HISTORY = 40;
 

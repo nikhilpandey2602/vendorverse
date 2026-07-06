@@ -10,7 +10,7 @@
 // 
 
 // Backend API base URL - Change if your backend runs on a different port
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://vendorverse-ekf8.onrender.com";
 
 // LocalStorage keys for auth data
 const TOKEN_KEY = 'vendorverse_token';

@@ -8,7 +8,7 @@
 // 
 
 const CART_KEY = 'vendorverse_cart';
-const API_BASE = 'http://localhost:5000';
+const API_BASE = 'https://vendorverse-ekf8.onrender.com';
 const TOKEN_KEY = 'vendorverse_token';
 
 // 

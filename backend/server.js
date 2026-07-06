@@ -11,6 +11,7 @@ console.log("MONGO_URI from env:", process.env.MONGO_URI);
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const connectDB = require('./config/database');
 
 // Import routes
@@ -82,6 +83,19 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/ai', aiRoutes);
+
+// 
+// Static File Serving (Frontend)
+// Serve the frontend HTML/CSS/JS from the project root (one level up from /backend)
+// 
+app.use(express.static(path.join(__dirname, '..')));
+
+// Catch-all: serve index.html for any non-API route (SPA-style fallback)
+app.get('*', (req, res, next) => {
+    // Let API routes fall through to the 404 handler
+    if (req.path.startsWith('/api/')) return next();
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
 
 // 
 // Error Handling
