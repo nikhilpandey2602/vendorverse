@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="mobile.css">
     <title>Vendor Dashboard — VendorVerse</title>
     <!-- Theme Initialization to prevent flash of wrong theme -->
     <script>
@@ -23,6 +24,9 @@
 <body>
 
 <div class="vd">
+    <!-- Mobile sidebar toggle -->
+    <button class="vd-sidebar-toggle" id="vd-sidebar-toggle" aria-label="Toggle sidebar">☰</button>
+    <div class="vd-sidebar-backdrop" id="vd-sidebar-backdrop"></div>
     <!-- ════ SIDEBAR ════ -->
     <aside class="vd-sidebar">
         <div class="vd-sb-top">
@@ -280,5 +284,46 @@
 
 <script src="theme.js"></script>
     <script src="vendor-dashboard.js"></script>
+<script>
+// Mobile sidebar toggle
+(function() {
+    var toggle = document.getElementById('vd-sidebar-toggle');
+    var sidebar = document.querySelector('.vd-sidebar');
+    var backdrop = document.getElementById('vd-sidebar-backdrop');
+    if (!toggle || !sidebar) return;
+    
+    function openSidebar() {
+        sidebar.classList.add('open');
+        if (backdrop) backdrop.classList.add('active');
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('active');
+    }
+    
+    toggle.addEventListener('click', function() {
+        if (sidebar.classList.contains('open')) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    });
+    
+    if (backdrop) {
+        backdrop.addEventListener('click', closeSidebar);
+    }
+    
+    // Close sidebar when a nav link is clicked on mobile
+    var navLinks = sidebar.querySelectorAll('.vd-sb-link');
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+            if (window.innerWidth < 768) {
+                closeSidebar();
+            }
+        });
+    });
+})();
+</script>
+    <script src="mobile.js" defer></script>
 </body>
 </html>

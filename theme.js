@@ -196,3 +196,59 @@ if (document.readyState === 'loading') {
 window.applyTheme = applyTheme;
 window.getCurrentTheme = getCurrentTheme;
 window.toggleTheme = toggleTheme;
+
+// Mobile Navbar Hamburger & Overlay Toggle behavior
+document.addEventListener('DOMContentLoaded', () => {
+    const header = document.getElementById('header');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    if (!header || !mobileMenuBtn) return;
+
+    mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = header.classList.contains('mobile-menu-open');
+        if (isOpen) {
+            header.classList.remove('mobile-menu-open');
+            document.body.style.overflow = '';
+        } else {
+            header.classList.add('mobile-menu-open');
+            document.body.style.overflow = 'hidden';
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (header.classList.contains('mobile-menu-open')) {
+            const isClickInsideMenuContent = e.target.closest('.search-container') || 
+                                             e.target.closest('.header-actions') || 
+                                             e.target.closest('.logo') || 
+                                             e.target.closest('.mobile-menu-btn');
+            if (!isClickInsideMenuContent) {
+                header.classList.remove('mobile-menu-open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close dashboard sidebars when clicking outside on mobile
+        if (window.innerWidth < 768) {
+            // Vendor Dashboard sidebar
+            const vdSidebar = document.querySelector('.vd-sidebar');
+            const vdToggle = document.getElementById('vd-sidebar-toggle');
+            if (vdSidebar && vdSidebar.classList.contains('open')) {
+                if (!vdSidebar.contains(e.target) && (!vdToggle || !vdToggle.contains(e.target))) {
+                    vdSidebar.classList.remove('open');
+                    const backdrop = document.getElementById('vd-sidebar-backdrop');
+                    if (backdrop) backdrop.classList.remove('active');
+                }
+            }
+
+            // Creator Studio sidebar
+            const creatorSidebar = document.querySelector('.creator-sidebar');
+            const creatorToggle = document.getElementById('sidebar-toggle');
+            if (creatorSidebar && creatorSidebar.classList.contains('open')) {
+                if (!creatorSidebar.contains(e.target) && (!creatorToggle || !creatorToggle.contains(e.target))) {
+                    creatorSidebar.classList.remove('open');
+                }
+            }
+        }
+    });
+});
+

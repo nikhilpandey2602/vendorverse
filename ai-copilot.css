@@ -530,6 +530,28 @@ body[data-theme="dark"] .aic-messages::-webkit-scrollbar-thumb {
 }
 
 /* ── Responsive ── */
+@media (max-width: 767px) {
+    .aic-panel {
+        right: 20px;
+        left: 20px;
+        width: auto;
+        bottom: 88px;
+        max-height: 70vh;
+        border-radius: 16px;
+    }
+
+    .aic-bubble {
+        right: 20px;
+        bottom: 20px;
+        width: 54px;
+        height: 54px;
+    }
+
+    .aic-messages {
+        max-height: 50vh;
+    }
+}
+
 @media (max-width: 480px) {
     .aic-panel {
         right: 10px;

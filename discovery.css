@@ -1073,7 +1073,8 @@ body[data-theme="dark"] #filter-panel {
 
     .filter-fab {
         bottom: 20px;
-        right: 16px;
+        right: auto;
+        left: 16px;
     }
 
     .search-results-grid {

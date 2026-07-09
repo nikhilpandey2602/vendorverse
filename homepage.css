@@ -859,3 +859,141 @@ body[data-theme="light"] .mobile-menu-btn span{background:#fff!important}
 
 /* ── Push page content below fixed navbar ── */
 #main-content{padding-top:0}
+
+/* ═══════════════════════════════════════════════
+   MOBILE RESPONSIVE — 768px BREAKPOINT
+   ═══════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* ── HERO SECTION ── */
+  .dsa-hero {
+    min-height: auto;
+    height: auto;
+  }
+
+  .dsa-content {
+    flex-direction: column;
+    text-align: left;
+    padding: 100px 1.25rem 2rem;
+    min-height: auto;
+    gap: 0;
+  }
+
+  .dsa-left {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .dsa-right {
+    display: none !important;
+  }
+
+  .dsa-headline {
+    font-size: clamp(36px, 8vw, 48px) !important;
+    letter-spacing: -1px;
+  }
+
+  .dsa-sub {
+    max-width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .dsa-cta-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .dsa-btn-primary,
+  .dsa-btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+    text-align: center;
+  }
+
+  .dsa-trust {
+    justify-content: flex-start;
+  }
+
+  .dsa-dots {
+    bottom: 1rem;
+  }
+
+  .dsa-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .dsa-arrow-prev {
+    left: 0.75rem;
+  }
+
+  .dsa-arrow-next {
+    right: 0.75rem;
+  }
+
+  /* Slide 2 */
+  .s2-headline {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+
+  .s2-bottom {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  .s2-badge {
+    display: none;
+  }
+
+  /* Slide 3 */
+  .s3-brand {
+    font-size: clamp(2rem, 10vw, 3.5rem);
+  }
+
+  .s3-stats {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .s3-stat {
+    padding: 0 1rem;
+  }
+
+  .s3-stat-divider {
+    display: none;
+  }
+
+  .s3-bottom {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  /* ── CATEGORY PILLS ── */
+  .vv-section-header {
+    padding: 0 1rem;
+  }
+
+  .vv-section-title {
+    font-size: 26px;
+  }
+
+  /* ── PRODUCT GRID ── */
+  .vv-product-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 16px;
+  }
+
+  .vv-product-section {
+    padding: 3rem 0;
+  }
+
+  .vv-section-toolbar {
+    padding: 0 16px;
+  }
+}
