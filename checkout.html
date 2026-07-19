@@ -1893,6 +1893,11 @@
                 const confirmScreen = document.getElementById('confirmation-screen');
                 confirmScreen.classList.add('active');
 
+                // Show toast notification
+                if (typeof showVVToast === 'function') {
+                    showVVToast('Order placed successfully', '🎉');
+                }
+
                 // Scroll to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
 

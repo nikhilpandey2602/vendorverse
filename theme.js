@@ -252,3 +252,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// 
+// Dynamic Loader for Shared Toast System
+// 
+(function () {
+    if (!document.getElementById('vv-toast-styles')) {
+        const link = document.createElement('link');
+        link.id = 'vv-toast-styles';
+        link.rel = 'stylesheet';
+        link.href = 'toast.css';
+        document.head.appendChild(link);
+    }
+    if (!window.showVVToast) {
+        window.showVVToast = function (message, icon) {
+            window.showVVToast.q = window.showVVToast.q || [];
+            window.showVVToast.q.push({ message: message, icon: icon });
+        };
+        const script = document.createElement('script');
+        script.src = 'toast.js';
+        script.async = true;
+        document.head.appendChild(script);
+    }
+})();
+
+

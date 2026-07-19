@@ -4,6 +4,29 @@
  */
 
 // 
+// Dynamic Loader for shared toast styles and script
+// 
+(function () {
+    if (!document.getElementById('vv-toast-styles')) {
+        const link = document.createElement('link');
+        link.id = 'vv-toast-styles';
+        link.rel = 'stylesheet';
+        link.href = 'toast.css';
+        document.head.appendChild(link);
+    }
+    if (!window.showVVToast) {
+        window.showVVToast = function (message, icon) {
+            window.showVVToast.q = window.showVVToast.q || [];
+            window.showVVToast.q.push({ message: message, icon: icon });
+        };
+        const script = document.createElement('script');
+        script.src = 'toast.js';
+        script.async = true;
+        document.head.appendChild(script);
+    }
+})();
+
+// 
 // Configuration
 // 
 
@@ -63,7 +86,7 @@ function addToCart(product) {
     }
 
     saveCart(cart);
-    showToastNotification('Added to cart! 🛒');
+    showVVToast('Added to cart', '🛒');
     return cart;
 }
 
@@ -317,7 +340,7 @@ async function placeOrder() {
                 if (typeof openDashboard === 'function') {
                     openDashboard('orders');
                 }
-                showToastNotification('Order placed! Check My Orders for details 📦');
+                showVVToast('Order placed successfully', '🎉');
             }, 2000);
         } else {
             showCheckoutMessage(data.message || 'Failed to place order. Please try again.', 'error');
@@ -459,7 +482,7 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.addEventListener('click', function (e) {
             e.stopPropagation();
             this.classList.toggle('active');
-            showToastNotification('Added to wishlist ❤️');
+            showVVToast('Added to wishlist', '❤️');
         });
     });
 });
@@ -480,26 +503,10 @@ window.closeCheckout = closeCheckout;
 window.placeOrder = placeOrder;
 window.showToastNotification = showToastNotification;
 
-// Toast notification function (if not already defined)
+// Toast notification function — delegates to the shared toast system.
+// Kept for backward compatibility with auth.js and other callers.
 function showToastNotification(message) {
-    // Check if toast container exists
-    let container = document.getElementById('toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'toast-container';
-        container.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;';
-        document.body.appendChild(container);
+    if (typeof showVVToast === 'function') {
+        showVVToast(message);
     }
-
-    const toast = document.createElement('div');
-    toast.style.cssText = 'background:#333;color:white;padding:12px 20px;border-radius:8px;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.2);animation:slideIn 0.3s ease;';
-    toast.textContent = message;
-    container.appendChild(toast);
-
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(100px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
 }

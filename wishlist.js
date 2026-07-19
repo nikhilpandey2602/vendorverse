@@ -5,6 +5,25 @@
 (function() {
   'use strict';
 
+  // Dynamic Loader for shared toast styles and script
+  if (!document.getElementById('vv-toast-styles')) {
+    const link = document.createElement('link');
+    link.id = 'vv-toast-styles';
+    link.rel = 'stylesheet';
+    link.href = 'toast.css';
+    document.head.appendChild(link);
+  }
+  if (!window.showVVToast) {
+    window.showVVToast = function (message, icon) {
+      window.showVVToast.q = window.showVVToast.q || [];
+      window.showVVToast.q.push({ message: message, icon: icon });
+    };
+    const script = document.createElement('script');
+    script.src = 'toast.js';
+    script.async = true;
+    document.head.appendChild(script);
+  }
+
   const STORAGE_KEY = 'vendorverse_wishlist';
   const CART_KEY = 'vendorverse_cart';
 
@@ -44,11 +63,9 @@
 
   // ═══ TOAST ═══
   function showToast(msg) {
-    const t = document.getElementById('wl-toast');
-    if (!t) return;
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
+    if (typeof showVVToast === 'function') {
+      showVVToast(msg);
+    }
   }
 
   // ═══ STAR GENERATOR ═══
@@ -157,7 +174,7 @@
       cart.push({ id: item.id, name: item.name, price: item.price, image: item.image, qty: 1 });
       saveCart(cart);
     }
-    showToast('Added to cart!');
+    showToast('Added to cart');
     // Update cart badge if exists
     const cb = document.querySelector('.cart-badge');
     if (cb) cb.textContent = getCart().length;
