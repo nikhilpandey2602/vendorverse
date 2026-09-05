@@ -1588,13 +1588,13 @@
             container.innerHTML = cartItems.map(item => `
                 <div class="summary-item">
                     <div class="summary-item-thumb">
-                        <img src="${item.image || 'https://via.placeholder.com/44'}" alt="${item.title}" loading="lazy">
+                        <img src="${escapeHtml(item.image) || 'https://via.placeholder.com/44'}" alt="${escapeHtml(item.title)}" loading="lazy">
                     </div>
                     <div class="summary-item-info">
-                        <div class="summary-item-name">${item.title}</div>
-                        <div class="summary-item-qty">Qty: ${item.quantity}</div>
+                        <div class="summary-item-name">${escapeHtml(item.title)}</div>
+                        <div class="summary-item-qty">Qty: ${escapeHtml(item.quantity)}</div>
                     </div>
-                    <div class="summary-item-price">₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
+                    <div class="summary-item-price">₹${(Number(item.price) * Number(item.quantity)).toLocaleString('en-IN')}</div>
                 </div>
             `).join('');
         }
@@ -1847,19 +1847,19 @@
                 const upiId = document.getElementById('upi-id').value;
                 if (upiId) paymentDetail += ` (${upiId})`;
             }
-            document.getElementById('review-payment').innerHTML = `<p><strong>${paymentDetail}</strong></p>`;
+            document.getElementById('review-payment').innerHTML = `<p><strong>${escapeHtml(paymentDetail)}</strong></p>`;
 
             // Cart items
             const itemsHtml = cartItems.map(item => `
                 <div class="review-cart-item">
                     <div class="review-item-thumb">
-                        <img src="${item.image || 'https://via.placeholder.com/56'}" alt="${item.title}" loading="lazy">
+                        <img src="${escapeHtml(item.image) || 'https://via.placeholder.com/56'}" alt="${escapeHtml(item.title)}" loading="lazy">
                     </div>
                     <div class="review-item-info">
-                        <div class="review-item-name">${item.title}</div>
-                        <div class="review-item-qty">Qty: ${item.quantity}</div>
+                        <div class="review-item-name">${escapeHtml(item.title)}</div>
+                        <div class="review-item-qty">Qty: ${escapeHtml(item.quantity)}</div>
                     </div>
-                    <div class="review-item-price">₹${(item.price * item.quantity).toLocaleString('en-IN')}</div>
+                    <div class="review-item-price">₹${(Number(item.price) * Number(item.quantity)).toLocaleString('en-IN')}</div>
                 </div>
             `).join('');
             document.getElementById('review-items').innerHTML = itemsHtml || '<p style="color:var(--color-text-muted);">No items</p>';

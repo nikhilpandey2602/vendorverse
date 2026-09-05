@@ -31,7 +31,11 @@ function aicDetectContext() {
 /* ═══ MARKDOWN PARSER ═══ */
 function aicParseMarkdown(text) {
     if (!text) return '';
-    return text
+    // SECURITY: escape raw HTML first. The AI output is untrusted — it can echo
+    // user input (which is sent to the model) and would otherwise render as live
+    // HTML/JS in the chat. Markdown tags are generated AFTER escaping.
+    const escaped = aicEscapeHtml(text);
+    return escaped
         // Bold
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         // Italic

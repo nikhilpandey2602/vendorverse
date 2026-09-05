@@ -515,11 +515,11 @@
             container.innerHTML = cart.map(item => `
                 <div class="cart-item" data-id="${item.id}">
                     <div class="cart-item-image">
-                        <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${item.title}">
+                        <img src="${escapeHtml(item.image) || 'https://via.placeholder.com/100'}" alt="${escapeHtml(item.title)}">
                     </div>
                     <div class="cart-item-details">
-                        <h3 class="cart-item-title">${item.title}</h3>
-                        <p class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</p>
+                        <h3 class="cart-item-title">${escapeHtml(item.title)}</h3>
+                        <p class="cart-item-price">₹${escapeHtml(item.price.toLocaleString('en-IN'))}</p>
                     </div>
                     <div class="cart-item-actions">
                         <div class="quantity-controls">

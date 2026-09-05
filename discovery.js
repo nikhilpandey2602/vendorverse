@@ -331,9 +331,20 @@ const CATEGORIES = [
     { id: 'minimal',      label: 'Minimal Essentials',icon: '◻' }
 ];
 
-let activeCategory  = 'all';
-let activePriceMax  = 20000;
-let activeRating    = 0;
+let activeCategory    = 'all';
+let activePriceMin    = null;
+let activePriceMax    = null;
+let activeRating      = 0;
+let activeSearchQuery = '';
+let activeSort        = 'default';
+
+function debounce(fn, delay = 300) {
+    let timer = null;
+    return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
 
 function initCategoryChips() {
     const chipsWrap = document.getElementById('category-chips');
@@ -358,19 +369,285 @@ function initCategoryChips() {
     renderDiscoverGrid();
 }
 
+function renderActiveFilterPills() {
+    const container = document.getElementById('marketplace-active-filters');
+    if (!container) return;
+
+    const pills = [];
+
+    // Search query pill
+    if (activeSearchQuery.trim()) {
+        pills.push({
+            type: 'search',
+            label: `Search: "${activeSearchQuery.trim()}"`,
+            onRemove: () => {
+                activeSearchQuery = '';
+                const searchInput = document.getElementById('marketplace-search');
+                if (searchInput) searchInput.value = '';
+                const clearBtn = document.getElementById('marketplace-search-clear');
+                if (clearBtn) clearBtn.classList.remove('visible');
+                renderDiscoverGrid();
+            }
+        });
+    }
+
+    // Category pill
+    if (activeCategory !== 'all') {
+        const catObj = CATEGORIES.find(c => c.id === activeCategory);
+        const catName = catObj ? catObj.label : activeCategory;
+        pills.push({
+            type: 'category',
+            label: `Category: ${catName}`,
+            onRemove: () => {
+                activeCategory = 'all';
+                const chipsWrap = document.getElementById('category-chips');
+                if (chipsWrap) {
+                    chipsWrap.querySelectorAll('.category-chip').forEach(c => {
+                        c.classList.toggle('active', c.dataset.cat === 'all');
+                    });
+                }
+                renderDiscoverGrid();
+            }
+        });
+    }
+
+    // Min price pill
+    if (activePriceMin !== null && !isNaN(activePriceMin) && activePriceMin > 0) {
+        pills.push({
+            type: 'priceMin',
+            label: `Min: ₹${activePriceMin.toLocaleString('en-IN')}`,
+            onRemove: () => {
+                activePriceMin = null;
+                const minInput = document.getElementById('marketplace-price-min');
+                if (minInput) minInput.value = '';
+                renderDiscoverGrid();
+            }
+        });
+    }
+
+    // Max price pill
+    if (activePriceMax !== null && !isNaN(activePriceMax) && isFinite(activePriceMax) && activePriceMax < 20000) {
+        pills.push({
+            type: 'priceMax',
+            label: `Max: ₹${activePriceMax.toLocaleString('en-IN')}`,
+            onRemove: () => {
+                activePriceMax = null;
+                const maxInput = document.getElementById('marketplace-price-max');
+                if (maxInput) maxInput.value = '';
+                renderDiscoverGrid();
+            }
+        });
+    }
+
+    // Rating pill (from filter panel if used)
+    if (activeRating > 0) {
+        pills.push({
+            type: 'rating',
+            label: `Rating: ${activeRating}★+`,
+            onRemove: () => {
+                activeRating = 0;
+                document.querySelectorAll('.rating-filter-btn').forEach(b => b.classList.remove('active'));
+                renderDiscoverGrid();
+            }
+        });
+    }
+
+    // Sort pill
+    if (activeSort && activeSort !== 'default') {
+        const sortLabels = {
+            'price-asc': 'Price: Low → High',
+            'price-desc': 'Price: High → Low',
+            'newest': 'Newest First',
+            'name-az': 'Name: A → Z'
+        };
+        pills.push({
+            type: 'sort',
+            label: `Sort: ${sortLabels[activeSort] || activeSort}`,
+            onRemove: () => {
+                activeSort = 'default';
+                const sortSelect = document.getElementById('marketplace-sort');
+                if (sortSelect) sortSelect.value = 'default';
+                renderDiscoverGrid();
+            }
+        });
+    }
+
+    if (pills.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+
+    container.innerHTML = pills.map((p, idx) => `
+        <span class="filter-pill" data-pill-idx="${idx}">
+            ${p.label}
+            <button class="filter-pill-dismiss" aria-label="Remove filter">✕</button>
+        </span>
+    `).join('') + `<button class="filter-clear-all" type="button">Clear all</button>`;
+
+    container.querySelectorAll('.filter-pill').forEach((pillEl, idx) => {
+        pillEl.querySelector('.filter-pill-dismiss')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            pills[idx].onRemove();
+        });
+    });
+
+    container.querySelector('.filter-clear-all')?.addEventListener('click', resetAllMarketplaceFilters);
+}
+
+function resetAllMarketplaceFilters() {
+    activeCategory    = 'all';
+    activeSearchQuery = '';
+    activePriceMin    = null;
+    activePriceMax    = null;
+    activeRating      = 0;
+    activeSort        = 'default';
+
+    const searchInput = document.getElementById('marketplace-search');
+    if (searchInput) searchInput.value = '';
+    const searchClear = document.getElementById('marketplace-search-clear');
+    if (searchClear) searchClear.classList.remove('visible');
+
+    const sortSelect = document.getElementById('marketplace-sort');
+    if (sortSelect) sortSelect.value = 'default';
+
+    const minInput = document.getElementById('marketplace-price-min');
+    if (minInput) minInput.value = '';
+
+    const maxInput = document.getElementById('marketplace-price-max');
+    if (maxInput) maxInput.value = '';
+
+    const chipsWrap = document.getElementById('category-chips');
+    if (chipsWrap) {
+        chipsWrap.querySelectorAll('.category-chip').forEach(c => {
+            c.classList.toggle('active', c.dataset.cat === 'all');
+        });
+    }
+
+    document.querySelectorAll('.rating-filter-btn').forEach(b => b.classList.remove('active'));
+
+    const priceSlider = document.getElementById('filter-price');
+    const priceDisplay = document.getElementById('price-display');
+    if (priceSlider) {
+        priceSlider.value = 20000;
+        if (priceDisplay) priceDisplay.textContent = `Up to ${fmt(20000)}`;
+        updateSliderFill(priceSlider);
+    }
+
+    renderDiscoverGrid();
+}
+
+function initMarketplaceControls() {
+    const searchInput = document.getElementById('marketplace-search');
+    const searchClear = document.getElementById('marketplace-search-clear');
+    const sortSelect  = document.getElementById('marketplace-sort');
+    const minInput    = document.getElementById('marketplace-price-min');
+    const maxInput    = document.getElementById('marketplace-price-max');
+
+    // Debounced real-time search (~300ms)
+    if (searchInput) {
+        const handleSearch = debounce((val) => {
+            activeSearchQuery = val;
+            renderDiscoverGrid();
+        }, 300);
+
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            if (searchClear) {
+                searchClear.classList.toggle('visible', val.length > 0);
+            }
+            handleSearch(val);
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                activeSearchQuery = searchInput.value;
+                renderDiscoverGrid();
+            }
+        });
+    }
+
+    // Clear search button
+    if (searchClear) {
+        searchClear.addEventListener('click', () => {
+            if (searchInput) searchInput.value = '';
+            searchClear.classList.remove('visible');
+            activeSearchQuery = '';
+            renderDiscoverGrid();
+            searchInput?.focus();
+        });
+    }
+
+    // Sort select
+    if (sortSelect) {
+        sortSelect.addEventListener('change', (e) => {
+            activeSort = e.target.value;
+            renderDiscoverGrid();
+        });
+    }
+
+    // Price range inputs (debounced ~300ms)
+    const handlePriceFilter = debounce(() => {
+        const minVal = minInput && minInput.value.trim() !== '' ? Number(minInput.value) : null;
+        const maxVal = maxInput && maxInput.value.trim() !== '' ? Number(maxInput.value) : null;
+        activePriceMin = minVal;
+        activePriceMax = maxVal;
+        renderDiscoverGrid();
+    }, 300);
+
+    minInput?.addEventListener('input', handlePriceFilter);
+    maxInput?.addEventListener('input', handlePriceFilter);
+}
+
 function renderDiscoverGrid() {
     const grid = document.getElementById('discover-grid');
     if (!grid) return;
 
     let products = PRODUCT_DATA.filter(p => {
-        const catOk  = activeCategory === 'all' || p.category === activeCategory;
-        const priceOk = p.price <= activePriceMax;
-        const rateOk  = p.rating >= activeRating;
-        return catOk && priceOk && rateOk;
+        const catOk = activeCategory === 'all' || p.category === activeCategory;
+
+        const q = activeSearchQuery.trim().toLowerCase();
+        const searchOk = !q || (
+            (p.title && p.title.toLowerCase().includes(q)) ||
+            (p.description && p.description.toLowerCase().includes(q)) ||
+            (p.brand && p.brand.toLowerCase().includes(q))
+        );
+
+        const minOk = activePriceMin === null || isNaN(activePriceMin) || p.price >= activePriceMin;
+        const maxOk = activePriceMax === null || isNaN(activePriceMax) || p.price <= activePriceMax;
+        const rateOk = p.rating >= activeRating;
+
+        return catOk && searchOk && minOk && maxOk && rateOk;
     });
 
+    // Sorting
+    if (activeSort === 'price-asc') {
+        products.sort((a, b) => a.price - b.price);
+    } else if (activeSort === 'price-desc') {
+        products.sort((a, b) => b.price - a.price);
+    } else if (activeSort === 'newest') {
+        products = [...products].reverse();
+    } else if (activeSort === 'name-az') {
+        products.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    // Update results count & active pills
+    const countEl = document.getElementById('marketplace-results-count');
+    if (countEl) {
+        countEl.innerHTML = `Showing <strong>${products.length}</strong> of <strong>${PRODUCT_DATA.length}</strong> products`;
+    }
+    renderActiveFilterPills();
+
     if (products.length === 0) {
-        grid.innerHTML = `<div class="discover-empty">No products match your filters.</div>`;
+        grid.innerHTML = `
+            <div class="discover-empty-enhanced">
+                <div class="discover-empty-icon">🔍</div>
+                <h3 class="discover-empty-title">No products found</h3>
+                <p class="discover-empty-subtitle">We couldn't find any products matching your current filters. Try searching for something else or clearing filters.</p>
+                <button class="discover-empty-clear-btn" id="discover-empty-clear" type="button">Clear All Filters</button>
+            </div>
+        `;
+        document.getElementById('discover-empty-clear')?.addEventListener('click', resetAllMarketplaceFilters);
         return;
     }
 
@@ -382,7 +659,7 @@ function renderDiscoverGrid() {
         const userRating = ratings[p.id] || p.rating;
         return `
         <article class="product-card lazy-reveal" data-product-id="${p.id}"
-                 style="animation-delay:${i * 60}ms">
+                 style="animation-delay:${Math.min(i * 50, 400)}ms">
             <div class="product-image-container">
                 <a href="product-detail.html?name=${encodeURIComponent(p.title)}&price=${p.price}&image=${encodeURIComponent(p.image)}&vendor=${encodeURIComponent(p.brand)}">
                     <img src="${p.image}" alt="${p.title}" class="product-image" loading="lazy">
@@ -485,17 +762,25 @@ function initFilterPanel() {
 
     applyBtn?.addEventListener('click', () => {
         const selRating = document.querySelector('.rating-filter-btn.active');
-        activePriceMax = Number(priceSlider?.value || 20000);
+        const sliderVal = Number(priceSlider?.value || 20000);
+        // Only set activePriceMax if slider is not at max position
+        activePriceMax = sliderVal < 20000 ? sliderVal : null;
         activeRating   = selRating ? Number(selRating.dataset.rating) : 0;
+        // Sync the marketplace max input
+        const maxInput = document.getElementById('marketplace-price-max');
+        if (maxInput) maxInput.value = activePriceMax !== null ? activePriceMax : '';
         renderDiscoverGrid();
         closePanel();
     });
 
     resetBtn?.addEventListener('click', () => {
-        activePriceMax = 20000;
+        activePriceMax = null;
         activeRating   = 0;
         if (priceSlider) { priceSlider.value = 20000; if (priceDisplay) priceDisplay.textContent = `Up to ${fmt(20000)}`; }
         document.querySelectorAll('.rating-filter-btn').forEach(b => b.classList.remove('active'));
+        // Sync the marketplace max input
+        const maxInput = document.getElementById('marketplace-price-max');
+        if (maxInput) maxInput.value = '';
         renderDiscoverGrid();
     });
 }
@@ -637,8 +922,8 @@ function openQuickView(product) {
     // Cart button
     const addBtn = modal.querySelector('#qv-add-cart');
     addBtn.onclick = () => {
-        addToDiscoverCart(product);
-        closeQuickView();
+        addToDiscoverCart(product, addBtn);
+        setTimeout(() => closeQuickView(), 800);
     };
 
     // Wishlist button
@@ -705,7 +990,7 @@ function attachCardHandlers(container) {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const product = PRODUCT_DATA.find(p => p.id === btn.dataset.id);
-            if (product) addToDiscoverCart(product);
+            if (product) addToDiscoverCart(product, btn);
         });
     });
 
@@ -733,7 +1018,7 @@ function attachCardHandlers(container) {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const product = PRODUCT_DATA.find(p => p.id === btn.dataset.id);
-            if (product) addToDiscoverCart(product);
+            if (product) addToDiscoverCart(product, btn);
         });
     });
 
@@ -745,7 +1030,7 @@ function attachCardHandlers(container) {
    ADD TO CART BRIDGE
    calls existing cart.js addToCart or falls back
    ════════════════════════════════════════════ */
-function addToDiscoverCart(product) {
+function addToDiscoverCart(product, triggerBtn) {
     const cartItem = {
         id: product.id,
         productId: product.id,
@@ -770,6 +1055,28 @@ function addToDiscoverCart(product) {
         // Update badge
         if (typeof updateCartBadgeCount === 'function') updateCartBadgeCount();
         if (typeof showToast === 'function') showToast('Added to cart', 'success');
+    }
+
+    // ── Visual Click Feedback on the triggering button ──
+    if (triggerBtn && !triggerBtn.classList.contains('atc-feedback-active')) {
+        triggerBtn.classList.add('atc-feedback-active');
+        const originalHTML = triggerBtn.innerHTML;
+        const isQaBtn = triggerBtn.classList.contains('qa-cart');
+
+        // Set "Added ✓" state
+        triggerBtn.innerHTML = isQaBtn
+            ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Added!`
+            : '✓ Added!';
+
+        // Animate
+        triggerBtn.style.pointerEvents = 'none';
+
+        // Revert after 1.5s
+        setTimeout(() => {
+            triggerBtn.innerHTML = originalHTML;
+            triggerBtn.classList.remove('atc-feedback-active');
+            triggerBtn.style.pointerEvents = '';
+        }, 1500);
     }
 }
 
@@ -845,7 +1152,7 @@ function upgradeExistingCards() {
         card.querySelector('.qa-cart')?.addEventListener('click', (e) => {
             e.stopPropagation();
             const p = PRODUCT_DATA.find(x => x.id === e.currentTarget.dataset.id);
-            if (p) addToDiscoverCart(p);
+            if (p) addToDiscoverCart(p, e.currentTarget);
         });
 
         card.querySelector('.qa-quickview')?.addEventListener('click', (e) => {
@@ -863,6 +1170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLiveSearch();
     initCategoryChips();
     initFilterPanel();
+    initMarketplaceControls();
     initWishlistSystem();
     initQuickView();
     initMicroAnimations();

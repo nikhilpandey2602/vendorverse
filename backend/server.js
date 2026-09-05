@@ -5,12 +5,15 @@
 
 // Load environment variables first
 require('dotenv').config();
-console.log("JWT_SECRET from env:", process.env.JWT_SECRET);
-console.log("MONGO_URI from env:", process.env.MONGO_URI);
+
+// NOTE: Never log JWT_SECRET, MONGO_URI, or API keys to the console or logs.
+// They are sensitive and would be exposed wherever server logs are stored.
 
 
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const path = require('path');
 const connectDB = require('./config/database');
 
@@ -31,13 +34,62 @@ connectDB();
 // Middleware
 // 
 
-// Enable CORS
+// Security headers (Helmet). CSP is disabled because the frontend uses
+// inline scripts and CDN assets; a proper CSP should be added separately.
+app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false
+}));
+
+// CORS allowlist — explicit origins only, never '*' with credentials.
+const allowedOrigins = (
+    process.env.CORS_ORIGINS ||
+    'http://localhost:5000,http://localhost:5500,http://127.0.0.1:5500,https://vendorverse-ekf8.onrender.com'
+).split(',').map(s => s.trim()).filter(Boolean);
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
+    origin(origin, callback) {
+        // Allow requests with no Origin header (curl, server-to-server, same-origin)
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        const err = new Error('Origin not allowed by CORS');
+        err.statusCode = 403;
+        return callback(err);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Rate limiting
+const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 300,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, message: 'Too many requests. Please try again later.' }
+});
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20, // login/register attempts per 15 min per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, message: 'Too many login attempts. Please try again later.' }
+});
+
+const aiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 25, // protect the Gemini API key from quota abuse
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, message: 'Too many AI requests. Please slow down.' }
+});
+
+app.use('/api', globalLimiter);
+app.use('/api/auth', authLimiter);
+app.use('/api/ai', aiLimiter);
 
 // Parse JSON bodies
 app.use(express.json({ limit: '10mb' }));
@@ -84,10 +136,27 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/ai', aiRoutes);
 
-// 
+//
 // Static File Serving (Frontend)
 // Serve the frontend HTML/CSS/JS from the project root (one level up from /backend)
-// 
+//
+
+// SECURITY: Block sensitive paths (backend source, dependencies, dotfiles,
+// git metadata) from ever being served as static files.
+const BLOCKED_STATIC_PREFIXES = ['/backend', '/node_modules', '/.git', '/screenshots', '/.claude'];
+app.use((req, res, next) => {
+    const lowerPath = req.path.toLowerCase();
+    const lastSegment = req.path.split('/').pop();
+
+    const isBlocked = BLOCKED_STATIC_PREFIXES.some(prefix => lowerPath === prefix || lowerPath.startsWith(prefix + '/'));
+    const isDotfile = lastSegment.startsWith('.') && lastSegment.length > 1;
+
+    if (isBlocked || isDotfile) {
+        return res.status(403).json({ success: false, message: 'Forbidden' });
+    }
+    next();
+});
+
 app.use(express.static(path.join(__dirname, '..')));
 
 // Catch-all: serve index.html for any non-API route (SPA-style fallback)

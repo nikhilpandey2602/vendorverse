@@ -122,10 +122,19 @@ const getProduct = async (req, res) => {
  */
 const createProduct = async (req, res) => {
     try {
-        // Set seller to current user
-        req.body.seller = req.user._id;
+        // SECURITY: Whitelist fields instead of passing the whole body.
+        // Prevents mass assignment of seller, isFeatured, isActive, ratings, reviews.
+        const allowedFields = [
+            'title', 'slug', 'description', 'price', 'category', 'subcategory',
+            'brand', 'images', 'inventory', 'specifications', 'tags'
+        ];
+        const productData = {};
+        for (const key of allowedFields) {
+            if (req.body[key] !== undefined) productData[key] = req.body[key];
+        }
+        productData.seller = req.user._id;
 
-        const product = await Product.create(req.body);
+        const product = await Product.create(productData);
 
         res.status(201).json({
             success: true,
@@ -166,7 +175,18 @@ const updateProduct = async (req, res) => {
             });
         }
 
-        product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+        // SECURITY: Whitelist fields — never merge the raw body (mass assignment
+        // could change seller, isFeatured, ratings, reviews, isActive, etc.).
+        const allowedFields = [
+            'title', 'slug', 'description', 'price', 'category', 'subcategory',
+            'brand', 'images', 'inventory', 'specifications', 'tags', 'isActive'
+        ];
+        const updateData = {};
+        for (const key of allowedFields) {
+            if (req.body[key] !== undefined) updateData[key] = req.body[key];
+        }
+
+        product = await Product.findByIdAndUpdate(req.params.id, updateData, {
             new: true,
             runValidators: true
         });

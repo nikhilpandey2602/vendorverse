@@ -96,15 +96,23 @@ const createOrder = async (req, res) => {
  */
 const createOrderFromCart = async (req, res) => {
     try {
-        const { items, shippingAddress, paymentMethod, totalAmount } = req.body;
-
-        console.log('Creating order with:', { items, shippingAddress, paymentMethod, totalAmount });
+        const { items, shippingAddress, paymentMethod } = req.body;
 
         // Validate items
-        if (!items || items.length === 0) {
+        if (!items || !Array.isArray(items) || items.length === 0) {
             return res.status(400).json({
                 success: false,
                 message: 'Cart is empty. Please add items to your cart.'
+            });
+        }
+
+        // Validate payment method against allowed set
+        const ALLOWED_PAYMENT_METHODS = ['cod', 'card', 'upi', 'netbanking', 'wallet'];
+        const method = paymentMethod || 'cod';
+        if (!ALLOWED_PAYMENT_METHODS.includes(method)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid payment method.'
             });
         }
 
@@ -121,30 +129,74 @@ const createOrderFromCart = async (req, res) => {
             country: address.country || 'India'
         };
 
-        // Calculate pricing
-        const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        /* ─────────────── SECURITY FIX ───────────────
+           Never trust client-supplied prices, quantities, or seller IDs.
+           Prices and inventory are read from the database. Unknown products
+           are rejected instead of creating bogus ObjectIds.               */
+
+        const mongoose = require('mongoose');
+        const orderItems = [];
+        let subtotal = 0;
+
+        for (const item of items) {
+            const productId = item.productId || item.id;
+
+            // Must be a real MongoDB ObjectId
+            if (!mongoose.Types.ObjectId.isValid(productId)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'One or more products are not available for ordering.'
+                });
+            }
+
+            // Must exist and be active
+            const product = await Product.findById(productId);
+            if (!product || !product.isActive) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'One or more products are no longer available.'
+                });
+            }
+
+            // Quantity must be a positive integer
+            const quantity = Number(item.quantity);
+            if (!Number.isInteger(quantity) || quantity < 1) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid item quantity.'
+                });
+            }
+
+            // Stock check
+            if (product.inventory.quantity < quantity) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Insufficient stock for "${product.title}".`
+                });
+            }
+
+            // Authoritative price from the database
+            const price = product.price.sellingPrice;
+            subtotal += price * quantity;
+
+            orderItems.push({
+                product: product._id,
+                seller: product.seller,
+                quantity,
+                price,
+                productSnapshot: {
+                    title: product.title,
+                    image: product.images?.[0]?.url || '',
+                    sku: product.inventory?.sku || ''
+                },
+                status: 'pending'
+            });
+        }
+
+        // Recompute all pricing server-side
         const shippingFee = subtotal > 499 ? 0 : 40;
         const tax = Math.round(subtotal * 0.18);
-        const total = totalAmount || (subtotal + shippingFee + tax);
-
-        // Prepare order items with ObjectIds
-        const mongoose = require('mongoose');
-        const orderItems = items.map(item => ({
-            product: mongoose.Types.ObjectId.isValid(item.productId)
-                ? item.productId
-                : new mongoose.Types.ObjectId(),
-            seller: mongoose.Types.ObjectId.isValid(item.sellerId)
-                ? item.sellerId
-                : new mongoose.Types.ObjectId(),
-            quantity: item.quantity || 1,
-            price: item.price || 0,
-            productSnapshot: {
-                title: item.title || item.name || 'Product',
-                image: item.image || '',
-                sku: item.sku || ''
-            },
-            status: 'pending'
-        }));
+        const total = subtotal + shippingFee + tax;
 
         // Create the order
         const order = await Order.create({
@@ -159,13 +211,18 @@ const createOrderFromCart = async (req, res) => {
                 total
             },
             payment: {
-                method: paymentMethod || 'cod',
+                method,
                 status: 'pending'
             },
             status: 'pending'
         });
 
-        console.log('Order created:', order._id, order.orderNumber);
+        // Decrement inventory after a successful order
+        for (const item of orderItems) {
+            await Product.findByIdAndUpdate(item.product, {
+                $inc: { 'inventory.quantity': -item.quantity }
+            });
+        }
 
         res.status(201).json({
             success: true,
@@ -182,8 +239,7 @@ const createOrderFromCart = async (req, res) => {
         console.error('CreateOrderFromCart error:', error);
         res.status(500).json({
             success: false,
-            message: 'Failed to create order. Please try again.',
-            error: error.message
+            message: 'Failed to create order. Please try again.'
         });
     }
 };
@@ -346,6 +402,20 @@ const updateOrderStatus = async (req, res) => {
                 success: false,
                 message: 'Order not found'
             });
+        }
+
+        // SECURITY: A seller may only update orders that contain their own items.
+        // Admins may update any order. Role alone is not enough.
+        if (req.user.role !== 'admin') {
+            const isTheirOrder = order.items.some(
+                item => item.seller && item.seller.toString() === req.user._id.toString()
+            );
+            if (!isTheirOrder) {
+                return res.status(403).json({
+                    success: false,
+                    message: 'Not authorized to update this order'
+                });
+            }
         }
 
         // Update status

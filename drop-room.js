@@ -11,6 +11,16 @@ const DR_CART_KEY = 'vendorverse_cart';
 
 const DR_COMMISSION = { creator: 0.12, platform: 0.07, vendor: 0.81 };
 
+/* ═══ SECURITY: escape user text before injecting into HTML ═══ */
+function drEscapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 const DR_MOCK_USERS = [
     { name: 'Aarav K.', avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=AK&backgroundColor=6366f1&textColor=ffffff' },
     { name: 'Priya S.', avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=PS&backgroundColor=ec4899&textColor=ffffff' },
@@ -158,14 +168,14 @@ function drRenderRoom() {
 
     const chatHtml = (room.chatMessages || []).map(msg => {
         if (msg.type === 'system') {
-            return `<div class="dr-chat-system"><span class="dr-chat-system-text">${msg.text}</span></div>`;
+            return `<div class="dr-chat-system"><span class="dr-chat-system-text">${drEscapeHtml(msg.text)}</span></div>`;
         }
         return `
         <div class="dr-chat-msg">
-            <img class="dr-chat-avatar" src="${msg.user.avatar}" alt="${msg.user.name}" loading="lazy">
+            <img class="dr-chat-avatar" src="${msg.user.avatar}" alt="${drEscapeHtml(msg.user.name)}" loading="lazy">
             <div class="dr-chat-bubble">
-                <div class="dr-chat-name">${msg.user.name}</div>
-                <div class="dr-chat-text">${msg.text}</div>
+                <div class="dr-chat-name">${drEscapeHtml(msg.user.name)}</div>
+                <div class="dr-chat-text">${drEscapeHtml(msg.text)}</div>
                 <div class="dr-chat-time">${drTimeAgo(msg.time)}</div>
             </div>
         </div>`;
@@ -367,10 +377,10 @@ function drStartChatSim(room) {
         const msgEl = document.createElement('div');
         msgEl.className = 'dr-chat-msg';
         msgEl.innerHTML = `
-            <img class="dr-chat-avatar" src="${user.avatar}" alt="${user.name}" loading="lazy">
+            <img class="dr-chat-avatar" src="${user.avatar}" alt="${drEscapeHtml(user.name)}" loading="lazy">
             <div class="dr-chat-bubble">
-                <div class="dr-chat-name">${user.name}</div>
-                <div class="dr-chat-text">${text}</div>
+                <div class="dr-chat-name">${drEscapeHtml(user.name)}</div>
+                <div class="dr-chat-text">${drEscapeHtml(text)}</div>
                 <div class="dr-chat-time">just now</div>
             </div>`;
         chatEl.appendChild(msgEl);
@@ -411,7 +421,7 @@ function drSendChat(room) {
             <img class="dr-chat-avatar" src="${user.avatar}" alt="You" loading="lazy">
             <div class="dr-chat-bubble">
                 <div class="dr-chat-name" style="color:#10b981">You</div>
-                <div class="dr-chat-text">${text}</div>
+                <div class="dr-chat-text">${drEscapeHtml(text)}</div>
                 <div class="dr-chat-time">just now</div>
             </div>`;
         chatEl.appendChild(msgEl);

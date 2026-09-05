@@ -16,6 +16,16 @@ const API_BASE = "https://vendorverse-ekf8.onrender.com";
 const TOKEN_KEY = 'vendorverse_token';
 const USER_KEY = 'vendorverse_user';
 
+// Escape user/server-controlled text before injecting into innerHTML
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 
 // 
 // Initialize on Page Load
@@ -661,7 +671,7 @@ async function fetchOrders() {
         } else {
             // API error
             if (errorEl) {
-                errorEl.innerHTML = '<p>' + (data.message || 'Unable to load orders.') + '</p><button onclick="fetchOrders()">Retry</button>';
+                errorEl.innerHTML = '<p>' + escapeHtml(data.message || 'Unable to load orders.') + '</p><button onclick="fetchOrders()">Retry</button>';
                 errorEl.style.display = 'flex';
             }
         }

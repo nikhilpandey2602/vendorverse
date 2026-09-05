@@ -117,9 +117,7 @@ body[data-theme="dark"] {
   color:rgba(255,255,255,.85);width:fit-content}
 
 /* ── HEADLINE ── */
-.dsa-headline{font-size:clamp(2.8rem,5vw,5rem);font-weight:800;line-height:1.05;letter-spacing:-1.5px;
-  background:linear-gradient(135deg,#c4b5fd 0%,#818cf8 30%,#06b6d4 70%,#22d3ee 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.dsa-headline{font-size:clamp(2.8rem,5vw,5rem);font-weight:800;line-height:1.05;letter-spacing:-1.5px;color:#fff}
 
 /* ── SUBTEXT ── */
 .dsa-sub{font-size:1rem;line-height:1.7;color:rgba(255,255,255,.55);max-width:420px}
@@ -996,4 +994,287 @@ body[data-theme="light"] .mobile-menu-btn span{background:#fff!important}
   .vv-section-toolbar {
     padding: 0 16px;
   }
+}
+
+/* ═══════════════════════════════════════════════
+   HERO WORD STAGGER ANIMATION
+   ═══════════════════════════════════════════════ */
+.dsa-headline .hero-word {
+  display: inline-block;
+  background: linear-gradient(135deg, #c4b5fd 0%, #818cf8 30%, #06b6d4 70%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s cubic-bezier(.23,1,.32,1),
+              transform 0.55s cubic-bezier(.23,1,.32,1);
+}
+.dsa-headline .hero-word.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════
+   KEY STATS BAND
+   ═══════════════════════════════════════════════ */
+.vv-stats-band {
+  padding: 3rem 0;
+  background: linear-gradient(180deg, rgba(10,8,19,0.95) 0%, rgba(13,11,30,0.95) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.vv-stats-band::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-color, #7c3aed), transparent);
+  opacity: 0.4;
+}
+
+.vv-stats-band-inner {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.vv-stat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+  /* Fade-in default state */
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(.23,1,.32,1),
+              transform 0.7s cubic-bezier(.23,1,.32,1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+}
+.vv-stat-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.vv-stat-card:nth-child(1) { transition-delay: 0ms; }
+.vv-stat-card:nth-child(2) { transition-delay: 120ms; }
+.vv-stat-card:nth-child(3) { transition-delay: 240ms; }
+
+/* Glow on hover */
+.vv-stat-card:hover {
+  border-color: var(--accent-color, #7c3aed);
+  box-shadow: 0 0 40px rgba(124,58,237,0.15),
+              0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* Accent gradient line at bottom */
+.vv-stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-color, #7c3aed), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.vv-stat-card:hover::after {
+  opacity: 0.7;
+}
+
+.vv-stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent-gradient-start, #6366f1), var(--accent-color-hover, #8b5cf6));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+}
+.vv-stat-icon svg {
+  stroke: #fff;
+}
+
+.vv-stat-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.vv-stat-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+
+/* Stats responsive */
+@media (max-width: 768px) {
+  .vv-stats-band-inner {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+  .vv-stat-card {
+    flex-direction: row;
+    padding: 1.25rem 1.5rem;
+    gap: 1rem;
+    align-items: center;
+  }
+  .vv-stat-value {
+    font-size: 1.6rem;
+  }
+  .vv-stat-label {
+    font-size: 0.7rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   3D TILT — PERSPECTIVE CONTAINER
+   ═══════════════════════════════════════════════ */
+.vv-product-grid {
+  perspective: 1200px;
+}
+
+/* Card 3D tilt transition */
+.vv-product-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  /* Override existing hover to let JS handle transform */
+}
+.vv-product-card.tilt-active {
+  transition: transform 80ms ease-out, box-shadow 300ms ease, border-color 300ms ease;
+}
+.vv-product-card:not(.tilt-active) {
+  transition: transform 500ms cubic-bezier(.23,1,.32,1), box-shadow 300ms ease, border-color 300ms ease;
+}
+
+/* 3D depth shine overlay */
+.vv-product-card .tilt-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(
+    circle at var(--shine-x, 50%) var(--shine-y, 50%),
+    rgba(255,255,255,0.08) 0%,
+    transparent 60%
+  );
+}
+.vv-product-card.tilt-active .tilt-shine {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════
+   TOUCH DEVICE FALLBACK
+   ═══════════════════════════════════════════════ */
+.vv-product-card.touch-press {
+  transform: scale(1.02) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45),
+              0 0 20px var(--card-glow-color, rgba(124,58,237,0.2));
+}
+
+/* ═══════════════════════════════════════════════
+   STATS BAND — THEME OVERRIDES
+   ═══════════════════════════════════════════════ */
+
+/* Light theme */
+body[data-theme="light"] .vv-stats-band {
+  background: linear-gradient(180deg, #f8f7ff 0%, #f0edff 100%);
+}
+body[data-theme="light"] .vv-stats-band::before {
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+}
+body[data-theme="light"] .vv-stat-card {
+  background: rgba(255,255,255,0.85);
+  border-color: rgba(0,0,0,0.06);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+body[data-theme="light"] .vv-stat-card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 32px rgba(99,102,241,0.12),
+              0 2px 16px rgba(0,0,0,0.06);
+}
+body[data-theme="light"] .vv-stat-value {
+  color: #1f2937;
+}
+body[data-theme="light"] .vv-stat-label {
+  color: #6b7280;
+}
+
+/* Blue theme */
+body[data-theme="blue"] .vv-stats-band {
+  background: linear-gradient(180deg, rgba(10,8,19,0.95) 0%, rgba(13,11,30,0.95) 100%);
+}
+body[data-theme="blue"] .vv-stat-card {
+  border-color: rgba(59,130,246,0.12);
+}
+body[data-theme="blue"] .vv-stat-card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 40px rgba(37,99,235,0.15),
+              0 8px 32px rgba(0,0,0,0.3);
+}
+body[data-theme="blue"] .vv-stat-icon {
+  background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-color-hover));
+  box-shadow: 0 4px 20px rgba(37,99,235,0.3);
+}
+
+/* ═══════════════════════════════════════════════
+   PRODUCT CARD — THEME GLOW VARIABLES
+   ═══════════════════════════════════════════════ */
+body[data-theme="dark"] .vv-product-card {
+  --card-glow-color: rgba(124,58,237,0.2);
+}
+body[data-theme="light"] .vv-product-card {
+  --card-glow-color: rgba(99,102,241,0.1);
+}
+body[data-theme="blue"] .vv-product-card {
+  --card-glow-color: rgba(59,130,246,0.2);
+}
+
+/* Light theme card name fix for 3D effect */
+body[data-theme="light"] .vv-card-name {
+  color: #1f2937;
+}
+body[data-theme="light"] .vv-price-current {
+  color: #1f2937;
+}
+body[data-theme="light"] .vv-rating-num {
+  color: #6b7280;
+}
+body[data-theme="light"] .vv-review-count {
+  color: #9ca3af;
+}
+body[data-theme="light"] .vv-card-img-area {
+  background: #f3f4f6;
+}
+
+/* Light theme touch press */
+body[data-theme="light"] .vv-product-card.touch-press {
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12),
+              0 0 20px var(--card-glow-color);
 }

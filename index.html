@@ -251,7 +251,7 @@
                     <!-- LEFT SIDE -->
                     <div class="dsa-left">
                         <span class="dsa-eyebrow dsa-fade-up" style="--delay:0ms">✦ 10,000+ Vendors. One Platform.</span>
-                        <h1 class="dsa-headline dsa-fade-up" style="--delay:120ms">Discover Products That Define You.</h1>
+                        <h1 class="dsa-headline dsa-fade-up" style="--delay:120ms" id="hero-headline">Discover Products That Define You.</h1>
                         <p class="dsa-sub dsa-fade-up" style="--delay:240ms">India's AI‑powered marketplace connecting you to handpicked vendors, artisan creators, and premium products — all in one place.</p>
                         <div class="dsa-cta-row dsa-fade-up" style="--delay:400ms">
                             <a href="product.html" class="dsa-btn-primary">Shop Now <span>→</span></a>
@@ -379,6 +379,43 @@
                 <a href="/deals" class="category-link deals-link"><span class="category-icon">🔥</span>Today's Deals</a>
             </div>
         </nav>
+
+        <!-- ═══ KEY STATS BAND ═══ -->
+        <section class="vv-stats-band" id="stats-band">
+            <div class="vv-stats-band-inner">
+                <div class="vv-stat-card" id="stat-vendors">
+                    <div class="vv-stat-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <span class="vv-stat-value" data-target="10000" data-suffix="+">0</span>
+                    <span class="vv-stat-label">Trusted Vendors</span>
+                </div>
+                <div class="vv-stat-card" id="stat-products">
+                    <div class="vv-stat-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <span class="vv-stat-value" data-target="245000" data-suffix="+">0</span>
+                    <span class="vv-stat-label">Products Listed</span>
+                </div>
+                <div class="vv-stat-card" id="stat-orders">
+                    <div class="vv-stat-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
+                    <span class="vv-stat-value" data-target="1200000" data-suffix="+">0</span>
+                    <span class="vv-stat-label">Orders Fulfilled</span>
+                </div>
+            </div>
+        </section>
 
         <!-- ═══ TRENDING PRODUCTS GRID ═══ -->
         <section class="vv-product-section" id="trending-section">
@@ -526,6 +563,68 @@
                         <button class="vv-add-cart-btn add-to-cart-btn">Add to Cart</button>
                     </div>
                 </article>
+            </div>
+        </section>
+
+        <!-- ═══ BROWSE MARKETPLACE ═══ -->
+        <section class="marketplace-browse-section" id="marketplace-browse">
+            <div class="container">
+                <div class="vv-section-header">
+                    <span class="vv-section-label">EXPLORE</span>
+                    <h2 class="vv-section-title">Browse Marketplace</h2>
+                    <p class="vv-section-subtitle">Search, filter, and sort to find exactly what you're looking for</p>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="marketplace-toolbar">
+                    <!-- Row 1: Search + Sort -->
+                    <div class="marketplace-toolbar-row">
+                        <div class="marketplace-search-wrap">
+                            <span class="marketplace-search-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                </svg>
+                            </span>
+                            <input type="search" id="marketplace-search" class="marketplace-search-input"
+                                   placeholder="Search products by name or description…" autocomplete="off" spellcheck="false">
+                            <button id="marketplace-search-clear" class="marketplace-search-clear" aria-label="Clear search">✕</button>
+                        </div>
+                        <select id="marketplace-sort" class="marketplace-sort-select" aria-label="Sort products">
+                            <option value="default">Sort by: Default</option>
+                            <option value="price-asc">Price: Low → High</option>
+                            <option value="price-desc">Price: High → Low</option>
+                            <option value="newest">Newest First</option>
+                            <option value="name-az">Name: A → Z</option>
+                        </select>
+                    </div>
+
+                    <!-- Row 2: Categories + Price Range -->
+                    <div class="marketplace-toolbar-row">
+                        <div class="category-chips-wrap" id="category-chips" role="group" aria-label="Filter by category">
+                            <!-- Rendered by discovery.js -->
+                        </div>
+                        <div class="marketplace-price-range">
+                            <span class="marketplace-price-range-label">₹</span>
+                            <input type="number" id="marketplace-price-min" class="marketplace-price-input"
+                                   placeholder="Min" min="0" step="100" aria-label="Minimum price">
+                            <span class="marketplace-price-sep">–</span>
+                            <input type="number" id="marketplace-price-max" class="marketplace-price-input"
+                                   placeholder="Max" min="0" step="100" aria-label="Maximum price">
+                        </div>
+                    </div>
+
+                    <!-- Active filter pills -->
+                    <div class="marketplace-active-filters" id="marketplace-active-filters"></div>
+                </div>
+
+                <!-- Results info -->
+                <div class="marketplace-results-info">
+                    <span class="marketplace-results-count" id="marketplace-results-count"></span>
+                </div>
+
+                <!-- Product grid (rendered by discovery.js) -->
+                <div id="discover-grid"></div>
             </div>
         </section>
 

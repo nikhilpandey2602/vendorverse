@@ -114,8 +114,10 @@ const orderSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Generate order number before saving
-orderSchema.pre('save', async function (next) {
+// Generate order number before VALIDATION (not 'save').
+// Mongoose validates before pre('save') hooks run, so generating here
+// guarantees orderNumber exists when the `required` validator executes.
+orderSchema.pre('validate', function (next) {
     if (!this.orderNumber) {
         const date = new Date();
         const year = date.getFullYear().toString().slice(-2);

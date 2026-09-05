@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendorVerse — Project Analytics Dashboard</title>
+<style>
+/* ══════════════════════════════════════════════
+   DATA-VIZ TOKENS — reference palette instance
+   ══════════════════════════════════════════════ */
+.viz-root {
+  color-scheme: dark;
+  --surface-1:      #1a1a19;
+  --surface-page:   #0d0d0d;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --gridline:       #2c2c2a;
+  --baseline:       #383835;
+  --border-ring:    rgba(255,255,255,0.10);
+
+  /* Categorical palette (dark mode) */
+  --series-1: #3987e5;  /* blue */
+  --series-2: #d95926;  /* orange */
+  --series-3: #199e70;  /* aqua */
+  --series-4: #c98500;  /* yellow */
+  --series-5: #d55181;  /* magenta */
+  --series-6: #008300;  /* green */
+  --series-7: #9085e9;  /* violet */
+  --series-8: #e66767;  /* red */
+
+  /* Status */
+  --good:   #0ca30c;
+  --warn:   #fab219;
+  --serious:#ec835a;
+  --critical:#d03b3b;
+
+  /* Font */
+  --font: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:where(:not([data-theme="dark"])) .viz-root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --surface-page:   #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border-ring:    rgba(11,11,11,0.10);
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --series-4: #eda100;
+    --series-5: #e87ba4;
+    --series-6: #008300;
+    --series-7: #4a3aa7;
+    --series-8: #e34948;
+  }
+}
+
+[data-theme="dark"] .viz-root {
+  color-scheme: dark;
+  --surface-1:      #1a1a19;
+  --surface-page:   #0d0d0d;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --gridline:       #2c2c2a;
+  --baseline:       #383835;
+  --border-ring:    rgba(255,255,255,0.10);
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+  --series-7: #9085e9;
+  --series-8: #e66767;
+}
+
+/* ══════════════════════════════════════════════
+   LAYOUT
+   ══════════════════════════════════════════════ */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: var(--font);
+  background: var(--surface-page);
+  color: var(--text-primary);
+  padding: 32px 24px;
+  line-height: 1.5;
+}
+
+.dashboard {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Header */
+.db-header {
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--border-ring);
+  padding-bottom: 24px;
+}
+.db-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.db-header .subtitle {
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin-top: 4px;
+}
+.db-header .subtitle span {
+  color: var(--text-muted);
+}
+.db-controls {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.theme-toggle {
+  background: var(--surface-1);
+  border: 1px solid var(--border-ring);
+  color: var(--text-primary);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background .15s;
+}
+.theme-toggle:hover { background: var(--gridline); }
+
+/* Stat Tiles */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.stat-tile {
+  background: var(--surface-1);
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid var(--border-ring);
+}
+.stat-tile .label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+.stat-tile .value {
+  font-size: 32px;
+  font-weight: 700;
+  margin-top: 4px;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+.stat-tile .value small {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* Chart Grid */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.chart-grid .full { grid-column: 1 / -1; }
+
+.chart-card {
+  background: var(--surface-1);
+  border-radius: 10px;
+  border: 1px solid var(--border-ring);
+  padding: 24px 24px 20px;
+  position: relative;
+}
+.chart-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.chart-card .chart-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.chart-card canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Legend */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-ring);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Tooltip overlay */
+.chart-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--surface-1);
+  border: 1px solid var(--border-ring);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  opacity: 0;
+  transition: opacity .12s;
+  z-index: 100;
+  max-width: 240px;
+}
+.chart-tooltip.visible { opacity: 1; }
+.chart-tooltip .tt-label { font-weight: 600; color: var(--text-primary); }
+.chart-tooltip .tt-value { color: var(--text-secondary); margin-top: 2px; }
+
+/* Responsive */
+@media (max-width: 800px) {
+  .chart-grid { grid-template-columns: 1fr; }
+  body { padding: 16px 12px; }
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Table view (accessibility) */
+.data-table-wrap {
+  margin-top: 16px;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--border-ring);
+  border-radius: 6px;
+}
+.data-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.data-table-wrap th {
+  text-align: left;
+  padding: 8px 10px;
+  background: var(--gridline);
+  color: var(--text-secondary);
+  font-weight: 500;
+  position: sticky;
+  top: 0;
+}
+.data-table-wrap td {
+  padding: 6px 10px;
+  border-top: 1px solid var(--border-ring);
+  color: var(--text-secondary);
+}
+.data-table-wrap td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.data-table-wrap tr:hover td { background: rgba(255,255,255,.04); }
+
+/* color swatch in table */
+.swatch-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="dashboard">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="db-header">
+    <h1>VendorVerse — Project Analytics</h1>
+    <p class="subtitle">Full-stack marketplace architecture breakdown · <span id="date-label"></span></p>
+    <div class="db-controls">
+      <button class="theme-toggle" id="themeBtn">Toggle theme</button>
+      <span style="font-size:12px;color:var(--text-muted)">Hover any chart for details</span>
+    </div>
+  </header>
+
+  <!-- ═══ STAT TILES ═══ -->
+  <div class="stat-row" id="statRow">
+    <div class="stat-tile"><div class="label">Frontend Files</div><div class="value" id="stat-frontend">—</div></div>
+    <div class="stat-tile"><div class="label">Backend Files</div><div class="value" id="stat-backend">—</div></div>
+    <div class="stat-tile"><div class="label">API Endpoints</div><div class="value" id="stat-endpoints">—</div></div>
+    <div class="stat-tile"><div class="label">Database Models</div><div class="value" id="stat-models">—</div></div>
+    <div class="stat-tile"><div class="label">Features Implemented</div><div class="value" id="stat-features">—</div></div>
+    <div class="stat-tile"><div class="label">Total Pages</div><div class="value" id="stat-pages">—</div></div>
+  </div>
+
+  <!-- ═══ CHARTS GRID ═══ -->
+
+  <!-- Row 1: Feature completion + API endpoints -->
+  <div class="chart-grid">
+
+    <!-- CHART 1: Feature Completion -->
+    <div class="chart-card">
+      <h3>Feature Completion Status</h3>
+      <p class="chart-desc">Modules by implementation state</p>
+      <canvas id="chart-features" height="280"></canvas>
+      <div class="chart-legend" id="legend-features"></div>
+      <details class="data-table-wrap">
+        <summary style="padding:8px 10px;cursor:pointer;font-size:12px;color:var(--text-secondary)">Table view</summary>
+        <table><thead><tr><th>Module</th><th>Status</th></tr></thead><tbody id="table-features"></tbody></table>
+      </details>
+    </div>
+
+    <!-- CHART 2: API Endpoints per Module -->
+    <div class="chart-card">
+      <h3>API Endpoints per Module</h3>
+      <p class="chart-desc">Route count by controller</p>
+      <canvas id="chart-endpoints" height="280"></canvas>
+      <div class="chart-legend" id="legend-endpoints"></div>
+      <details class="data-table-wrap">
+        <summary style="padding:8px 10px;cursor:pointer;font-size:12px;color:var(--text-secondary)">Table view</summary>
+        <table><thead><tr><th>Module</th><th>Endpoints</th></tr></thead><tbody id="table-endpoints"></tbody></table>
+      </details>
+    </div>
+  </div>
+
+  <!-- Row 2: File distribution + Project tree -->
+  <div class="chart-grid">
+
+    <!-- CHART 3: File Distribution -->
+    <div class="chart-card">
+      <h3>Code Distribution by Layer</h3>
+      <p class="chart-desc">Files per architectural layer</p>
+      <canvas id="chart-layers" height="280"></canvas>
+      <div class="chart-legend" id="legend-layers"></div>
+      <details class="data-table-wrap">
+        <summary style="padding:8px 10px;cursor:pointer;font-size:12px;color:var(--text-secondary)">Table view</summary>
+        <table><thead><tr><th>Layer</th><th>Files</th></tr></thead><tbody id="table-layers"></tbody></table>
+      </details>
+    </div>
+
+    <!-- CHART 4: Tech Stack Radar -->
+    <div class="chart-card">
+      <h3>Technology Stack</h3>
+      <p class="chart-desc">Core technologies powering VendorVerse</p>
+      <canvas id="chart-tech" height="280"></canvas>
+      <div class="chart-legend" id="legend-tech"></div>
+    </div>
+  </div>
+
+  <!-- Row 3: DB Schema overview (full width) -->
+  <div class="chart-grid">
+    <div class="chart-card full">
+      <h3>Database Schema — Entity Relationships</h3>
+      <p class="chart-desc">MongoDB collections and their field categories</p>
+      <canvas id="chart-db" height="240"></canvas>
+      <div class="chart-legend" id="legend-db"></div>
+    </div>
+  </div>
+
+  <!-- Row 4: Status breakdown + File types -->
+  <div class="chart-grid">
+    <!-- CHART 6: Frontend vs Backend -->
+    <div class="chart-card">
+      <h3>Frontend vs Backend Split</h3>
+      <p class="chart-desc">Code distribution (file count)</p>
+      <canvas id="chart-split" height="260"></canvas>
+      <div class="chart-legend" id="legend-split"></div>
+    </div>
+
+    <!-- CHART 7: Feature health -->
+    <div class="chart-card">
+      <h3>Feature Health Overview</h3>
+      <p class="chart-desc">Status breakdown of all 20+ features</p>
+      <canvas id="chart-health" height="260"></canvas>
+      <div class="chart-legend" id="legend-health"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="margin-top:40px;padding-top:16px;border-top:1px solid var(--border-ring);font-size:12px;color:var(--text-muted);text-align:center;">
+    VendorVerse Project Analytics · Generated from codebase analysis
+  </footer>
+</div>
+
+<!-- ═══ TOOLTIP ═══ -->
+<div class="chart-tooltip" id="tooltip"><div class="tt-label"></div><div class="tt-value"></div></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   DATA
+   ══════════════════════════════════════════════ */
+const DATA = {
+  // Feature completion (8 categories)
+  features: [
+    { label: 'User Auth',    done: 5, total: 6, status: 'done',     detail: 'Login, register, profile, password, JWT · Google OAuth UI only' },
+    { label: 'Products',     done: 6, total: 6, status: 'done',     detail: 'CRUD, search, filter, pagination, reviews, featured' },
+    { label: 'Cart',         done: 5, total: 5, status: 'done',     detail: 'Add/remove/update/clear, stock validation, DB+local sync' },
+    { label: 'Orders',       done: 6, total: 6, status: 'done',     detail: 'Place, history, cancel, status tracking, inventory restore' },
+    { label: 'AI Copilot',   done: 5, total: 5, status: 'done',     detail: 'Gemini 2.5 Flash, context-aware, history, markdown' },
+    { label: 'Payments',     done: 1, total: 4, status: 'partial',  detail: 'COD only · Card/UPI/Wallet coming soon' },
+    { label: 'Wishlist',     done: 2, total: 3, status: 'partial',  detail: 'UI + localStorage · No backend API/model yet' },
+    { label: 'Tests',        done: 0, total: 2, status: 'missing',  detail: 'No frontend or backend test files' },
+  ],
+  // API endpoints per module
+  endpoints: [
+    { module: 'Auth',     count: 6, color: 'var(--series-1)' },
+    { module: 'Products', count: 6, color: 'var(--series-2)' },
+    { module: 'Cart',     count: 5, color: 'var(--series-3)' },
+    { module: 'Orders',   count: 7, color: 'var(--series-4)' },
+    { module: 'AI Chat',  count: 1, color: 'var(--series-5)' },
+    { module: 'Health',   count: 2, color: 'var(--series-6)' },
+  ],
+  // Files by layer
+  layers: [
+    { layer: 'HTML Pages',   count: 14, color: 'var(--series-1)' },
+    { layer: 'JS Scripts',   count: 18, color: 'var(--series-2)' },
+    { layer: 'CSS Styles',   count: 16, color: 'var(--series-3)' },
+    { layer: 'Controllers',  count: 4,  color: 'var(--series-4)' },
+    { layer: 'Models',       count: 4,  color: 'var(--series-5)' },
+    { layer: 'Routes',       count: 5,  color: 'var(--series-6)' },
+    { layer: 'Middleware',   count: 1,  color: 'var(--series-7)' },
+    { layer: 'Config/Utils', count: 2,  color: 'var(--series-8)' },
+  ],
+  // Frontend vs Backend
+  split: [
+    { label: 'Frontend (HTML/CSS/JS)', count: 48, color: 'var(--series-1)' },
+    { label: 'Backend (Node.js)',      count: 16, color: 'var(--series-2)' },
+  ],
+  // DB Schema - field counts per model
+  db: [
+    { model: 'User',    fields: 10, color: 'var(--series-1)', detail: 'firstName, lastName, email, password, phone, role, avatar, addresses, isEmailVerified, isActive' },
+    { model: 'Product', fields: 14, color: 'var(--series-2)', detail: 'title, slug, description, price(mrp/sellingPrice), category, brand, images, seller, inventory, ratings, reviews, specifications, tags, isFeatured' },
+    { model: 'Cart',    fields: 6,  color: 'var(--series-3)', detail: 'user, items(product/quantity/price/snapshot), totalItems, totalPrice' },
+    { model: 'Order',   fields: 10, color: 'var(--series-4)', detail: 'orderNumber, user, items, shippingAddress, pricing, payment, status, tracking, notes, timestamps' },
+  ],
+  // Feature health (status counts)
+  health: [
+    { status: '✅ Complete', count: 5, color: 'var(--good)' },
+    { status: '🔶 Partial',  count: 2, color: 'var(--warn)' },
+    { status: '❌ Missing',  count: 1, color: 'var(--critical)' },
+  ],
+  // Tech stack
+  tech: [
+    { name: 'Express.js',  category: 'Backend',    weight: 10, color: 'var(--series-1)' },
+    { name: 'MongoDB',     category: 'Database',   weight: 10, color: 'var(--series-2)' },
+    { name: 'JWT + bcrypt',category: 'Auth',       weight: 8,  color: 'var(--series-3)' },
+    { name: 'Gemini API',  category: 'AI/ML',      weight: 7,  color: 'var(--series-4)' },
+    { name: 'Vanilla JS',  category: 'Frontend',   weight: 9,  color: 'var(--series-5)' },
+    { name: 'CSS3 Var Theming', category:'Frontend',weight:8,  color: 'var(--series-6)' },
+    { name: 'GSAP',        category: 'Animations', weight: 6,  color: 'var(--series-7)' },
+    { name: 'Mongoose ODM',category: 'Database',   weight: 9,  color: 'var(--series-1)' },
+    { name: 'Node.js',     category: 'Backend',    weight: 10, color: 'var(--series-2)' },
+    { name: 'Render',      category: 'Deploy',     weight: 5,  color: 'var(--series-3)' },
+  ],
+};
+
+/* ══════════════════════════════════════════════
+   STATS
+   ══════════════════════════════════════════════ */
+const stats = {
+  frontendFiles: 48,
+  backendFiles:  16,
+  endpoints:     27,
+  models:        4,
+  features:      26,
+  pages:         14,
+};
+Object.entries(stats).forEach(([k,v]) => {
+  const el = document.getElementById('stat-'+k.replace(/([A-Z])/g,'-$1').toLowerCase());
+  if (el) el.textContent = v;
+});
+document.getElementById('date-label').textContent = new Date().toLocaleDateString('en-IN', { year:'numeric', month:'long', day:'numeric' });
+
+/* ══════════════════════════════════════════════
+   THEME TOGGLE
+   ══════════════════════════════════════════════ */
+const html = document.documentElement;
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const cur = html.getAttribute('data-theme');
+  html.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  // redraw all
+  CHARTS.forEach(fn => fn());
+});
+
+/* ══════════════════════════════════════════════
+   TOOLTIP
+   ══════════════════════════════════════════════ */
+const tooltip = document.getElementById('tooltip');
+function showTooltip(e, label, value) {
+  const t = tooltip;
+  t.querySelector('.tt-label').textContent = label;
+  t.querySelector('.tt-value').textContent = value;
+  const r = t.getBoundingClientRect();
+  let x = e.clientX + 14, y = e.clientY - 10;
+  if (x + r.width > window.innerWidth - 10) x = e.clientX - r.width - 14;
+  if (y + r.height > window.innerHeight - 10) y = e.clientY - r.height - 10;
+  if (y < 10) y = 10;
+  t.style.left = x + 'px';
+  t.style.top = y + 'px';
+  t.classList.add('visible');
+}
+function hideTooltip() { tooltip.classList.remove('visible'); }
+
+/* ══════════════════════════════════════════════
+   DRAWING HELPERS
+   ══════════════════════════════════════════════ */
+function getCSSVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#fff';
+}
+
+/* ── Horizontal Bar Chart ── */
+function drawHBar(canvasId, data, labelKey, valueKey, opts = {}) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const W = rect.width;
+  const H = rect.height;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const pad = { top: 8, bottom: 28, left: 110, right: 48 };
+  const chartW = W - pad.left - pad.right;
+  const chartH = H - pad.top - pad.bottom;
+  const barH = Math.min(24, (chartH / data.length) * 0.65);
+  const gap = (chartH - barH * data.length) / (data.length + 1);
+  const maxVal = Math.max(...data.map(d => d[valueKey]));
+
+  // Clear
+  ctx.clearRect(0, 0, W, H);
+
+  // Gridlines (horizontal)
+  ctx.strokeStyle = getCSSVar('--gridline');
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let i = 0; i <= 4; i++) {
+    const x = pad.left + (chartW * i) / 4;
+    ctx.moveTo(x, pad.top);
+    ctx.lineTo(x, pad.top + chartH);
+  }
+  ctx.stroke();
+
+  // Bars
+  data.forEach((d, i) => {
+    const y = pad.top + gap + i * (barH + gap);
+    const w = (d[valueKey] / maxVal) * chartW;
+    const color = d.color || d.color;
+
+    // Bar
+    const resolvedColor = getCSSVar(color.replace('var(', '').replace(')', '')) || color;
+    ctx.fillStyle = resolvedColor;
+    const radius = 4;
+    const x = pad.left;
+    drawRoundRect(ctx, x, y, w, barH, radius, true, false);
+
+    // Label
+    ctx.fillStyle = getCSSVar('--text-secondary');
+    ctx.font = '11px ' + getComputedStyle(document.body).fontFamily;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(d[labelKey], pad.left - 8, y + barH / 2);
+
+    // Value
+    ctx.fillStyle = getCSSVar('--text-muted');
+    ctx.textAlign = 'left';
+    const valStr = d[valueKey] + (opts.suffix || '');
+    ctx.fillText(valStr, x + w + 6, y + barH / 2);
+
+    // Hit area
+    canvas.addEventListener('mousemove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      if (mx >= x && mx <= x + w && my >= y && my <= y + barH) {
+        showTooltip(e, d[labelKey], d.detail || valStr);
+      }
+    });
+    canvas.addEventListener('mouseleave', hideTooltip);
+  });
+
+  // Hover hit - we need to track independently from draw (attached per-item above)
+}
+
+/* ── Vertical Bar Chart ── */
+function drawVBar(canvasId, data, labelKey, valueKey, opts = {}) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const W = rect.width;
+  const H = rect.height;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const pad = { top: 8, bottom: 32, left: 36, right: 16 };
+  const chartW = W - pad.left - pad.right;
+  const chartH = H - pad.top - pad.bottom;
+  const barW = Math.min(32, (chartW / data.length) * 0.6);
+  const gap = (chartW - barW * data.length) / (data.length + 1);
+  const maxVal = Math.max(...data.map(d => d[valueKey]));
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Baseline
+  ctx.strokeStyle = getCSSVar('--baseline');
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pad.left, pad.top + chartH);
+  ctx.lineTo(pad.left + chartW, pad.top + chartH);
+  ctx.stroke();
+
+  // Gridlines
+  ctx.strokeStyle = getCSSVar('--gridline');
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3, 4]);
+  for (let i = 1; i <= 4; i++) {
+    const y = pad.top + chartH - (chartH * i) / 4;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y);
+    ctx.lineTo(pad.left + chartW, y);
+    ctx.stroke();
+    ctx.fillStyle = getCSSVar('--text-muted');
+    ctx.font = '10px ' + getComputedStyle(document.body).fontFamily;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(Math.round(maxVal * i / 4), pad.left - 6, y);
+  }
+  ctx.setLineDash([]);
+
+  // Bars
+  data.forEach((d, i) => {
+    const x = pad.left + gap + i * (barW + gap);
+    const h = (d[valueKey] / maxVal) * chartH;
+    const y = pad.top + chartH - h;
+    const color = d.color || 'var(--series-1)';
+    const resolvedColor = getCSSVar(color.replace('var(', '').replace(')', '')) || color;
+
+    ctx.fillStyle = resolvedColor;
+    const radius = 4;
+    drawRoundRect(ctx, x, y, barW, h, radius, false, true);
+
+    // Label
+    ctx.fillStyle = getCSSVar('--text-secondary');
+    ctx.font = '10px ' + getComputedStyle(document.body).fontFamily;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(d[labelKey], x + barW / 2, pad.top + chartH + 6);
+
+    // Hover areas
+    canvas.addEventListener('mousemove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      if (mx >= x && mx <= x + barW && my >= y && my <= y + h) {
+        showTooltip(e, d[labelKey], (d.detail || '') + ' ' + d[valueKey]);
+      }
+    });
+    canvas.addEventListener('mouseleave', hideTooltip);
+  });
+}
+
+/* ── Donut Chart ── */
+function drawDonut(canvasId, data, labelKey, valueKey, opts = {}) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const W = rect.width;
+  const H = rect.height;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2;
+  const outerR = Math.min(W, H) * 0.37;
+  const innerR = outerR * 0.55;
+  const total = data.reduce((s, d) => s + d[valueKey], 0);
+  let startAngle = -Math.PI / 2;
+
+  data.forEach((d, i) => {
+    const slice = (d[valueKey] / total) * Math.PI * 2;
+    const endAngle = startAngle + slice;
+    const color = d.color || 'var(--series-1)';
+    const resolvedColor = getCSSVar(color.replace('var(', '').replace(')', '')) || color;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerR, startAngle, endAngle);
+    ctx.arc(cx, cy, innerR, endAngle, startAngle, true);
+    ctx.closePath();
+    ctx.fillStyle = resolvedColor;
+    ctx.fill();
+
+    // Label segments for hover
+    const mid = startAngle + slice / 2;
+    const lx = cx + Math.cos(mid) * (outerR + 14);
+    const ly = cy + Math.sin(mid) * (outerR + 14);
+
+    // Percentage label
+    const pct = Math.round((d[valueKey] / total) * 100);
+    if (pct > 5) {
+      ctx.fillStyle = getCSSVar('--text-secondary');
+      ctx.font = '11px ' + getComputedStyle(document.body).fontFamily;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const labelX = cx + Math.cos(mid) * (innerR + (outerR - innerR) * 0.5);
+      const labelY = cy + Math.sin(mid) * (innerR + (outerR - innerR) * 0.5);
+      ctx.fillText(pct + '%', labelX, labelY);
+    }
+
+    // Hover
+    canvas.addEventListener('mousemove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      const dx = mx - cx, dy = my - cy;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist >= innerR && dist <= outerR) {
+        let angle = Math.atan2(dy, dx);
+        if (angle < -Math.PI/2) angle += Math.PI * 2;
+        let s = startAngle;
+        const eA = startAngle + slice;
+        if (angle >= s && angle <= eA) {
+          showTooltip(e, d[labelKey], d[valueKey] + (opts.suffix || ''));
+        }
+      }
+    });
+    canvas.addEventListener('mouseleave', hideTooltip);
+
+    startAngle = endAngle;
+  });
+
+  // Center text
+  ctx.fillStyle = getCSSVar('--text-primary');
+  ctx.font = 'bold 18px ' + getComputedStyle(document.body).fontFamily;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(total, cx, cy - 6);
+  ctx.fillStyle = getCSSVar('--text-muted');
+  ctx.font = '10px ' + getComputedStyle(document.body).fontFamily;
+  ctx.fillText('total', cx, cy + 12);
+}
+
+/* ── Round rect helper ── */
+function drawRoundRect(ctx, x, y, w, h, r, topLeft, topRight) {
+  if (w < 0) { x += w; w = -w; }
+  if (h < 0) { y += h; h = -h; }
+  r = Math.min(r, w/2, h/2);
+  ctx.beginPath();
+  ctx.moveTo(x, y + h);
+  ctx.lineTo(x, y + (topLeft ? r : 0));
+  if (topLeft) ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.lineTo(x + w - (topRight ? r : 0), y);
+  if (topRight) ctx.quadraticCurveTo(x + w, y, x + w, y + (topRight ? r : 0));
+  ctx.lineTo(x + w, y + h);
+  ctx.closePath();
+  ctx.fill();
+}
+
+/* ── Radar/Spider Chart ── */
+function drawRadar(canvasId, data, labelKey, valueKey) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const W = rect.width;
+  const H = rect.height;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  const cx = W / 2, cy = H / 2 + 12;
+  const R = Math.min(W, H) * 0.32;
+  const N = data.length;
+  const maxV = 10;
+
+  // Grid rings
+  for (let ring = 1; ring <= 5; ring++) {
+    const r = (R * ring) / 5;
+    ctx.strokeStyle = getCSSVar('--gridline');
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i = 0; i <= N; i++) {
+      const angle = (Math.PI * 2 * i) / N - Math.PI / 2;
+      const px = cx + r * Math.cos(angle);
+      const py = cy + r * Math.sin(angle);
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  // Axes
+  for (let i = 0; i < N; i++) {
+    const angle = (Math.PI * 2 * i) / N - Math.PI / 2;
+    const px = cx + R * Math.cos(angle);
+    const py = cy + R * Math.sin(angle);
+    ctx.strokeStyle = getCSSVar('--gridline');
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(px, py);
+    ctx.stroke();
+
+    // Labels
+    const lx = cx + (R + 24) * Math.cos(angle);
+    const ly = cy + (R + 24) * Math.sin(angle);
+    ctx.fillStyle = getCSSVar('--text-secondary');
+    ctx.font = '10px ' + getComputedStyle(document.body).fontFamily;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    // offset for bottom ones
+    let ta = 'center', tb = 'middle';
+    if (angle > -0.3 && angle < 0.3) { ta = 'center'; tb = 'top'; }
+    else if (angle > Math.PI - 0.3 || angle < -Math.PI + 0.3) { ta = 'center'; tb = 'bottom'; }
+    else if (angle > 0) { ta = 'left'; }
+    else { ta = 'right'; }
+    ctx.textAlign = ta;
+    ctx.textBaseline = tb;
+    ctx.fillText(data[i][labelKey], lx, ly);
+  }
+
+  // Data fill
+  ctx.beginPath();
+  data.forEach((d, i) => {
+    const angle = (Math.PI * 2 * i) / N - Math.PI / 2;
+    const val = d[valueKey] / maxV;
+    const px = cx + R * val * Math.cos(angle);
+    const py = cy + R * val * Math.sin(angle);
+    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  });
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(57,135,229,0.12)';
+  ctx.fill();
+  ctx.strokeStyle = getCSSVar('--series-1');
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Dots
+  data.forEach((d, i) => {
+    const angle = (Math.PI * 2 * i) / N - Math.PI / 2;
+    const val = d[valueKey] / maxV;
+    const px = cx + R * val * Math.cos(angle);
+    const py = cy + R * val * Math.sin(angle);
+    ctx.beginPath();
+    ctx.arc(px, py, 4, 0, Math.PI * 2);
+    ctx.fillStyle = getCSSVar('--series-1');
+    ctx.fill();
+    ctx.strokeStyle = getCSSVar('--surface-1');
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Value label
+    ctx.fillStyle = getCSSVar('--text-muted');
+    ctx.font = '9px ' + getComputedStyle(document.body).fontFamily;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(d[valueKey], px, py - 8);
+  });
+}
+
+/* ── Build legend ── */
+function buildLegend(id, data, labelKey, colorKey) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  data.forEach(d => {
+    const color = getCSSVar((d[colorKey] || d.color || '--series-1').replace('var(', '').replace(')', ''));
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<span class="legend-swatch" style="background:${color}"></span>${d[labelKey]}`;
+    el.appendChild(item);
+  });
+}
+
+/* ── Build table ── */
+function buildTable(id, data, col1, col2) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  data.forEach(d => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${d[col1]}</td><td>${d[col2]}</td>`;
+    el.appendChild(tr);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   INIT ALL CHARTS
+   ══════════════════════════════════════════════ */
+function initCharts() {
+  // 1. Features - horizontal bar (done count per module)
+  // For features chart we show done/total as a composite
+  const featCanvas = document.getElementById('chart-features');
+  if (featCanvas) {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = featCanvas.getBoundingClientRect();
+    const W = rect.width, H = rect.height;
+    featCanvas.width = W * dpr;
+    featCanvas.height = H * dpr;
+    const ctx = featCanvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    const pad = { top: 8, bottom: 28, left: 90, right: 40 };
+    const chartW = W - pad.left - pad.right;
+    const chartH = H - pad.top - pad.bottom;
+    const barH = Math.min(18, (chartH / DATA.features.length) * 0.55);
+    const gap = (chartH - barH * DATA.features.length) / (DATA.features.length + 1);
+    ctx.clearRect(0, 0, W, H);
+
+    // Gridlines
+    ctx.strokeStyle = getCSSVar('--gridline');
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const x = pad.left + (chartW * i) / 4;
+      ctx.beginPath();
+      ctx.moveTo(x, pad.top);
+      ctx.lineTo(x, pad.top + chartH);
+      ctx.stroke();
+    }
+
+    DATA.features.forEach((d, i) => {
+      const y = pad.top + gap + i * (barH + gap);
+      const totalW = (d.total / 6) * chartW;
+      const doneW = (d.done / 6) * chartW;
+      const x = pad.left;
+
+      // Total bar (background)
+      ctx.fillStyle = getCSSVar('--gridline');
+      const radius = 4;
+      drawRoundRect(ctx, x, y, totalW, barH, radius, true, true);
+
+      // Done bar (foreground)
+      const color = d.status === 'done' ? getCSSVar('--good') :
+                    d.status === 'partial' ? getCSSVar('--warn') :
+                    getCSSVar('--critical');
+      ctx.fillStyle = color;
+      drawRoundRect(ctx, x, y, doneW > 4 ? doneW : 0, barH, radius, true, true);
+
+      // Label
+      ctx.fillStyle = getCSSVar('--text-secondary');
+      ctx.font = '10px ' + getComputedStyle(document.body).fontFamily;
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(d.label, pad.left - 8, y + barH / 2);
+
+      // Value
+      ctx.fillStyle = getCSSVar('--text-muted');
+      ctx.textAlign = 'left';
+      ctx.fillText(d.done + '/' + d.total, x + totalW + 6, y + barH / 2);
+
+      // Hover
+      featCanvas.addEventListener('mousemove', (e) => {
+        const r = featCanvas.getBoundingClientRect();
+        const mx = e.clientX - r.left, my = e.clientY - r.top;
+        if (mx >= x && mx <= x + totalW && my >= y && my <= y + barH) {
+          showTooltip(e, d.label, d.detail);
+        }
+      });
+      featCanvas.addEventListener('mouseleave', hideTooltip);
+    });
+  }
+
+  // 2. Endpoints - vertical bar
+  drawVBar('chart-endpoints', DATA.endpoints, 'module', 'count');
+
+  // 3. Layers - horizontal bar
+  drawHBar('chart-layers', DATA.layers, 'layer', 'count');
+
+  // 4. Tech stack - radar
+  drawRadar('chart-tech', DATA.tech, 'name', 'weight');
+
+  // 5. DB schema - horizontal bar
+  drawHBar('chart-db', DATA.db, 'model', 'fields', { suffix: ' fields' });
+
+  // 6. Frontend vs Backend - donut
+  drawDonut('chart-split', DATA.split, 'label', 'count', { suffix: ' files' });
+
+  // 7. Health - donut
+  drawDonut('chart-health', DATA.health, 'status', 'count');
+
+  // Legends
+  buildLegend('legend-features', DATA.features, 'label', 'color');
+  buildLegend('legend-endpoints', DATA.endpoints, 'module', 'color');
+  buildLegend('legend-layers', DATA.layers, 'layer', 'color');
+  buildLegend('legend-db', DATA.db, 'model', 'color');
+  buildLegend('legend-split', DATA.split, 'label', 'color');
+  buildLegend('legend-health', DATA.health, 'status', 'color');
+
+  // Tables
+  buildTable('table-features', DATA.features, 'label', 'detail');
+  buildTable('table-endpoints', DATA.endpoints, 'module', 'count');
+  buildTable('table-layers', DATA.layers, 'layer', 'count');
+}
+
+const CHARTS = [initCharts];
+
+// Debounced resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(initCharts, 150);
+});
+
+document.addEventListener('DOMContentLoaded', initCharts);
+</script>
+</body>
+</html>

@@ -34,6 +34,16 @@ const CART_KEY = 'vendorverse_cart';
 const API_BASE = 'https://vendorverse-ekf8.onrender.com';
 const TOKEN_KEY = 'vendorverse_token';
 
+// Escape text before injecting into innerHTML (cart items come from localStorage)
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 // 
 // Cart Management (localStorage)
 //
@@ -216,14 +226,14 @@ function renderCheckoutItems() {
     container.innerHTML = cart.map(item => `
         <div class="checkout-item">
             <div class="checkout-item-image">
-                <img src="${item.image || 'https://via.placeholder.com/60'}" alt="${item.title}">
+                <img src="${escapeHtml(item.image) || 'https://via.placeholder.com/60'}" alt="${escapeHtml(item.title)}">
             </div>
             <div class="checkout-item-details">
-                <h4>${item.title}</h4>
-                <p class="checkout-item-qty">Qty: ${item.quantity}</p>
+                <h4>${escapeHtml(item.title)}</h4>
+                <p class="checkout-item-qty">Qty: ${escapeHtml(item.quantity)}</p>
             </div>
             <div class="checkout-item-price">
-                ₹${(item.price * item.quantity).toLocaleString('en-IN')}
+                ₹${(Number(item.price) * Number(item.quantity)).toLocaleString('en-IN')}
             </div>
         </div>
     `).join('');
